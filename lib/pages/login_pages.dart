@@ -103,20 +103,27 @@ class LoginPages extends StatelessWidget {
     );
   }
 
+  //Funcion que retorna el widget que almacena el boton de iniciar seccion
   Widget _createBottom(BuildContext context) {
     return RaisedButton(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
-        child: Text('Iniciar seccion'),
-      ),
+          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
+          child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Iniciar sesion'),
+                Icon(Icons.arrow_forward_ios_sharp)
+              ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 0.0,
       color: Colors.blue,
       textColor: Colors.white,
-      onPressed: () => Navigator.pushReplacementNamed(context, 'home'),
+      onPressed: () => _login(context),
     );
   }
 
+  //Funcion que retorna el widget del apartado de recuperar contraseña
   Widget _recuperar(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -131,6 +138,7 @@ class LoginPages extends StatelessWidget {
     );
   }
 
+  //Funcion que retorna el widget del apartado de Registrarse
   Widget _createAccount(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -143,5 +151,12 @@ class LoginPages extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  //Funcion que se ejecuta al presionar el boton "Iniciar sesion"
+  _login(BuildContext context) {
+    //Pendiente de completacion
+
+    Navigator.pushReplacementNamed(context, 'home');
   }
 }
