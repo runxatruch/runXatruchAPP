@@ -8,7 +8,7 @@ class HomePages extends StatelessWidget {
         title: Text('Inicio'),
       ),
       body: Center(
-        child: Text('Pagina principal'),
+        child: Text('Pagina princ'),
       ),
     );
   }
