@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:runxatruch_app/pages/BottonNavigatorBar.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
 import 'package:runxatruch_app/pages/login_pages.dart';
 import 'package:runxatruch_app/pages/recover_pages.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -22,7 +24,10 @@ class MyApp extends StatelessWidget {
         'login': (BuildContext context) => LoginPages(),
         'home': (BuildContext context) => HomePages(),
         'recoverAccount': (BuildContext context) => RecoverAccount(),
-        'createAccount': (BuildContext context) => CreateAccount()
+        'createAccount': (BuildContext context) => CreateAccount(),
+        //no se como inicializarla
+        'BAr': (BuildContext context) => MyHomePage(),
+        
       },
     );
   }
