@@ -41,7 +41,7 @@ class LoginPages extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Text('Ingrese su informacion para iniciar seccion'),
+                Text('Ingrese su información para iniciar sesión'),
                 SizedBox(
                   height: 40.0,
                 ),
@@ -112,7 +112,7 @@ class LoginPages extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Iniciar sesion'),
+                Text('Iniciar sesión'),
                 Icon(Icons.arrow_forward_ios_sharp)
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
