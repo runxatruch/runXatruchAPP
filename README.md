@@ -1,6 +1,7 @@
 # runxatruch_app
 
 A new Flutter project.
+SDK version 1.22.6
 
 ## Getting Started
 

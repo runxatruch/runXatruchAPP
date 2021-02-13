@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 
-  void _sustraer() {
-    setState(() => _conteo--);
-  }
+void prueba() {
+  print("prueba");
+}
 
-  void _reset() {
-    setState(() => _conteo = 0);
-  }
+void prueba2() {
+  print("prueba");
 }
