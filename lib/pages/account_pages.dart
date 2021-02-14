@@ -284,8 +284,8 @@ class _CreateAccountState extends State<CreateAccount> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             icon: Icon(Icons.phone),
-            hintText: 'Ejem: 88905690',
-            labelText: 'Numero de telefono sin Espacios',
+            hintText: 'Ejem: +50488905690',
+            labelText: 'Numero de telefono con código de área y sin espacios',
           ),
           onSaved: (value) => userAccount.telefono = value,
           validator: (value) {
