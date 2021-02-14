@@ -19,18 +19,19 @@ class CuentaModel {
   String ciudad;
   String fechaNac;
   String clave;
+  String password;
 
-  CuentaModel({
-    this.id,
-    this.nombres,
-    this.apellidos,
-    this.identidad,
-    this.email,
-    this.telefono,
-    this.ciudad,
-    this.fechaNac,
-    this.clave,
-  });
+  CuentaModel(
+      {this.id,
+      this.nombres,
+      this.apellidos,
+      this.identidad,
+      this.email,
+      this.telefono,
+      this.ciudad,
+      this.fechaNac,
+      this.clave,
+      this.password});
 
   factory CuentaModel.fromJson(Map<String, dynamic> json) => new CuentaModel(
         id: json["id"],
@@ -53,6 +54,7 @@ class CuentaModel {
         "telefono": telefono,
         "ciudad": ciudad,
         "fechaNac": fechaNac,
-        "clave": clave
+        "clave": clave,
+        "pasword": password
       };
 }

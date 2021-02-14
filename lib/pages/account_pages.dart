@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/account_models.dart';
+import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
 class CreateAccount extends StatefulWidget {
@@ -9,6 +10,7 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   CuentaModel userAccount = new CuentaModel();
+  AuthProvider _auth = new AuthProvider();
 
   final formkey = GlobalKey<FormState>();
   TextEditingController pass1 = new TextEditingController();
@@ -402,6 +404,7 @@ class _CreateAccountState extends State<CreateAccount> {
             icon: Icon(Icons.lock)),
         key: keyClave,
         controller: pass1,
+        onSaved: (value) => userAccount.password = value,
         validator: (value) {
           if (utils.passwordValid(value)) {
             return null;
@@ -508,21 +511,13 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Funcion que se ejecuta al presionar el boton "Registrarse"
-  _login(BuildContext context) {
+  _login(BuildContext context) async {
     //Pendiente de completacion
 
     if (!formkey.currentState.validate()) return;
     formkey.currentState.save();
-
-    print(userAccount.nombres);
-    print(userAccount.apellidos);
-    print(userAccount.ciudad);
-    print(userAccount.identidad);
-    print(userAccount.email);
-    print(userAccount.fechaNac);
-    print(userAccount.id);
-    print(userAccount.apellidos);
-    print(userAccount.clave);
+    dynamic result = await _auth.registerUser(userAccount);
+    print(result);
 
     //Navigator.pushReplacementNamed(context, 'home');
   }
