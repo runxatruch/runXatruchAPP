@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
         const Locale('en', 'US'), // English
         const Locale('es', 'ES'),
       ],
-      
       title: 'Material App',
       home: Scaffold(
         appBar: AppBar(
@@ -36,7 +35,6 @@ class MyApp extends StatelessWidget {
         'home': (BuildContext context) => HomePages(),
         'recoverAccount': (BuildContext context) => RecoverAccount(),
         'createAccount': (BuildContext context) => CreateAccount(),
-      
       },
     );
   }
