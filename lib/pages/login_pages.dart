@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class LoginPages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Login'),
+          title: Center(child: Text('Login')),
+          elevation: 0.0,
         ),
         body: Stack(
           children: [_crateForm(context)],
@@ -13,7 +15,35 @@ class LoginPages extends StatelessWidget {
   }
 
   //Funcion para crear el fondo de la pantalla de login
-  Widget _createBackground(BuildContext context) {}
+  Widget _createBackground(BuildContext context) {
+    final gradiente = Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: FractionalOffset(0.0, 0.5),
+              end: FractionalOffset(0.0, 1.0),
+              colors: [
+            Color.fromRGBO(52, 37, 101, 1.0),
+            Color.fromRGBO(35, 37, 57, 1.0)
+          ])),
+    );
+
+    final cajaRosa = Transform.rotate(
+        angle: -pi / 3.0,
+        child: Container(
+          height: 360.0,
+          width: 300.0,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.lightBlue[800], Colors.lightBlue[800]]),
+              borderRadius:
+                  BorderRadius.horizontal(left: Radius.circular(100.0)),
+              color: Colors.pink),
+        ));
+
+    return Stack(children: [Positioned(child: cajaRosa, top: -150)]);
+  }
 
   // Funcion que retorna el formulario para el apartado de inicio de seccion
   Widget _crateForm(BuildContext context) {
@@ -107,7 +137,8 @@ class LoginPages extends StatelessWidget {
   Widget _createBottom(BuildContext context) {
     return RaisedButton(
       child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
+          width: 220.0,
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -116,8 +147,8 @@ class LoginPages extends StatelessWidget {
                 Icon(Icons.arrow_forward_ios_sharp)
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      elevation: 0.0,
-      color: Colors.blue,
+      elevation: 5.0,
+      color: Colors.lightBlue[800],
       textColor: Colors.white,
       onPressed: () => _login(context),
     );

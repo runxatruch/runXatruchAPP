@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/account_models.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
@@ -38,7 +40,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Sign Up'),
+          title: Center(
+            child: Text('Crear cuenta'),
+          ),
         ),
         body: Stack(
           children: [_crateForm(context)],
@@ -46,7 +50,35 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Funcion para crear el fondo de la pantalla de login
-  //Widget _createBackground(BuildContext context) {}
+  Widget _createBackground(BuildContext context) {
+    final gradiente = Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: FractionalOffset(0.0, 0.5),
+              end: FractionalOffset(0.0, 1.0),
+              colors: [
+            Color.fromRGBO(52, 37, 101, 1.0),
+            Color.fromRGBO(35, 37, 57, 1.0)
+          ])),
+    );
+
+    final cajaRosa = Transform.rotate(
+        angle: -pi / 3.0,
+        child: Container(
+          height: 400.0,
+          width: 360.0,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.lightBlue[800], Colors.lightBlue[800]]),
+              borderRadius:
+                  BorderRadius.horizontal(left: Radius.circular(100.0)),
+              color: Colors.pink),
+        ));
+
+    return Stack(children: [Positioned(child: cajaRosa, top: -170)]);
+  }
 
   // Funcion que retorna el formulario para el apartado de inicio de sesion
   Widget _crateForm(BuildContext context) {
@@ -60,7 +92,7 @@ class _CreateAccountState extends State<CreateAccount> {
             ),
           ),
           Container(
-              width: size.width * 0.90,
+              width: size.width * 0.85,
               padding: EdgeInsets.symmetric(vertical: 20.0),
               margin: EdgeInsets.symmetric(vertical: 20.0),
               decoration: BoxDecoration(

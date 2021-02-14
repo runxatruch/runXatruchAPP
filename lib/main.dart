@@ -14,28 +14,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('es', 'ES'),
-      ],
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), // English
+          const Locale('es', 'ES'),
+        ],
+        title: 'Material App',
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Material App Bar'),
+          ),
         ),
-      ),
-      initialRoute: 'login',
-      routes: {
-        'login': (BuildContext context) => LoginPages(),
-        'home': (BuildContext context) => HomePages(),
-        'recoverAccount': (BuildContext context) => RecoverAccount(),
-        'createAccount': (BuildContext context) => CreateAccount(),
-      },
-    );
+        initialRoute: 'login',
+        routes: {
+          'login': (BuildContext context) => LoginPages(),
+          'home': (BuildContext context) => HomePages(),
+          'recoverAccount': (BuildContext context) => RecoverAccount(),
+          'createAccount': (BuildContext context) => CreateAccount(),
+        },
+        theme: ThemeData(
+          // Define the default brightness and colors.
+          brightness: Brightness.light,
+          primaryColor: Colors.lightBlue[800],
+          accentColor: Colors.cyan[600],
+
+          // Define the default TextTheme. Use this to specify the default
+          // text styling for headlines, titles, bodies of text, and more.
+        ));
   }
 }
