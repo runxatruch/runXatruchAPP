@@ -12,12 +12,14 @@ class AuthProvider {
         email: email, password: password);
   }
 
+  //Registrar un nuevo usuario
   Future registerUser(CuentaModel userData) async {
     try {
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: userData.email, password: userData.password);
-      print("token: ${result.credential}");
-      final result2 = await _addCompetitor(userData);
+      if (result.user.uid != null) {
+        await _addCompetitor(userData);
+      }
       return result.user;
     } catch (e) {
       print('Error');
