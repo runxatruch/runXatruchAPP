@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:runxatruch_app/pages/src/models/account_models.dart';
 import 'src/util.dart' as utils;
 
 class CreateAccount extends StatefulWidget {
@@ -7,6 +8,8 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+  CuentaModel userAccount = new CuentaModel();
+
   final formkey = GlobalKey<FormState>();
   TextEditingController pass1 = new TextEditingController();
   TextEditingController pass2 = new TextEditingController();
@@ -28,6 +31,11 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final CuentaModel userData = ModalRoute.of(context).settings.arguments;
+    if (userData != null) {
+      userAccount = userData;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Sign Up'),
@@ -181,6 +189,7 @@ class _CreateAccountState extends State<CreateAccount> {
             hintText: 'Ejem: Juan Antonio',
             labelText: 'Primer y Segundo Nombre',
           ),
+          onSaved: (value) => userAccount.nombres = value,
           validator: (value) {
             if (value.isEmpty || utils.isNumeric(value)) {
               return 'Ingrese sus nombres';
@@ -204,6 +213,7 @@ class _CreateAccountState extends State<CreateAccount> {
             hintText: 'Ejem: Perez Ramos',
             labelText: 'Primer y Segundo apellido',
           ),
+          onSaved: (value) => userAccount.apellidos = value,
           validator: (value) {
             if (value.isEmpty || utils.isNumeric(value)) {
               return 'Ingrese sus apellidos';
@@ -227,6 +237,7 @@ class _CreateAccountState extends State<CreateAccount> {
             hintText: 'Ejem: 080119992000',
             labelText: 'Numero de Identidad sin Espacios',
           ),
+          onSaved: (value) => userAccount.identidad = value,
           validator: (value) {
             if (!utils.isNumeric(value) || !utils.identity(value)) {
               return 'Ingrese un número de identidad válido';
@@ -252,6 +263,7 @@ class _CreateAccountState extends State<CreateAccount> {
             hintText: 'example@example.com',
             labelText: 'Correo Electrónico',
           ),
+          onSaved: (value) => userAccount.email = value,
           validator: (value) {
             if (utils.validatorEmail(value)) {
               return null;
@@ -275,6 +287,7 @@ class _CreateAccountState extends State<CreateAccount> {
             hintText: 'Ejem: 88905690',
             labelText: 'Numero de telefono sin Espacios',
           ),
+          onSaved: (value) => userAccount.telefono = value,
           validator: (value) {
             if (!utils.numberTel(value)) {
               return 'Ingrese un número válido';
@@ -324,6 +337,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 onChanged: (opt) {
                   setState(() {
                     _opcionCiudad = opt;
+                    userAccount.ciudad = opt;
                   });
                 },
               ),
@@ -338,10 +352,11 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget _createBirthDate(BuildContext context) {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: TextField(
+        child: TextFormField(
           enableInteractiveSelection: false,
           controller: _inputFieldDateController,
           keyboardType: TextInputType.emailAddress,
+          onSaved: (value) => userAccount.fechaNac = value,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -412,6 +427,7 @@ class _CreateAccountState extends State<CreateAccount> {
             suffixIcon: Icon(Icons.lock_open),
             icon: Icon(Icons.lock)),
         controller: pass2,
+        onSaved: (value) => userAccount.clave = value,
         validator: (value) {
           if (value != pass1.text) {
             return 'Las claves no coinciden';
@@ -461,6 +477,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 onChanged: (opt) {
                   setState(() {
                     _opcionCategoria = opt;
+                    userAccount.clave = opt;
                   });
                 },
               ),
@@ -496,6 +513,16 @@ class _CreateAccountState extends State<CreateAccount> {
 
     if (!formkey.currentState.validate()) return;
     formkey.currentState.save();
+
+    print(userAccount.nombres);
+    print(userAccount.apellidos);
+    print(userAccount.ciudad);
+    print(userAccount.identidad);
+    print(userAccount.email);
+    print(userAccount.fechaNac);
+    print(userAccount.id);
+    print(userAccount.apellidos);
+    print(userAccount.clave);
 
     //Navigator.pushReplacementNamed(context, 'home');
   }
