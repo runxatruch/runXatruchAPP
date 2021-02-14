@@ -44,7 +44,7 @@ class _BarraNavegacion extends State<BarraNavegacion> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar ejemplo'),
+        title: const Text('RunXatruch'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
