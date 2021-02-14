@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:runxatruch_app/pages/src/models/account_models.dart';
-import 'src/util.dart' as utils;
+import 'package:runxatruch_app/models/account_models.dart';
+import 'package:runxatruch_app/utils/util.dart' as utils;
 
 class CreateAccount extends StatefulWidget {
   @override
