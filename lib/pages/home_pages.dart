@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:runxatruch_app/Widget/BottonNavigatorBar.dart';
 
 class HomePages extends StatelessWidget {
   @override
@@ -8,8 +9,15 @@ class HomePages extends StatelessWidget {
         title: Text('Inicio'),
       ),
       body: Center(
-        child: Text('Pagina principal'),
+        child: Text('Pagina Princial...'),
       ),
+      
+    //barra de navegacion 
+      bottomNavigationBar: BarraNavegacion(),
+    
+      
     );
+    
   }
 }
+
