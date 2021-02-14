@@ -60,7 +60,7 @@ class _CreateAccountState extends State<CreateAccount> {
             ),
           ),
           Container(
-              width: size.width * 0.99,
+              width: size.width * 0.90,
               padding: EdgeInsets.symmetric(vertical: 20.0),
               margin: EdgeInsets.symmetric(vertical: 20.0),
               decoration: BoxDecoration(
