@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
@@ -8,7 +9,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 //import 'package:runxatruch_app/pages/sign_pages.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+  Firebase.initializeApp();
+}
 
 class MyApp extends StatelessWidget {
   @override

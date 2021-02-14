@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "587544708776",
+    "project_id": "testproyect-fee79",
+    "storage_bucket": "testproyect-fee79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587544708776:android:cfe62c565c64ac443be49d",
+        "android_client_info": {
+          "package_name": "com.example.runxatruch_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587544708776-pgd0k1sg7mm6hp9d9qtprrh8eik5g1ah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEZrJmMYPNPYcdgV2Iw_biFlahJDaHgVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587544708776-pgd0k1sg7mm6hp9d9qtprrh8eik5g1ah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
