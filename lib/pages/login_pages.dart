@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:runxatruch_app/models/login_models.dart';
+import 'package:runxatruch_app/utils/util.dart' as utils;
 
-class LoginPages extends StatelessWidget {
+class LoginPages extends StatefulWidget {
+  @override
+  _LoginPagesState createState() => _LoginPagesState();
+}
+
+class _LoginPagesState extends State<LoginPages> {
+  LoginModel login = new LoginModel();
+  final keyLogin = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
+    final LoginModel userData = ModalRoute.of(context).settings.arguments;
+    if (userData != null) {
+      login = userData;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Center(child: Text('Login')),
@@ -14,38 +29,9 @@ class LoginPages extends StatelessWidget {
         ));
   }
 
-  //Funcion para crear el fondo de la pantalla de login
-  Widget _createBackground(BuildContext context) {
-    final gradiente = Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: FractionalOffset(0.0, 0.5),
-              end: FractionalOffset(0.0, 1.0),
-              colors: [
-            Color.fromRGBO(52, 37, 101, 1.0),
-            Color.fromRGBO(35, 37, 57, 1.0)
-          ])),
-    );
 
-    final cajaRosa = Transform.rotate(
-        angle: -pi / 3.0,
-        child: Container(
-          height: 360.0,
-          width: 300.0,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.lightBlue[800], Colors.lightBlue[800]]),
-              borderRadius:
-                  BorderRadius.horizontal(left: Radius.circular(100.0)),
-              color: Colors.pink),
-        ));
+  Widget _createBackground(BuildContext context) {}
 
-    return Stack(children: [Positioned(child: cajaRosa, top: -150)]);
-  }
-
-  // Funcion que retorna el formulario para el apartado de inicio de seccion
   Widget _crateForm(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
@@ -57,36 +43,38 @@ class LoginPages extends StatelessWidget {
             ),
           ),
           Container(
-            width: size.width * 0.85,
-            padding: EdgeInsets.symmetric(vertical: 50.0),
-            margin: EdgeInsets.symmetric(vertical: 20.0),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 3.0,
-                      offset: Offset(0.0, 5.0))
-                ]),
-            child: Column(
-              children: [
-                Text('Ingrese su información para iniciar sesión'),
-                SizedBox(
-                  height: 40.0,
+              width: size.width * 0.85,
+              padding: EdgeInsets.symmetric(vertical: 50.0),
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5.0),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 3.0,
+                        offset: Offset(0.0, 5.0))
+                  ]),
+              child: Form(
+                key: keyLogin,
+                child: Column(
+                  children: [
+                    Text('Ingrese su información para iniciar sesión'),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    _createEmail(),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    _createPass(),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    _createBottom(context),
+                  ],
                 ),
-                _createEmail(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                _createPass(),
-                SizedBox(
-                  height: 30.0,
-                ),
-                _createBottom(context),
-              ],
-            ),
-          ),
+              )),
           SizedBox(
             height: 15.0,
           ),
@@ -100,11 +88,10 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Crear el input para ingresar el correo electronico
   Widget _createEmail() {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
+        child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             border:
@@ -114,13 +101,21 @@ class LoginPages extends StatelessWidget {
             hintText: 'example@example.com',
             labelText: 'Correo Electornico',
           ),
+          onSaved: (value) => login.correo = value,
+          validator: (value) {
+            if (utils.validatorEmail(value)) {
+              return null;
+            } else {
+              return 'Ingrese un correo válido';
+            }
+          },
         ));
   }
 
   Widget _createPass() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextField(
+      child: TextFormField(
         obscureText: true,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
@@ -129,11 +124,18 @@ class LoginPages extends StatelessWidget {
             labelText: 'Password',
             suffixIcon: Icon(Icons.lock_open),
             icon: Icon(Icons.lock)),
+        onSaved: (value) => login.clave = value,
+        validator: (value) {
+          if (utils.passwordValid(value)) {
+            return null;
+          } else {
+            return 'Mayúscula/s, minúsculas/s, número/s';
+          }
+        },
       ),
     );
   }
 
-  //Funcion que retorna el widget que almacena el boton de iniciar seccion
   Widget _createBottom(BuildContext context) {
     return RaisedButton(
       child: Container(
@@ -154,7 +156,6 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Funcion que retorna el widget del apartado de recuperar contraseña
   Widget _recuperar(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -169,7 +170,6 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Funcion que retorna el widget del apartado de Registrarse
   Widget _createAccount(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -184,9 +184,13 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Funcion que se ejecuta al presionar el boton "Iniciar sesion"
   _login(BuildContext context) {
+    if (!keyLogin.currentState.validate()) return;
+    keyLogin.currentState.save();
+
     //Pendiente de completacion
+    print(login.clave);
+    print(login.correo);
 
     Navigator.pushReplacementNamed(context, 'home');
   }
