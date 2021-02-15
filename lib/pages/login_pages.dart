@@ -11,7 +11,6 @@ class _LoginPagesState extends State<LoginPages> {
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context) {
     final LoginModel userData = ModalRoute.of(context).settings.arguments;
@@ -20,17 +19,68 @@ class _LoginPagesState extends State<LoginPages> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Center(child: Text('Login')),
-          elevation: 0.0,
-        ),
         body: Stack(
-          children: [_crateForm(context)],
-        ));
+      children: [_createBackground(context), _crateForm(context)],
+    ));
   }
 
+  Widget _createBackground(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final fondoMorado = Container(
+      height: size.height * 0.45,
+      width: double.infinity,
+      color: Colors.lightBlue[800],
+    );
 
-  Widget _createBackground(BuildContext context) {}
+    final circulo = Container(
+      width: 100.0,
+      height: 100.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.0),
+          color: Color.fromRGBO(255, 255, 255, 0.05)),
+    );
+    return Stack(
+      children: [
+        fondoMorado,
+        Positioned(
+          child: circulo,
+          top: 110.0,
+          left: 30.0,
+        ),
+        Positioned(
+          child: circulo,
+          top: -40.0,
+          right: -30.0,
+        ),
+        Positioned(
+          child: circulo,
+          bottom: 100.0,
+          right: 80.0,
+        ),
+        Positioned(
+          child: circulo,
+          bottom: -50.0,
+          right: 20.0,
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 80.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10.0,
+                width: double.infinity,
+              ),
+              Image(
+                image: AssetImage('assets/logo.png'),
+                height: 200.0,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
 
   Widget _crateForm(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -39,7 +89,7 @@ class _LoginPagesState extends State<LoginPages> {
         children: [
           SafeArea(
             child: Container(
-              height: 100.0,
+              height: 200.0,
             ),
           ),
           Container(

@@ -41,45 +41,68 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Center(
-            child: Text('Crear cuenta'),
-          ),
-        ),
         body: Stack(
-          children: [_crateForm(context)],
-        ));
+      children: [_createBackground(context), _crateForm(context)],
+    ));
   }
 
   //Funcion para crear el fondo de la pantalla de login
   Widget _createBackground(BuildContext context) {
-    final gradiente = Container(
+    final size = MediaQuery.of(context).size;
+    final fondoMorado = Container(
+      height: size.height * 0.45,
       width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: FractionalOffset(0.0, 0.5),
-              end: FractionalOffset(0.0, 1.0),
-              colors: [
-            Color.fromRGBO(52, 37, 101, 1.0),
-            Color.fromRGBO(35, 37, 57, 1.0)
-          ])),
+      color: Colors.lightBlue[800],
     );
 
-    final cajaRosa = Transform.rotate(
-        angle: -pi / 3.0,
-        child: Container(
-          height: 400.0,
-          width: 360.0,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.lightBlue[800], Colors.lightBlue[800]]),
-              borderRadius:
-                  BorderRadius.horizontal(left: Radius.circular(100.0)),
-              color: Colors.pink),
-        ));
-
-    return Stack(children: [Positioned(child: cajaRosa, top: -170)]);
+    final circulo = Container(
+      width: 100.0,
+      height: 100.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.0),
+          color: Color.fromRGBO(255, 255, 255, 0.05)),
+    );
+    return Stack(
+      children: [
+        fondoMorado,
+        Positioned(
+          child: circulo,
+          top: 110.0,
+          left: 30.0,
+        ),
+        Positioned(
+          child: circulo,
+          top: -40.0,
+          right: -30.0,
+        ),
+        Positioned(
+          child: circulo,
+          bottom: 100.0,
+          right: 80.0,
+        ),
+        Positioned(
+          child: circulo,
+          bottom: -50.0,
+          right: 20.0,
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 80.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10.0,
+                width: double.infinity,
+              ),
+              Image(
+                image: AssetImage('assets/logo.png'),
+                height: 200.0,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   // Funcion que retorna el formulario para el apartado de inicio de sesion
@@ -90,7 +113,7 @@ class _CreateAccountState extends State<CreateAccount> {
         children: [
           SafeArea(
             child: Container(
-              height: 10.0,
+              height: 200.0,
             ),
           ),
           Container(
