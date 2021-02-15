@@ -11,6 +11,7 @@ class _LoginPagesState extends State<LoginPages> {
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     final LoginModel userData = ModalRoute.of(context).settings.arguments;
@@ -20,12 +21,14 @@ class _LoginPagesState extends State<LoginPages> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Login'),
+          title: Center(child: Text('Login')),
+          elevation: 0.0,
         ),
         body: Stack(
           children: [_crateForm(context)],
         ));
   }
+
 
   Widget _createBackground(BuildContext context) {}
 
@@ -136,7 +139,8 @@ class _LoginPagesState extends State<LoginPages> {
   Widget _createBottom(BuildContext context) {
     return RaisedButton(
       child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
+          width: 220.0,
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -145,8 +149,8 @@ class _LoginPagesState extends State<LoginPages> {
                 Icon(Icons.arrow_forward_ios_sharp)
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      elevation: 0.0,
-      color: Colors.blue,
+      elevation: 5.0,
+      color: Colors.lightBlue[800],
       textColor: Colors.white,
       onPressed: () => _login(context),
     );

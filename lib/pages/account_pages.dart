@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/account_models.dart';
+import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
 class CreateAccount extends StatefulWidget {
@@ -9,6 +12,7 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   CuentaModel userAccount = new CuentaModel();
+  AuthProvider _auth = new AuthProvider();
 
   final formkey = GlobalKey<FormState>();
   TextEditingController pass1 = new TextEditingController();
@@ -38,7 +42,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Sign Up'),
+          title: Center(
+            child: Text('Crear cuenta'),
+          ),
         ),
         body: Stack(
           children: [_crateForm(context)],
@@ -46,7 +52,35 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Funcion para crear el fondo de la pantalla de login
-  //Widget _createBackground(BuildContext context) {}
+  Widget _createBackground(BuildContext context) {
+    final gradiente = Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: FractionalOffset(0.0, 0.5),
+              end: FractionalOffset(0.0, 1.0),
+              colors: [
+            Color.fromRGBO(52, 37, 101, 1.0),
+            Color.fromRGBO(35, 37, 57, 1.0)
+          ])),
+    );
+
+    final cajaRosa = Transform.rotate(
+        angle: -pi / 3.0,
+        child: Container(
+          height: 400.0,
+          width: 360.0,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.lightBlue[800], Colors.lightBlue[800]]),
+              borderRadius:
+                  BorderRadius.horizontal(left: Radius.circular(100.0)),
+              color: Colors.pink),
+        ));
+
+    return Stack(children: [Positioned(child: cajaRosa, top: -170)]);
+  }
 
   // Funcion que retorna el formulario para el apartado de inicio de sesion
   Widget _crateForm(BuildContext context) {
@@ -60,7 +94,7 @@ class _CreateAccountState extends State<CreateAccount> {
             ),
           ),
           Container(
-              width: size.width * 0.90,
+              width: size.width * 0.85,
               padding: EdgeInsets.symmetric(vertical: 20.0),
               margin: EdgeInsets.symmetric(vertical: 20.0),
               decoration: BoxDecoration(
@@ -402,6 +436,7 @@ class _CreateAccountState extends State<CreateAccount> {
             icon: Icon(Icons.lock)),
         key: keyClave,
         controller: pass1,
+        onSaved: (value) => userAccount.password = value,
         validator: (value) {
           if (utils.passwordValid(value)) {
             return null;
@@ -501,28 +536,20 @@ class _CreateAccountState extends State<CreateAccount> {
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 0.0,
-      color: Colors.blue,
+      color: Colors.lightBlue[800],
       textColor: Colors.white,
       onPressed: () => _login(context),
     );
   }
 
   //Funcion que se ejecuta al presionar el boton "Registrarse"
-  _login(BuildContext context) {
+  _login(BuildContext context) async {
     //Pendiente de completacion
 
     if (!formkey.currentState.validate()) return;
     formkey.currentState.save();
-
-    print(userAccount.nombres);
-    print(userAccount.apellidos);
-    print(userAccount.ciudad);
-    print(userAccount.identidad);
-    print(userAccount.email);
-    print(userAccount.fechaNac);
-    print(userAccount.id);
-    print(userAccount.apellidos);
-    print(userAccount.clave);
+    dynamic result = await _auth.registerUser(userAccount);
+    print(result);
 
     //Navigator.pushReplacementNamed(context, 'home');
   }

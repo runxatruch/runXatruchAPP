@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
@@ -8,36 +9,45 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 //import 'package:runxatruch_app/pages/sign_pages.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+  Firebase.initializeApp();
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('es', 'ES'),
-      ],
-      
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), // English
+          const Locale('es', 'ES'),
+        ],
+        title: 'Material App',
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Material App Bar'),
+          ),
         ),
-      ),
-      initialRoute: 'login',
-      routes: {
-        'login': (BuildContext context) => LoginPages(),
-        'home': (BuildContext context) => HomePages(),
-        'recoverAccount': (BuildContext context) => RecoverAccount(),
-        'createAccount': (BuildContext context) => CreateAccount(),
-      
-      },
-    );
+        initialRoute: 'login',
+        routes: {
+          'login': (BuildContext context) => LoginPages(),
+          'home': (BuildContext context) => HomePages(),
+          'recoverAccount': (BuildContext context) => RecoverAccount(),
+          'createAccount': (BuildContext context) => CreateAccount(),
+        },
+        theme: ThemeData(
+          // Define the default brightness and colors.
+          brightness: Brightness.light,
+          primaryColor: Colors.lightBlue[800],
+          accentColor: Colors.cyan[600],
+
+          // Define the default TextTheme. Use this to specify the default
+          // text styling for headlines, titles, bodies of text, and more.
+        ));
   }
 }
