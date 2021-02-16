@@ -11,13 +11,9 @@ class HomePages extends StatelessWidget {
       body: Center(
         child: Text('Pagina Princial...'),
       ),
-      
-    //barra de navegacion 
+
+      //barra de navegacion
       bottomNavigationBar: BarraNavegacion(),
-    
-      
     );
-    
   }
 }
-

@@ -35,6 +35,10 @@ class PreferenciasUsuario {
     _prefs.setString('credential', value);
   }
 
+  credentialClear() async {
+    await _prefs.clear();
+  }
+
   // GET y SET de la última página
   get ultimaPagina {
     return _prefs.getString('ultimaPagina') ?? 'login';

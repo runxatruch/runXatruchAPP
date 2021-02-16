@@ -90,7 +90,7 @@ class _CreateAccountState extends State<CreateAccount> {
           right: 20.0,
         ),
         Container(
-          padding: EdgeInsets.only(top: 80.0),
+          padding: EdgeInsets.only(top: 20.0),
           child: Column(
             children: [
               SizedBox(
@@ -137,15 +137,18 @@ class _CreateAccountState extends State<CreateAccount> {
                 key: formkey,
                 child: Column(
                   children: [
-                    Text('Nombres'),
+                    Text(
+                      'Crear cuenta',
+                      style:
+                          TextStyle(fontFamily: 'RobotoMono', fontSize: 30.0),
+                    ),
                     SizedBox(
-                      height: 5.0,
+                      height: 15.0,
                     ),
                     _createName(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Apellidos'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -153,7 +156,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Numero de Identidad'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -161,7 +163,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Correo Electronico'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -169,7 +170,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Telefono'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -177,7 +177,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Ciudad'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -185,7 +184,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Contraseña'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -193,7 +191,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text('Confirmar contraseña'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -355,7 +352,7 @@ class _CreateAccountState extends State<CreateAccount> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             icon: Icon(Icons.phone),
-            hintText: 'Ejem: +50488905690',
+            hintText: 'Ejem: 88905690',
             labelText: 'Numero de telefono con código de área y sin espacios',
           ),
           onSaved: (value) => userAccount.telefono = value,

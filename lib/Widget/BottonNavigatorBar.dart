@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 /// This is the stateful widget that the main application instantiates.
 class BarraNavegacion extends StatefulWidget {
   //BarraNavegacion({Key key}) : super(key: key);
@@ -27,7 +26,6 @@ class _BarraNavegacion extends State<BarraNavegacion> {
       'Index 2: Ranking',
       style: optionStyle,
     ),
-
     Text(
       'Index 3: Perfil',
       style: optionStyle,
@@ -50,7 +48,7 @@ class _BarraNavegacion extends State<BarraNavegacion> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        //la linea  de abajo  lo que hace es mostrar los datos de los iconos 
+        //la linea  de abajo  lo que hace es mostrar los datos de los iconos
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -65,7 +63,7 @@ class _BarraNavegacion extends State<BarraNavegacion> {
             icon: Icon(Icons.wine_bar),
             label: 'Raking',
           ),
-           BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_sharp),
             label: 'Perfil',
           ),
@@ -73,8 +71,8 @@ class _BarraNavegacion extends State<BarraNavegacion> {
         currentIndex: _selectedIndex,
         //color del  iten cuando es seleccionado
         selectedItemColor: Colors.amber[800],
-        //color del iten cuando no esta seleccionadao 
-        //color de los iconos  por defecto esta en gris 
+        //color del iten cuando no esta seleccionadao
+        //color de los iconos  por defecto esta en gris
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
