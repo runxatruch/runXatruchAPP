@@ -16,8 +16,8 @@ class UserModel {
   String email;
   String telefono;
   String fechaNac;
-  String clave;
   String password;
+  List participations = [];
 
   UserModel(
       {this.id,
@@ -27,29 +27,26 @@ class UserModel {
       this.email,
       this.telefono,
       this.fechaNac,
-      this.clave,
+      this.participations,
       this.password});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => new UserModel(
-        id: json["id"],
-        nombres: json["nombres"],
-        apellidos: json["apellidos"],
-        identidad: json["identidad"],
+        nombres: json["firstName"],
+        apellidos: json["lastName"],
+        identidad: json["identity"],
         email: json["email"],
-        telefono: json["telefono"],
-        fechaNac: json["fechaNac"],
-        clave: json["clave"],
+        telefono: json["phone"],
+        fechaNac: json["birthDate"],
+        participations: json["participations"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "nombres": nombres,
-        "apellidos": apellidos,
-        "identidad": identidad,
+        "firstName": nombres,
+        "lastName": apellidos,
+        "identity": identidad,
         "email": email,
-        "telefono": telefono,
-        "fechaNac": fechaNac,
-        "clave": clave,
-        "pasword": password
+        "phone": telefono,
+        "birthDate": fechaNac,
+        "participations": participations == null ? [] : participations,
       };
 }

@@ -460,7 +460,7 @@ class _CreateAccountState extends State<CreateAccount> {
             suffixIcon: Icon(Icons.lock_open),
             icon: Icon(Icons.lock)),
         controller: pass2,
-        onSaved: (value) => userAccount.clave = value,
+        onSaved: (value) => userAccount.password = value,
         validator: (value) {
           if (value != pass1.text) {
             return 'Las claves no coinciden';
@@ -510,7 +510,6 @@ class _CreateAccountState extends State<CreateAccount> {
                 onChanged: (opt) {
                   setState(() {
                     _opcionCategoria = opt;
-                    userAccount.clave = opt;
                   });
                 },
               ),
@@ -547,8 +546,10 @@ class _CreateAccountState extends State<CreateAccount> {
     if (!formkey.currentState.validate()) return;
     formkey.currentState.save();
     dynamic result = await _auth.registerUser(userAccount);
-    print(result);
-
-    //Navigator.pushReplacementNamed(context, 'home');
+    if (result['ok']) {
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      //error
+    }
   }
 }

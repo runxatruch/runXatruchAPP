@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/login_models.dart';
+import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
 class LoginPages extends StatefulWidget {
@@ -234,14 +236,18 @@ class _LoginPagesState extends State<LoginPages> {
     );
   }
 
-  _login(BuildContext context) {
+  _login(BuildContext context) async {
+    AuthProvider _auth = new AuthProvider();
     if (!keyLogin.currentState.validate()) return;
     keyLogin.currentState.save();
-
-    //Pendiente de completacion
-    print(login.clave);
-    print(login.correo);
-
-    Navigator.pushReplacementNamed(context, 'home');
+    final result = await _auth.loginUser(login.correo, login.clave);
+    if (result['ok']) {
+      UserCredential userCredential = result['credential'];
+      userCredential.user;
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      //Error
+      print(result['error']);
+    }
   }
 }

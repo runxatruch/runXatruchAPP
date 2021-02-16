@@ -9,9 +9,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 //import 'package:runxatruch_app/pages/sign_pages.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
