@@ -1,15 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:runxatruch_app/models/user_models.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
 class AuthProvider {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  final _pref = new PreferenciasUsuario();
   CollectionReference _competitor =
       FirebaseFirestore.instance.collection('users');
 
-  Future<Map<String, dynamic>> loginUser(String email, String password) async {
+  Future<Map<String, dynamic>> loginUser(
+      String email, String password, bool temp) async {
+    UserCredential userCredential;
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -18,18 +22,31 @@ class AuthProvider {
         return {'ok': false, 'error': 'Contraseña incorrecra'};
       }
     }
-    return {'ok': true, 'credential': UserCredential};
+    if (temp) {
+      _pref.credential = {
+        'email': userCredential.user.email,
+        'uid': userCredential.user.uid
+      }.toString();
+    }
+
+    return {'ok': true, 'credential': userCredential};
   }
 
   //Registrar un nuevo usuario
-  Future<Map<String, dynamic>> registerUser(UserModel userData) async {
+  Future<Map<String, dynamic>> registerUser(
+      UserModel userData, bool temp) async {
     try {
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: userData.email, password: userData.password);
       if (result.user.uid != null) {
         await _addCompetitor(userData);
+        if (temp) {
+          _pref.credential =
+              {'email': result.user.email, 'uid': result.user.uid}.toString();
+        }
+        return {'ok': true, 'credential': result};
       }
-      return {'ok': false, 'credential': result.user};
+      return {'ok': false, 'credential': result};
     } catch (e) {
       return {'ok': false, 'error': e.code};
     }

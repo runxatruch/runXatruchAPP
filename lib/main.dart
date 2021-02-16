@@ -6,17 +6,25 @@ import 'package:runxatruch_app/pages/login_pages.dart';
 import 'package:runxatruch_app/pages/recover_pages.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:runxatruch_app/pages/welcome_pages.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
 //import 'package:runxatruch_app/pages/sign_pages.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = new PreferenciasUsuario();
+  await prefs.initPrefs();
   runApp(MyApp());
   await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
+  final initialapp =
+      PreferenciasUsuario().credential == null ? 'welcome' : 'home';
   @override
   Widget build(BuildContext context) {
+    print(PreferenciasUsuario().credential);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
@@ -33,8 +41,9 @@ class MyApp extends StatelessWidget {
             title: Text('Material App Bar'),
           ),
         ),
-        initialRoute: 'login',
+        initialRoute: initialapp,
         routes: {
+          'welcome': (BuildContext context) => WelcomePages(),
           'login': (BuildContext context) => LoginPages(),
           'home': (BuildContext context) => HomePages(),
           'recoverAccount': (BuildContext context) => RecoverAccount(),
