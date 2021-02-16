@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/login_models.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
+import 'package:runxatruch_app/provider/auth_provider.dart';
+import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
 class LoginPages extends StatefulWidget {
@@ -8,6 +12,7 @@ class LoginPages extends StatefulWidget {
 }
 
 class _LoginPagesState extends State<LoginPages> {
+  bool _checkbox = false;
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
 
@@ -119,7 +124,29 @@ class _LoginPagesState extends State<LoginPages> {
                     ),
                     _createPass(),
                     SizedBox(
-                      height: 30.0,
+                      height: 5.0,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            focusColor: Colors.lightBlue[800],
+                            activeColor: Colors.lightBlue[800],
+                            value: _checkbox,
+                            onChanged: (value) {
+                              setState(() {
+                                _checkbox = !_checkbox;
+                              });
+                            },
+                          ),
+                          Text('Mantener sesion inciada'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25.0,
                     ),
                     _createBottom(context),
                   ],
@@ -234,14 +261,18 @@ class _LoginPagesState extends State<LoginPages> {
     );
   }
 
-  _login(BuildContext context) {
+  _login(BuildContext context) async {
+    AuthProvider _auth = new AuthProvider();
     if (!keyLogin.currentState.validate()) return;
     keyLogin.currentState.save();
-
-    //Pendiente de completacion
-    print(login.clave);
-    print(login.correo);
-
-    Navigator.pushReplacementNamed(context, 'home');
+    final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
+    if (result['ok']) {
+      UserCredential userCredential = result['credential'];
+      print('********');
+      print(PreferenciasUsuario().credential);
+      //Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      mostrarAlerta(context, result['error']);
+    }
   }
 }

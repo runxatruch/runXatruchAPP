@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:runxatruch_app/models/account_models.dart';
+import 'package:runxatruch_app/models/user_models.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
+import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
 class CreateAccount extends StatefulWidget {
@@ -11,7 +13,7 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  CuentaModel userAccount = new CuentaModel();
+  UserModel userAccount = new UserModel();
   AuthProvider _auth = new AuthProvider();
 
   final formkey = GlobalKey<FormState>();
@@ -20,10 +22,12 @@ class _CreateAccountState extends State<CreateAccount> {
 
   final keyClave = GlobalKey<FormFieldState>();
   String _fecha = '';
+
   TextEditingController _inputFieldDateController = new TextEditingController();
 
   String _opcionCiudad = 'Francisco Morazan';
   List<String> _ciudades = ['Francisco Morazan', 'Cortes', 'colon', 'Olancho'];
+  bool _checkbox = false;
 
   //mirando como agregar esos iconos a las categorias
   dynamic icono1 = Icon(Icons.sports_football_sharp);
@@ -35,7 +39,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
-    final CuentaModel userData = ModalRoute.of(context).settings.arguments;
+    final UserModel userData = ModalRoute.of(context).settings.arguments;
     if (userData != null) {
       userAccount = userData;
     }
@@ -137,105 +141,112 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createName(),
+                    _createName(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Apellidos'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createSurname(),
+                    _createSurname(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Numero de Identidad'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createIdentity(),
+                    _createIdentity(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Correo Electronico'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createEmail(),
+                    _createEmail(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Telefono'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createPhone(),
+                    _createPhone(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Ciudad'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    //_createCity(),
-                    _createCityDropdown(),
+                    _createBirthDate(size.width, context),
                     SizedBox(
                       height: 20.0,
                     ),
-
-                    Text('Fecha de Nacimiento'),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    _createBirthDate(context),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-
                     Text('Contraseña'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createPass(),
+                    _createPass(size.width),
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Confirmar contraseña'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createPassConfir(),
+                    _createPassConfir(size.width),
                     SizedBox(
-                      height: 20.0,
+                      height: 10.0,
                     ),
-
-                    Text('Categoria'),
+                    _mantenersecion(),
                     SizedBox(
-                      height: 5.0,
+                      height: 10.0,
                     ),
-                    _createCategoriaDropdown(),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-
                     _createBottom(context),
                   ],
                 ),
               )),
+          SizedBox(
+            height: 10.0,
+          ),
+          _loginPages(context),
+          SizedBox(
+            height: 50.0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _mantenersecion() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Checkbox(
+            focusColor: Colors.lightBlue[800],
+            activeColor: Colors.lightBlue[800],
+            value: _checkbox,
+            onChanged: (value) {
+              setState(() {
+                _checkbox = !_checkbox;
+              });
+            },
+          ),
+          Text('Mantener sesion inciada'),
         ],
       ),
     );
   }
 
   //Crear el input para ingresar los nombres
-  Widget _createName() {
+  Widget _createName(size) {
     return Container(
+        width: size * 0.8,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
           keyboardType: TextInputType.name,
@@ -258,8 +269,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para ingresar los apellidos
-  Widget _createSurname() {
+  Widget _createSurname(size) {
     return Container(
+        width: size * 0.8,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
           keyboardType: TextInputType.name,
@@ -282,8 +294,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para ingresar la identidad
-  Widget _createIdentity() {
+  Widget _createIdentity(size) {
     return Container(
+        width: size * 0.8,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
           keyboardType: TextInputType.number,
@@ -307,8 +320,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //Crear el input para ingresar el correo electronico
 
-  Widget _createEmail() {
+  Widget _createEmail(size) {
     return Container(
+        width: size * 0.8,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
@@ -316,7 +330,6 @@ class _CreateAccountState extends State<CreateAccount> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             icon: Icon(Icons.email),
-            suffixIcon: Icon(Icons.alternate_email),
             hintText: 'example@example.com',
             labelText: 'Correo Electrónico',
           ),
@@ -332,8 +345,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para ingresar el numero de telefono
-  Widget _createPhone() {
+  Widget _createPhone(size) {
     return Container(
+        width: size * 0.8,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
           keyboardType: TextInputType.number,
@@ -370,7 +384,7 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //funcion de crear ciudad
-  Widget _createCityDropdown() {
+  Widget _createCityDropdown(size) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -378,7 +392,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Icon(Icons.room_rounded, color: Colors.black45),
           SizedBox(width: 15.0),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 70.0),
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
             height: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
@@ -394,7 +408,6 @@ class _CreateAccountState extends State<CreateAccount> {
                 onChanged: (opt) {
                   setState(() {
                     _opcionCiudad = opt;
-                    userAccount.ciudad = opt;
                   });
                 },
               ),
@@ -406,8 +419,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para ingresar la fecha de nacimiento
-  Widget _createBirthDate(BuildContext context) {
+  Widget _createBirthDate(size, BuildContext context) {
     return Container(
+        width: size * 0.8,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: TextFormField(
           enableInteractiveSelection: false,
@@ -445,8 +459,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para ingresar la contraseña
-  Widget _createPass() {
+  Widget _createPass(size) {
     return Container(
+      width: size * 0.8,
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: TextFormField(
         textCapitalization: TextCapitalization.sentences,
@@ -473,8 +488,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para confirmar la contraseña
-  Widget _createPassConfir() {
+  Widget _createPassConfir(size) {
     return Container(
+      width: size * 0.8,
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: TextFormField(
         textCapitalization: TextCapitalization.sentences,
@@ -485,7 +501,7 @@ class _CreateAccountState extends State<CreateAccount> {
             suffixIcon: Icon(Icons.lock_open),
             icon: Icon(Icons.lock)),
         controller: pass2,
-        onSaved: (value) => userAccount.clave = value,
+        onSaved: (value) => userAccount.password = value,
         validator: (value) {
           if (value != pass1.text) {
             return 'Las claves no coinciden';
@@ -511,7 +527,7 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //funcion para crear categoria
-  Widget _createCategoriaDropdown() {
+  Widget _createCategoriaDropdown(size) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -519,7 +535,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Icon(Icons.run_circle_outlined, color: Colors.black45),
           SizedBox(width: 15.0),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 95.0),
+            padding: EdgeInsets.symmetric(horizontal: 70.0),
             height: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
@@ -535,13 +551,26 @@ class _CreateAccountState extends State<CreateAccount> {
                 onChanged: (opt) {
                   setState(() {
                     _opcionCategoria = opt;
-                    userAccount.clave = opt;
                   });
                 },
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _loginPages(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, 'login');
+      },
+      child: Container(
+        child: Text(
+          '¿Ya tienes cuenta?',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
     );
   }
@@ -558,7 +587,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 Text('Registrarse'),
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      elevation: 0.0,
+      elevation: 5.0,
       color: Colors.lightBlue[800],
       textColor: Colors.white,
       onPressed: () => _login(context),
@@ -571,9 +600,11 @@ class _CreateAccountState extends State<CreateAccount> {
 
     if (!formkey.currentState.validate()) return;
     formkey.currentState.save();
-    dynamic result = await _auth.registerUser(userAccount);
-    print(result);
-
-    //Navigator.pushReplacementNamed(context, 'home');
+    dynamic result = await _auth.registerUser(userAccount, _checkbox);
+    if (result['ok']) {
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      mostrarAlerta(context, result['error']);
+    }
   }
 }
