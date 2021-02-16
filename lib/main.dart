@@ -20,7 +20,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final initialapp = 'welcome';
+  final initialapp =
+      PreferenciasUsuario().credential == '' ? 'welcome' : 'home';
   @override
   Widget build(BuildContext context) {
     print(PreferenciasUsuario().credential);
