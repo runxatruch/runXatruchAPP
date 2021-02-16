@@ -4,43 +4,39 @@
 
 import 'dart:convert';
 
-CuentaModel cuentaModelFromJson(String str) =>
-    CuentaModel.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String cuentaModelToJson(CuentaModel data) => json.encode(data.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
-class CuentaModel {
+class UserModel {
   String id;
   String nombres;
   String apellidos;
   String identidad;
   String email;
   String telefono;
-  String ciudad;
   String fechaNac;
   String clave;
   String password;
 
-  CuentaModel(
+  UserModel(
       {this.id,
       this.nombres,
       this.apellidos,
       this.identidad,
       this.email,
       this.telefono,
-      this.ciudad,
       this.fechaNac,
       this.clave,
       this.password});
 
-  factory CuentaModel.fromJson(Map<String, dynamic> json) => new CuentaModel(
+  factory UserModel.fromJson(Map<String, dynamic> json) => new UserModel(
         id: json["id"],
         nombres: json["nombres"],
         apellidos: json["apellidos"],
         identidad: json["identidad"],
         email: json["email"],
         telefono: json["telefono"],
-        ciudad: json["ciudad"],
         fechaNac: json["fechaNac"],
         clave: json["clave"],
       );
@@ -52,7 +48,6 @@ class CuentaModel {
         "identidad": identidad,
         "email": email,
         "telefono": telefono,
-        "ciudad": ciudad,
         "fechaNac": fechaNac,
         "clave": clave,
         "pasword": password

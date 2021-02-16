@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:runxatruch_app/models/account_models.dart';
+import 'package:runxatruch_app/models/user_models.dart';
 
 class AuthProvider {
   FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference _competitor =
-      FirebaseFirestore.instance.collection('competitor');
+      FirebaseFirestore.instance.collection('users');
 
   Future loginUser(String email, String password) async {
     final result = await _auth.createUserWithEmailAndPassword(
@@ -13,7 +13,7 @@ class AuthProvider {
   }
 
   //Registrar un nuevo usuario
-  Future registerUser(CuentaModel userData) async {
+  Future registerUser(UserModel userData) async {
     try {
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: userData.email, password: userData.password);
@@ -28,15 +28,15 @@ class AuthProvider {
     }
   }
 
-  Future _addCompetitor(CuentaModel userData) async {
+  Future _addCompetitor(UserModel userData) async {
     return await _competitor
         .add({
           'firstName': userData.nombres,
           'lastName': userData.apellidos,
           'email': userData.email,
-          'location': userData.ciudad,
           'number': userData.telefono,
-          'birthDate': userData.fechaNac
+          'birthDate': userData.fechaNac,
+          'participations': []
         })
         .then((value) => print('Competidor agregado cone xito'))
         .catchError((e) => print("error $e"));

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:runxatruch_app/models/account_models.dart';
+import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
@@ -11,7 +11,7 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  CuentaModel userAccount = new CuentaModel();
+  UserModel userAccount = new UserModel();
   AuthProvider _auth = new AuthProvider();
 
   final formkey = GlobalKey<FormState>();
@@ -35,7 +35,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
-    final CuentaModel userData = ModalRoute.of(context).settings.arguments;
+    final UserModel userData = ModalRoute.of(context).settings.arguments;
     if (userData != null) {
       userAccount = userData;
     }
@@ -141,7 +141,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Apellidos'),
                     SizedBox(
                       height: 5.0,
@@ -150,7 +149,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Numero de Identidad'),
                     SizedBox(
                       height: 5.0,
@@ -159,7 +157,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Correo Electronico'),
                     SizedBox(
                       height: 5.0,
@@ -168,7 +165,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Telefono'),
                     SizedBox(
                       height: 5.0,
@@ -177,18 +173,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Ciudad'),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    //_createCity(),
-                    _createCityDropdown(),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-
-                    Text('Fecha de Nacimiento'),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -196,7 +181,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Contraseña'),
                     SizedBox(
                       height: 5.0,
@@ -205,7 +189,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
                     Text('Confirmar contraseña'),
                     SizedBox(
                       height: 5.0,
@@ -214,16 +197,9 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-
-                    Text('Categoria'),
                     SizedBox(
                       height: 5.0,
                     ),
-                    _createCategoriaDropdown(),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-
                     _createBottom(context),
                   ],
                 ),
@@ -378,7 +354,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Icon(Icons.room_rounded, color: Colors.black45),
           SizedBox(width: 15.0),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 70.0),
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
             height: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
@@ -394,7 +370,6 @@ class _CreateAccountState extends State<CreateAccount> {
                 onChanged: (opt) {
                   setState(() {
                     _opcionCiudad = opt;
-                    userAccount.ciudad = opt;
                   });
                 },
               ),
@@ -519,7 +494,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Icon(Icons.run_circle_outlined, color: Colors.black45),
           SizedBox(width: 15.0),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 95.0),
+            padding: EdgeInsets.symmetric(horizontal: 70.0),
             height: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
