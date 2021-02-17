@@ -41,11 +41,11 @@ class MyApp extends StatelessWidget {
             title: Text('Material App Bar'),
           ),
         ),
-        initialRoute: initialapp,
+        initialRoute: 'home',
         routes: {
           'welcome': (BuildContext context) => WelcomePages(),
           'login': (BuildContext context) => LoginPages(),
-          'home': (BuildContext context) => HomePages(),
+          'home': (BuildContext context) => HomePage(),
           'recoverAccount': (BuildContext context) => RecoverAccount(),
           'createAccount': (BuildContext context) => CreateAccount(),
         },

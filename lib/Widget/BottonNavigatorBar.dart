@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:runxatruch_app/pages/careers_page.dart';
+import 'package:runxatruch_app/pages/porfile_page.dart';
+import 'package:runxatruch_app/pages/preparation_page.dart';
+import 'package:runxatruch_app/pages/toRun_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class BarraNavegacion extends StatefulWidget {
@@ -14,22 +18,10 @@ class _BarraNavegacion extends State<BarraNavegacion> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Entrenar',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Competir',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Ranking',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Perfil',
-      style: optionStyle,
-    ),
+    PreparationPages(),
+    ToRunPage(),
+    CareersPages(),
+    PorfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -41,9 +33,6 @@ class _BarraNavegacion extends State<BarraNavegacion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('RunXatruch'),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -52,25 +41,36 @@ class _BarraNavegacion extends State<BarraNavegacion> {
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_sharp),
+            icon: Icon(
+              Icons.directions_run,
+              size: 30.0,
+            ),
             label: 'Entrenar',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.flag),
+            icon: Icon(
+              Icons.emoji_events_sharp,
+              size: 30.0,
+            ),
             label: 'Competir',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wine_bar),
-            label: 'Raking',
+            icon: Icon(
+              Icons.drag_handle_sharp,
+              size: 30.0,
+            ),
+            label: 'Carreras',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_sharp),
+            icon: Icon(
+              Icons.person,
+              size: 30.0,
+            ),
             label: 'Perfil',
           ),
         ],
         currentIndex: _selectedIndex,
         //color del  iten cuando es seleccionado
-        selectedItemColor: Colors.amber[800],
         //color del iten cuando no esta seleccionadao
         //color de los iconos  por defecto esta en gris
         unselectedItemColor: Colors.grey,
