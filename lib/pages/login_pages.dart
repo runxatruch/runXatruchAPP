@@ -1,51 +1,92 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:runxatruch_app/models/login_models.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
+import 'package:runxatruch_app/provider/auth_provider.dart';
+import 'package:runxatruch_app/utils/menu_alert.dart';
+import 'package:runxatruch_app/utils/util.dart' as utils;
 
-class LoginPages extends StatelessWidget {
+class LoginPages extends StatefulWidget {
+  @override
+  _LoginPagesState createState() => _LoginPagesState();
+}
+
+class _LoginPagesState extends State<LoginPages> {
+  bool _checkbox = false;
+  LoginModel login = new LoginModel();
+  final keyLogin = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    final LoginModel userData = ModalRoute.of(context).settings.arguments;
+    if (userData != null) {
+      login = userData;
+    }
+
     return Scaffold(
-        appBar: AppBar(
-          title: Center(child: Text('Login')),
-          elevation: 0.0,
-        ),
         body: Stack(
-          children: [_crateForm(context)],
-        ));
+      children: [_createBackground(context), _crateForm(context)],
+    ));
   }
 
-  //Funcion para crear el fondo de la pantalla de login
   Widget _createBackground(BuildContext context) {
-    final gradiente = Container(
+    final size = MediaQuery.of(context).size;
+    final fondoMorado = Container(
+      height: size.height * 0.45,
       width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: FractionalOffset(0.0, 0.5),
-              end: FractionalOffset(0.0, 1.0),
-              colors: [
-            Color.fromRGBO(52, 37, 101, 1.0),
-            Color.fromRGBO(35, 37, 57, 1.0)
-          ])),
+      color: Colors.lightBlue[800],
     );
 
-    final cajaRosa = Transform.rotate(
-        angle: -pi / 3.0,
-        child: Container(
-          height: 360.0,
-          width: 300.0,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.lightBlue[800], Colors.lightBlue[800]]),
-              borderRadius:
-                  BorderRadius.horizontal(left: Radius.circular(100.0)),
-              color: Colors.pink),
-        ));
-
-    return Stack(children: [Positioned(child: cajaRosa, top: -150)]);
+    final circulo = Container(
+      width: 100.0,
+      height: 100.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.0),
+          color: Color.fromRGBO(255, 255, 255, 0.05)),
+    );
+    return Stack(
+      children: [
+        fondoMorado,
+        Positioned(
+          child: circulo,
+          top: 110.0,
+          left: 30.0,
+        ),
+        Positioned(
+          child: circulo,
+          top: -40.0,
+          right: -30.0,
+        ),
+        Positioned(
+          child: circulo,
+          bottom: 100.0,
+          right: 80.0,
+        ),
+        Positioned(
+          child: circulo,
+          bottom: -50.0,
+          right: 20.0,
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10.0,
+                width: double.infinity,
+              ),
+              Image(
+                image: AssetImage('assets/logo.png'),
+                height: 200.0,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
-  // Funcion que retorna el formulario para el apartado de inicio de seccion
   Widget _crateForm(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
@@ -53,40 +94,64 @@ class LoginPages extends StatelessWidget {
         children: [
           SafeArea(
             child: Container(
-              height: 100.0,
+              height: 200.0,
             ),
           ),
           Container(
-            width: size.width * 0.85,
-            padding: EdgeInsets.symmetric(vertical: 50.0),
-            margin: EdgeInsets.symmetric(vertical: 20.0),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 3.0,
-                      offset: Offset(0.0, 5.0))
-                ]),
-            child: Column(
-              children: [
-                Text('Ingrese su información para iniciar sesión'),
-                SizedBox(
-                  height: 40.0,
+              width: size.width * 0.85,
+              padding: EdgeInsets.symmetric(vertical: 50.0),
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5.0),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 3.0,
+                        offset: Offset(0.0, 5.0))
+                  ]),
+              child: Form(
+                key: keyLogin,
+                child: Column(
+                  children: [
+                    Text('Ingrese su información para iniciar sesión'),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    _createEmail(),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    _createPass(),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            focusColor: Colors.lightBlue[800],
+                            activeColor: Colors.lightBlue[800],
+                            value: _checkbox,
+                            onChanged: (value) {
+                              setState(() {
+                                _checkbox = !_checkbox;
+                              });
+                            },
+                          ),
+                          Text('Mantener sesion inciada'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25.0,
+                    ),
+                    _createBottom(context),
+                  ],
                 ),
-                _createEmail(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                _createPass(),
-                SizedBox(
-                  height: 30.0,
-                ),
-                _createBottom(context),
-              ],
-            ),
-          ),
+              )),
           SizedBox(
             height: 15.0,
           ),
@@ -94,17 +159,20 @@ class LoginPages extends StatelessWidget {
           SizedBox(
             height: 15.0,
           ),
-          _createAccount(context)
+          _createAccount(context),
+          SizedBox(
+            height: 40.0,
+            width: double.infinity,
+          ),
         ],
       ),
     );
   }
 
-  //Crear el input para ingresar el correo electronico
   Widget _createEmail() {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
+        child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             border:
@@ -114,13 +182,21 @@ class LoginPages extends StatelessWidget {
             hintText: 'example@example.com',
             labelText: 'Correo Electornico',
           ),
+          onSaved: (value) => login.correo = value,
+          validator: (value) {
+            if (utils.validatorEmail(value)) {
+              return null;
+            } else {
+              return 'Ingrese un correo válido';
+            }
+          },
         ));
   }
 
   Widget _createPass() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextField(
+      child: TextFormField(
         obscureText: true,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
@@ -129,11 +205,18 @@ class LoginPages extends StatelessWidget {
             labelText: 'Password',
             suffixIcon: Icon(Icons.lock_open),
             icon: Icon(Icons.lock)),
+        onSaved: (value) => login.clave = value,
+        validator: (value) {
+          if (utils.passwordValid(value)) {
+            return null;
+          } else {
+            return 'Mayúscula/s, minúsculas/s, número/s';
+          }
+        },
       ),
     );
   }
 
-  //Funcion que retorna el widget que almacena el boton de iniciar seccion
   Widget _createBottom(BuildContext context) {
     return RaisedButton(
       child: Container(
@@ -154,7 +237,6 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Funcion que retorna el widget del apartado de recuperar contraseña
   Widget _recuperar(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -169,7 +251,6 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Funcion que retorna el widget del apartado de Registrarse
   Widget _createAccount(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -184,10 +265,15 @@ class LoginPages extends StatelessWidget {
     );
   }
 
-  //Funcion que se ejecuta al presionar el boton "Iniciar sesion"
-  _login(BuildContext context) {
-    //Pendiente de completacion
-
-    Navigator.pushReplacementNamed(context, 'home');
+  _login(BuildContext context) async {
+    AuthProvider _auth = new AuthProvider();
+    if (!keyLogin.currentState.validate()) return;
+    keyLogin.currentState.save();
+    final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
+    if (result['ok']) {
+      Navigator.popAndPushNamed(context, 'home');
+    } else {
+      mostrarAlerta(context, result['error']);
+    }
   }
 }
