@@ -12,7 +12,7 @@ class LoginPages extends StatefulWidget {
 }
 
 class _LoginPagesState extends State<LoginPages> {
-  bool _checkbox = false;
+  bool _checkbox = true;
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
 
@@ -29,6 +29,8 @@ class _LoginPagesState extends State<LoginPages> {
     ));
   }
 
+  //Definicion de variables globales
+  bool _showpasword = true;
   Widget _createBackground(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fondoMorado = Container(
@@ -194,17 +196,25 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   Widget _createPass() {
+    print(_showpasword);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
-        obscureText: true,
+        obscureText: _showpasword,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            labelText: 'Password',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+          labelText: 'Password',
+          suffixIcon: GestureDetector(
+            child: _showpasword ? Icon(Icons.lock) : Icon(Icons.lock_open),
+            onTap: () => {
+              setState(() {
+                _showpasword = !_showpasword;
+              })
+            },
+          ),
+          icon: Icon(Icons.lock),
+        ),
         onSaved: (value) => login.clave = value,
         validator: (value) {
           if (utils.passwordValid(value)) {
@@ -254,7 +264,7 @@ class _LoginPagesState extends State<LoginPages> {
   Widget _createAccount(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'createAccount');
+        Navigator.pushReplacementNamed(context, 'createAccount');
       },
       child: Container(
         child: Text(
@@ -271,7 +281,7 @@ class _LoginPagesState extends State<LoginPages> {
     keyLogin.currentState.save();
     final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
     if (result['ok']) {
-      Navigator.popAndPushNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
       mostrarAlerta(context, result['error']);
     }

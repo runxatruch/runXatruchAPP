@@ -26,10 +26,11 @@ bool validatorEmail(String c) {
 //verificar cantidad de caracteres de identidad
 
 bool identity(String id) {
-  if (id.length > 13 || id.length < 13) {
-    return false;
-  } else {
+  RegExp idenExp = RegExp(r'^([01][1-8][0-2][1-9]\d{9})$');
+  if (idenExp.hasMatch(id)) {
     return true;
+  } else {
+    return false;
   }
 }
 

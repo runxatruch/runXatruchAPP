@@ -34,8 +34,7 @@ class _CreateAccountState extends State<CreateAccount> {
   dynamic icono2 = Icon(Icons.sports_handball_sharp);
   dynamic icono3 = Icon(Icons.sports_soccer_rounded);
 
-  String _opcionCategoria = 'Principiante';
-  List<String> _categorias = ['Principiante', 'Intermedio', 'Avanzado'];
+  bool _showpasword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -191,10 +190,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    _createPassConfir(size.width),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -461,13 +456,21 @@ class _CreateAccountState extends State<CreateAccount> {
       width: size * 0.8,
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: TextFormField(
+        obscureText: _showpasword,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             hintText: 'Ejem: PajaroAzul1980',
             labelText: 'Al menos 8 caracteres',
-            suffixIcon: Icon(Icons.lock_open),
+            suffixIcon: GestureDetector(
+              child: _showpasword ? Icon(Icons.lock) : Icon(Icons.lock_open),
+              onTap: () => {
+                setState(() {
+                  _showpasword = !_showpasword;
+                })
+              },
+            ),
             icon: Icon(Icons.lock)),
         key: keyClave,
         controller: pass1,
@@ -485,32 +488,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para confirmar la contraseña
-  Widget _createPassConfir(size) {
-    return Container(
-      width: size * 0.8,
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: TextFormField(
-        textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            labelText: 'Ingrese su Contraseña Nuevamente',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
-        controller: pass2,
-        onSaved: (value) => userAccount.password = value,
-        validator: (value) {
-          if (value != pass1.text) {
-            return 'Las claves no coinciden';
-          } else
-            return null;
-        },
-      ),
-    );
-  }
 
   //funcion enlazada a crear categoria
-  List<DropdownMenuItem<String>> getCategoriaDropdown() {
+  /*List<DropdownMenuItem<String>> getCategoriaDropdown() {
     List<DropdownMenuItem<String>> listaCategorias = new List();
 
     _categorias.forEach((categoria) {
@@ -521,10 +501,10 @@ class _CreateAccountState extends State<CreateAccount> {
     });
 
     return listaCategorias;
-  }
+  }*/
 
   //funcion para crear categoria
-  Widget _createCategoriaDropdown(size) {
+  /*Widget _createCategoriaDropdown(size) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -556,12 +536,12 @@ class _CreateAccountState extends State<CreateAccount> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget _loginPages(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'login');
+        Navigator.pushReplacementNamed(context, 'login');
       },
       child: Container(
         child: Text(
