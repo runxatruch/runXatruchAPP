@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             title: Text('Material App Bar'),
           ),
         ),
-        initialRoute: 'home',
+        initialRoute: initialapp,
         routes: {
           'welcome': (BuildContext context) => WelcomePages(),
           'login': (BuildContext context) => LoginPages(),

@@ -271,7 +271,7 @@ class _LoginPagesState extends State<LoginPages> {
     keyLogin.currentState.save();
     final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
     if (result['ok']) {
-      Navigator.pushReplacementNamed(context, 'home');
+      Navigator.popAndPushNamed(context, 'home');
     } else {
       mostrarAlerta(context, result['error']);
     }

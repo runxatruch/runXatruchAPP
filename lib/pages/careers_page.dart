@@ -5,7 +5,7 @@ class CareersPages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Center(
       child: Text('Lista de carreras'),
     );
   }
