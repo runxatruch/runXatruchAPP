@@ -68,7 +68,7 @@ class _LoginPagesState extends State<LoginPages> {
           right: 20.0,
         ),
         Container(
-          padding: EdgeInsets.only(top: 80.0),
+          padding: EdgeInsets.only(top: 20.0),
           child: Column(
             children: [
               SizedBox(
@@ -159,7 +159,11 @@ class _LoginPagesState extends State<LoginPages> {
           SizedBox(
             height: 15.0,
           ),
-          _createAccount(context)
+          _createAccount(context),
+          SizedBox(
+            height: 40.0,
+            width: double.infinity,
+          ),
         ],
       ),
     );
@@ -267,10 +271,7 @@ class _LoginPagesState extends State<LoginPages> {
     keyLogin.currentState.save();
     final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
     if (result['ok']) {
-      UserCredential userCredential = result['credential'];
-      print('********');
-      print(PreferenciasUsuario().credential);
-      //Navigator.pushReplacementNamed(context, 'home');
+      Navigator.popAndPushNamed(context, 'home');
     } else {
       mostrarAlerta(context, result['error']);
     }

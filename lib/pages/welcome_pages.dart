@@ -21,7 +21,7 @@ class WelcomePages extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: 270,
+                height: 210,
               ),
               Text(
                 'Bienvenido',
@@ -29,7 +29,7 @@ class WelcomePages extends StatelessWidget {
                     fontFamily: 'Camar', color: Colors.white, fontSize: 30),
               ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
               Text(
                 'RunXatruch',
@@ -68,7 +68,7 @@ class WelcomePages extends StatelessWidget {
       elevation: 10.0,
       color: Colors.white,
       textColor: Colors.lightBlue[800],
-      onPressed: () => _login(context),
+      onPressed: () => Navigator.pushNamed(context, 'login'),
     );
   }
 
@@ -87,15 +87,7 @@ class WelcomePages extends StatelessWidget {
       elevation: 10.0,
       color: Colors.white,
       textColor: Colors.lightBlue[800],
-      onPressed: () => _register(context),
+      onPressed: () => Navigator.pushNamed(context, 'createAccount'),
     );
-  }
-
-  _login(BuildContext context) {
-    Navigator.popAndPushNamed(context, 'login');
-  }
-
-  _register(BuildContext context) {
-    Navigator.popAndPushNamed(context, 'createAccount');
   }
 }

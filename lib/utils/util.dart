@@ -35,7 +35,7 @@ bool identity(String id) {
 
 //verificar telefono
 bool numberTel(String tel) {
-  if (tel.length < 12 || tel[0] != '+' || !isNumeric(tel.substring(0))) {
+  if (tel.length < 8 || !isNumeric(tel.substring(0))) {
     return false;
   } else {
     return true;

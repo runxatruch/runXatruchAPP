@@ -21,7 +21,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final initialapp =
-      PreferenciasUsuario().credential == null ? 'welcome' : 'home';
+      PreferenciasUsuario().credential == '' ? 'welcome' : 'home';
   @override
   Widget build(BuildContext context) {
     print(PreferenciasUsuario().credential);
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         routes: {
           'welcome': (BuildContext context) => WelcomePages(),
           'login': (BuildContext context) => LoginPages(),
-          'home': (BuildContext context) => HomePages(),
+          'home': (BuildContext context) => HomePage(),
           'recoverAccount': (BuildContext context) => RecoverAccount(),
           'createAccount': (BuildContext context) => CreateAccount(),
         },
