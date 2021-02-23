@@ -86,11 +86,11 @@ class WelcomePages extends StatelessWidget {
               ])),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0), 
-        side: BorderSide(color: Colors.cyan[700], width: 2.0),
+        //side: BorderSide(color: Colors.red[400], width: 2.0),
       ),
       elevation: 10.0,
       color: Colors.white,
-      textColor: Colors.cyan[700],
+      textColor: Colors.red[400],
       onPressed: () => Navigator.popAndPushNamed(context, 'createAccount'),
     );
   }

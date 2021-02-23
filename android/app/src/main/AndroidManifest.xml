@@ -9,6 +9,14 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="runxatruch_app"
         android:icon="@mipmap/ic_launcher">
+
+        <!--esto es para implementar el mapa de google en la aplicacion, por los momentos no se esta usando
+        en: (adroid:value). hay que generar key(APIS) atraves de la plataforma de google para tener acceso al google 
+        del telefono en tiempo real-->
+        <meta-data
+          android:name="com.google.android.geo.API_KEY"
+          android:value="AIzaSyD6ILH3Vmy391zdOttfQlG4s5Bfb-UVmqg"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

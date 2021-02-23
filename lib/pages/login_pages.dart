@@ -6,6 +6,7 @@ import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
+
 class LoginPages extends StatefulWidget {
   @override
   _LoginPagesState createState() => _LoginPagesState();
@@ -15,6 +16,8 @@ class _LoginPagesState extends State<LoginPages> {
   bool _checkbox = true;
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +138,8 @@ class _LoginPagesState extends State<LoginPages> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
-                            focusColor: Colors.lightBlue[800],
-                            activeColor: Colors.lightBlue[800],
+                            //focusColor: Colors.lightBlue[800],
+                            //activeColor: Colors.lightBlue[800],
                             value: _checkbox,
                             onChanged: (value) {
                               setState(() {
@@ -181,7 +184,7 @@ class _LoginPagesState extends State<LoginPages> {
             border:
                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
                fillColor: Colors.orange,
-            icon: Icon(Icons.email, color: Colors.lightBlue[800]),
+            icon: Icon(Icons.email, /*color: Colors.lightBlue[800]*/),
             suffixIcon: Icon(Icons.alternate_email,),
             hintText: 'example@example.com',
             labelText: 'Correo Electornico',
@@ -215,7 +218,7 @@ class _LoginPagesState extends State<LoginPages> {
               })
             },
           ),
-          icon: Icon(Icons.lock, color: Colors.lightBlue[800]),
+          icon: Icon(Icons.lock, /*color: Colors.lightBlue[800]*/),
         ),
         onSaved: (value) => login.clave = value,
         validator: (value) {
