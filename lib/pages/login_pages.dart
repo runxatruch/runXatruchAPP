@@ -36,7 +36,7 @@ class _LoginPagesState extends State<LoginPages> {
     final fondoMorado = Container(
       height: size.height * 0.45,
       width: double.infinity,
-      color: Colors.lightBlue[800],
+      color: Colors.teal[300],
     );
 
     final circulo = Container(
@@ -100,6 +100,7 @@ class _LoginPagesState extends State<LoginPages> {
             ),
           ),
           Container(
+              
               width: size.width * 0.85,
               padding: EdgeInsets.symmetric(vertical: 50.0),
               margin: EdgeInsets.symmetric(vertical: 20.0),
@@ -178,9 +179,10 @@ class _LoginPagesState extends State<LoginPages> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.email),
-            suffixIcon: Icon(Icons.alternate_email),
+               OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+               fillColor: Colors.orange,
+            icon: Icon(Icons.email, color: Colors.lightBlue[800]),
+            suffixIcon: Icon(Icons.alternate_email,),
             hintText: 'example@example.com',
             labelText: 'Correo Electornico',
           ),
@@ -213,7 +215,7 @@ class _LoginPagesState extends State<LoginPages> {
               })
             },
           ),
-          icon: Icon(Icons.lock),
+          icon: Icon(Icons.lock, color: Colors.lightBlue[800]),
         ),
         onSaved: (value) => login.clave = value,
         validator: (value) {
@@ -241,7 +243,7 @@ class _LoginPagesState extends State<LoginPages> {
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 5.0,
-      color: Colors.lightBlue[800],
+      color: Colors.red[400],
       textColor: Colors.white,
       onPressed: () => _login(context),
     );

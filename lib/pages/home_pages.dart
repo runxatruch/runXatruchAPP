@@ -33,7 +33,14 @@ class _BarraNavegacion extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Center(
+          child: 
+            Text('Comenzamos'),
+            
+            ),
+        backgroundColor: Colors.teal[300],
+      ),
       body: Container(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -41,10 +48,12 @@ class _BarraNavegacion extends State<HomePage> {
         //la linea  de abajo  lo que hace es mostrar los datos de los iconos
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
             icon: Icon(
-              Icons.directions_run,
+              Icons.directions_run, 
               size: 30.0,
+              color: Colors.orangeAccent,
+
             ),
             label: 'Entrenar',
           ),
@@ -52,13 +61,16 @@ class _BarraNavegacion extends State<HomePage> {
             icon: Icon(
               Icons.emoji_events_sharp,
               size: 30.0,
+              color: Colors.tealAccent,
             ),
             label: 'Competir',
+            
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.drag_handle_sharp,
               size: 30.0,
+              color: Colors.redAccent,
             ),
             label: 'Carreras',
           ),
@@ -66,11 +78,14 @@ class _BarraNavegacion extends State<HomePage> {
             icon: Icon(
               Icons.person,
               size: 30.0,
+              color: Colors.black26,
             ),
             label: 'Perfil',
           ),
         ],
         currentIndex: _selectedIndex,
+        fixedColor: Colors.white60,
+        backgroundColor: Colors.teal[300],
         //color del  iten cuando es seleccionado
         //color del iten cuando no esta seleccionadao
         //color de los iconos  por defecto esta en gris
