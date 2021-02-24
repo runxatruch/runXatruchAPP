@@ -114,7 +114,6 @@ class _BarraNavegacion extends State<HomePage> {
   requestPerms() async {
     Map<Permission, PermissionStatus> statuses =
         await [Permission.locationAlways].request();
-
     var status = statuses[Permission.locationAlways];
     if (status == PermissionStatus.denied) {
       requestPerms();
@@ -127,7 +126,6 @@ class _BarraNavegacion extends State<HomePage> {
   gpsAnable() async {
     location = lct.Location();
     bool statusResult = await location.requestService();
-
     if (!statusResult) {
       gpsAnable();
     } else {
