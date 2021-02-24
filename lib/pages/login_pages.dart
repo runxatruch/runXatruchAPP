@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/login_models.dart';
-import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
@@ -13,7 +11,8 @@ class LoginPages extends StatefulWidget {
 }
 
 class _LoginPagesState extends State<LoginPages> {
-  bool _checkbox = true;
+  bool _checkbox = false;
+  bool _check = false;
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
   
@@ -233,23 +232,29 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   Widget _createBottom(BuildContext context) {
-    return RaisedButton(
-      child: Container(
-          width: 220.0,
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Iniciar sesión'),
-                Icon(Icons.arrow_forward_ios_sharp)
-              ])),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      elevation: 5.0,
-      color: Colors.red[400],
-      textColor: Colors.white,
-      onPressed: () => _login(context),
-    );
+
+    if (_check) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return RaisedButton(
+        child: Container(
+            width: 220.0,
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Iniciar sesión'),
+                  Icon(Icons.arrow_forward_ios_sharp)
+                ])),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        elevation: 5.0,
+        color: Colors.lightBlue[800],
+        textColor: Colors.white,
+        onPressed: () => _login(context),
+      );
+    }
   }
 
   Widget _recuperar(BuildContext context) {
@@ -284,10 +289,16 @@ class _LoginPagesState extends State<LoginPages> {
     AuthProvider _auth = new AuthProvider();
     if (!keyLogin.currentState.validate()) return;
     keyLogin.currentState.save();
+    setState(() {
+      _check = true;
+    });
     final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
     if (result['ok']) {
       Navigator.pushReplacementNamed(context, 'home');
     } else {
+      setState(() {
+        _check = false;
+      });
       mostrarAlerta(context, result['error']);
     }
   }

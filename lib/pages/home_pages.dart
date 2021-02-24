@@ -47,13 +47,6 @@ class _BarraNavegacion extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        /*title: Center(
-          child: 
-            Text('Comenzamos'),    
-        ),
-        backgroundColor: Colors.teal[300],*/
-      ),
       body: Container(
 
         child: (

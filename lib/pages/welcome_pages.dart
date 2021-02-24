@@ -68,8 +68,8 @@ class WelcomePages extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 10.0,
       color: Colors.red[400],
-      textColor: Colors.white,           //lightBlue[800],
-      onPressed: () => Navigator.popAndPushNamed(context, 'login'),
+      textColor: Colors.lightBlue[800],
+      onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
     );
   }
 
@@ -91,7 +91,8 @@ class WelcomePages extends StatelessWidget {
       elevation: 10.0,
       color: Colors.white,
       textColor: Colors.red[400],
-      onPressed: () => Navigator.popAndPushNamed(context, 'createAccount'),
+      onPressed: () => Navigator.pushReplacementNamed(context, 'createAccount'),
+
     );
   }
 }

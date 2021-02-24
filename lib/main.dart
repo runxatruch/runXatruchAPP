@@ -6,6 +6,7 @@ import 'package:runxatruch_app/pages/login_pages.dart';
 import 'package:runxatruch_app/pages/recover_pages.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:runxatruch_app/pages/setting_porfile.dart';
 import 'package:runxatruch_app/pages/welcome_pages.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => HomePage(),
           'recoverAccount': (BuildContext context) => RecoverAccount(),
           'createAccount': (BuildContext context) => CreateAccount(),
+          'setting': (BuildContext context) => SettingPage(),
         },
         theme: ThemeData(
           // Define the default brightness and colors.

@@ -579,7 +579,7 @@ class _CreateAccountState extends State<CreateAccount> {
     formkey.currentState.save();
     dynamic result = await _auth.registerUser(userAccount, _checkbox);
     if (result['ok']) {
-      Navigator.popAndPushNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
       mostrarAlerta(context, result['error']);
     }
