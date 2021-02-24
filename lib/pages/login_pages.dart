@@ -28,6 +28,8 @@ class _LoginPagesState extends State<LoginPages> {
     ));
   }
 
+  //Definicion de variables globales
+  bool _showpasword = true;
   Widget _createBackground(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fondoMorado = Container(
@@ -193,17 +195,25 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   Widget _createPass() {
+    print(_showpasword);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
-        obscureText: true,
+        obscureText: _showpasword,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            labelText: 'Password',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+          labelText: 'Password',
+          suffixIcon: GestureDetector(
+            child: _showpasword ? Icon(Icons.lock) : Icon(Icons.lock_open),
+            onTap: () => {
+              setState(() {
+                _showpasword = !_showpasword;
+              })
+            },
+          ),
+          icon: Icon(Icons.lock),
+        ),
         onSaved: (value) => login.clave = value,
         validator: (value) {
           if (utils.passwordValid(value)) {
