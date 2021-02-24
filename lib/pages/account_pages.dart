@@ -561,7 +561,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget _loginPages(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'login');
+        Navigator.pushReplacementNamed(context, 'login');
       },
       child: Container(
         child: Text(
@@ -599,7 +599,7 @@ class _CreateAccountState extends State<CreateAccount> {
     formkey.currentState.save();
     dynamic result = await _auth.registerUser(userAccount, _checkbox);
     if (result['ok']) {
-      Navigator.popAndPushNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
       mostrarAlerta(context, result['error']);
     }

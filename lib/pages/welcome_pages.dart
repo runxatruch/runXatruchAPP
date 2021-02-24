@@ -68,7 +68,7 @@ class WelcomePages extends StatelessWidget {
       elevation: 10.0,
       color: Colors.white,
       textColor: Colors.lightBlue[800],
-      onPressed: () => Navigator.pushNamed(context, 'login'),
+      onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
     );
   }
 
@@ -87,7 +87,7 @@ class WelcomePages extends StatelessWidget {
       elevation: 10.0,
       color: Colors.white,
       textColor: Colors.lightBlue[800],
-      onPressed: () => Navigator.pushNamed(context, 'createAccount'),
+      onPressed: () => Navigator.pushReplacementNamed(context, 'createAccount'),
     );
   }
 }

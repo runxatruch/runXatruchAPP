@@ -33,7 +33,6 @@ class _BarraNavegacion extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
