@@ -3,6 +3,7 @@ import 'package:runxatruch_app/pages/careers_page.dart';
 import 'package:runxatruch_app/pages/porfile_page.dart';
 import 'package:runxatruch_app/pages/preparation_page.dart';
 import 'package:runxatruch_app/pages/toRun_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 //import 'package:google_maps_flutter/google_maps_flutter.dart'; para usar despues
 import 'package:permission_handler/permission_handler.dart';
@@ -21,7 +22,7 @@ class _BarraNavegacion extends State<HomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    PreparationPages(),
+    const ProviderScope(child: PreparationPages()),
     ToRunPage(),
     CareersPages(),
     PorfilePage(),
@@ -30,9 +31,9 @@ class _BarraNavegacion extends State<HomePage> {
   //variable que valida la ubicacion(es necesario jdk)
   lct.Location location;
 
- //sobre escribimos el metodo al inicio para que solicite los permisos al entrar
- @override
-  void initState(){
+  //sobre escribimos el metodo al inicio para que solicite los permisos al entrar
+  @override
+  void initState() {
     //getIcons();
     requestPerms();
     super.initState();
@@ -43,26 +44,22 @@ class _BarraNavegacion extends State<HomePage> {
       _selectedIndex = index;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-
-        child: (
-            _widgetOptions.elementAt(_selectedIndex)
-        ),
+        child: (_widgetOptions.elementAt(_selectedIndex)),
       ),
       bottomNavigationBar: BottomNavigationBar(
         //la linea  de abajo  lo que hace es mostrar los datos de los iconos
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
-           BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(
-              Icons.directions_run, 
+              Icons.directions_run,
               size: 30.0,
               //color: Colors.orangeAccent,
-
             ),
             label: 'Entrenar',
           ),
@@ -72,7 +69,7 @@ class _BarraNavegacion extends State<HomePage> {
               size: 30.0,
               //color: Colors.tealAccent,
             ),
-            label: 'Competir',  
+            label: 'Competir',
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -103,7 +100,7 @@ class _BarraNavegacion extends State<HomePage> {
     );
   }
 
-  //solicitar permisos para que la aplicacion tenga acceso a la ubicacion(cuando se ingresa por primera vez) 
+  //solicitar permisos para que la aplicacion tenga acceso a la ubicacion(cuando se ingresa por primera vez)
   requestPerms() async {
     Map<Permission, PermissionStatus> statuses =
         await [Permission.locationAlways].request();
@@ -122,8 +119,7 @@ class _BarraNavegacion extends State<HomePage> {
     if (!statusResult) {
       gpsAnable();
     } else {
-         //flataria cargar el mapa para definir parametros y que se cierre la app o mande advertencia
+      //flataria cargar el mapa para definir parametros y que se cierre la app o mande advertencia
     }
   }
-
 }
