@@ -37,7 +37,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget crearMap(MiUbicacionState state) {
-    if (!state.existeUbicacion) return Text('Ubicando...');
+    if (!state.existeUbicacion) return Center(child: Text('Ubicando...'));
     // ignore: close_sinks
     final mapaBloc = BlocProvider.of<MapaBloc>(context);
     mapaBloc.add(OnNuevaUbicacion(ubicacion: state.ubicacion));

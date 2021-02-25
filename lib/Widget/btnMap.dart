@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
+import 'package:runxatruch_app/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
 
 class BTNmap extends StatefulWidget {
   const BTNmap({Key key}) : super(key: key);
@@ -12,6 +15,11 @@ bool _check = false;
 class _BTNmapState extends State<BTNmap> {
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
+    final mapaBloc = BlocProvider.of<MapaBloc>(context);
+    // ignore: close_sinks
+    final miUbicacion = BlocProvider.of<MiUbicacionBloc>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -29,13 +37,16 @@ class _BTNmapState extends State<BTNmap> {
           elevation: 5.0,
           color: Colors.lightBlue[800],
           textColor: Colors.white,
-          onPressed: () => _playStop(),
+          onPressed: () => _playStop(mapaBloc),
         )
       ],
     );
   }
 
-  _playStop() {
+  _playStop(MapaBloc mapaBloc) {
+    for (var item in mapaBloc.state.polylines.values) {
+      print(item.points);
+    }
     setState(() {
       _check = !_check;
     });
