@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
+import '../provider/auth_provider.dart';
+
 class PorfilePage extends StatelessWidget {
   const PorfilePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider _prov = new AuthProvider();
+    dynamic result = _prov.getDataUser();
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
