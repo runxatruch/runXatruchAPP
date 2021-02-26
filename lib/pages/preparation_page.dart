@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:runxatruch_app/Widget/btnMap.dart';
+import 'package:runxatruch_app/Widget/widgets.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'timer.dart';
 
@@ -51,71 +53,66 @@ class PreparationPages extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   //const MyHomePage({Key key}) : super(key: key);
 
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        body: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 80),
-              child: Column(
-                children: <Widget>[
-                  TimerTextWidget(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Start(),
-
-                  // ButtonsContainer(),
-
-                  _createInformation()
-                ],
-              ),
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 80),
+            child: Column(
+              children: <Widget>[
+                TimerTextWidget(),
+                Text('Duracion'),
+                SizedBox(
+                  height: 30,
+                ),
+                _createInformation()
+              ],
             ),
-            Divider(),
-            GestureDetector(
-              onTap: () => print('presiono'),
-              child: Container(
-                width: size.width * 1,
-                height: size.height * 0.595,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset.zero, //(x,y)
-                        blurRadius: 2.0,
-                      )
-                    ]),
-                child: MapPage(),
-              ),
-            )
+          ),
+          Divider(),
+          Container(
+              width: size.width * 1,
+              height: size.height * 0.6,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset.zero, //(x,y)
+                      blurRadius: 2.0,
+                    )
+                  ]),
+              child: MapPage())
+        ],
+      ),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(left: 27),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.list),
+            ),
+            Start(),
+            BtnMiRuta()
           ],
         ),
-        floatingActionButton: BTNmap());
+      ),
+    );
   }
-
-  // Widget _cronometro() {
-  //   return Center(
-  //     child: Column(
-  //       children: [
-  //         Text(
-  //           '00:00:00',
-  //           style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-  //         ),
-  //         SizedBox(
-  //           height: 5,
-  //         ),
-  //         Text('Duracion')
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget _createInformation() {
     return Container(
@@ -207,12 +204,10 @@ class _StartButton extends State<Start> {
     setState(() {
       _check = !_check;
     });
-
     if (_check == true) {
-      print('Iniciar');
       context.read(timerProvider).startTimer();
     } else if (_check == false) {
-      print('finalizar');
+      print(context.read(timeLeftProvider));
       context.read(timerProvider).pause();
     }
   }

@@ -10,7 +10,7 @@ class MapaState {
 
   MapaState(
       {this.mapaListo = false,
-      this.dibujarRecorrido = true,
+      this.dibujarRecorrido = false,
       Map<String, Polyline> polylines})
       : this.polylines = polylines ?? new Map();
 

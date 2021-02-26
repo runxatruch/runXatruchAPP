@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:runxatruch_app/models/user_models.dart';
@@ -23,10 +25,11 @@ class AuthProvider {
       }
     }
     if (temp) {
-      _pref.credential = {
-        'email': userCredential.user.email,
-        'uid': userCredential.user.uid
-      }.toString();
+      final data = {
+        "email": userCredential.user.email,
+        "uid": userCredential.user.uid
+      };
+      _pref.credential = jsonEncode(data);
     }
 
     return {'ok': true, 'credential': userCredential};

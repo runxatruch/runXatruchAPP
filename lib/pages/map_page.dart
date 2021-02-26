@@ -50,7 +50,7 @@ class _MapPageState extends State<MapPage> {
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
         zoomControlsEnabled: false,
-        onMapCreated: BlocProvider.of<MapaBloc>(context).initMapa,
+        onMapCreated: mapaBloc.initMapa,
         polylines: mapaBloc.state.polylines.values.toSet(),
       ),
     );

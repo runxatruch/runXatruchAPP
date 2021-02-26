@@ -4,7 +4,6 @@ import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
 
-
 class LoginPages extends StatefulWidget {
   @override
   _LoginPagesState createState() => _LoginPagesState();
@@ -15,8 +14,6 @@ class _LoginPagesState extends State<LoginPages> {
   bool _check = false;
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
-  
-  
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +99,6 @@ class _LoginPagesState extends State<LoginPages> {
             ),
           ),
           Container(
-              
               width: size.width * 0.85,
               padding: EdgeInsets.symmetric(vertical: 50.0),
               margin: EdgeInsets.symmetric(vertical: 20.0),
@@ -181,10 +177,14 @@ class _LoginPagesState extends State<LoginPages> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             border:
-               OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-               fillColor: Colors.orange,
-            icon: Icon(Icons.email, /*color: Colors.lightBlue[800]*/),
-            suffixIcon: Icon(Icons.alternate_email,),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+            fillColor: Colors.orange,
+            icon: Icon(
+              Icons.email, /*color: Colors.lightBlue[800]*/
+            ),
+            suffixIcon: Icon(
+              Icons.alternate_email,
+            ),
             hintText: 'example@example.com',
             labelText: 'Correo Electornico',
           ),
@@ -200,7 +200,6 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   Widget _createPass() {
-    print(_showpasword);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
@@ -217,7 +216,9 @@ class _LoginPagesState extends State<LoginPages> {
               })
             },
           ),
-          icon: Icon(Icons.lock, /*color: Colors.lightBlue[800]*/),
+          icon: Icon(
+            Icons.lock, /*color: Colors.lightBlue[800]*/
+          ),
         ),
         onSaved: (value) => login.clave = value,
         validator: (value) {
@@ -232,7 +233,6 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   Widget _createBottom(BuildContext context) {
-
     if (_check) {
       return Center(child: CircularProgressIndicator());
     } else {

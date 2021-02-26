@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/pages/careers_page.dart';
 import 'package:runxatruch_app/pages/porfile_page.dart';
@@ -8,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart'; para usar despues
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as lct;
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -47,6 +50,9 @@ class _BarraNavegacion extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final data = jsonDecode(PreferenciasUsuario().credential);
+    print('****asdad** ${data['email']}');
+
     return Scaffold(
       body: Container(
         child: (_widgetOptions.elementAt(_selectedIndex)),
