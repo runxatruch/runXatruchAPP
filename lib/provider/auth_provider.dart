@@ -62,11 +62,22 @@ class AuthProvider {
         .catchError((e) => print("error $e"));
   }
 
-  Future<Map<String, dynamic>> _getDataUser(String email) async {
-    _competitor.where('email', isEqualTo: email).get().then((value) {
+  Future<List<UserModel>> getDataUser() async {
+    final data = jsonDecode(PreferenciasUsuario().credential);
+    final firestoreInstance = FirebaseFirestore.instance;
+
+    firestoreInstance
+        .collection("users")
+        .where("email", isEqualTo: data['email'])
+        .get()
+        .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        return {'data', user.toJson()};
+        final id = result.id;
+        user.id = id;
+        print(user.fechaNac);
+        print(user.id);
+        return user;
       });
     });
   }
