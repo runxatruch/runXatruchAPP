@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
+import 'package:runxatruch_app/provider/user_provider.dart';
 
 import '../provider/auth_provider.dart';
 
@@ -8,7 +9,7 @@ class PorfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider _prov = new AuthProvider();
+    UserProvider _prov = UserProvider();
     dynamic result = _prov.getDataUser();
 
     final size = MediaQuery.of(context).size;
