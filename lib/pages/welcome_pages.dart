@@ -10,9 +10,9 @@ class WelcomePages extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/fondo.png'), fit: BoxFit.cover),
-           /*gradient: LinearGradient(
+          image: DecorationImage(
+              image: AssetImage('assets/fondo.png'), fit: BoxFit.cover),
+          /*gradient: LinearGradient(
                 colors: [Colors.cyan[700], Colors.lightBlue[800]],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter)*/
@@ -63,7 +63,10 @@ class WelcomePages extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Iniciar sesion'),
+                Text(
+                  'Iniciar sesion',
+                  style: TextStyle(color: Colors.white),
+                ),
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 10.0,
@@ -85,14 +88,13 @@ class WelcomePages extends StatelessWidget {
                 Text('Registrarse'),
               ])),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0), 
+        borderRadius: BorderRadius.circular(15.0),
         //side: BorderSide(color: Colors.red[400], width: 2.0),
       ),
       elevation: 10.0,
       color: Colors.white,
       textColor: Colors.red[400],
       onPressed: () => Navigator.pushReplacementNamed(context, 'createAccount'),
-
     );
   }
 }
