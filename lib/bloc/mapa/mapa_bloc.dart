@@ -59,6 +59,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
     } else {
       List<LatLng> points = [];
       this._miRuta = this._miRuta.copyWith(pointsParam: points);
+      this._miRuta = this._miRuta.copyWith(colorParam: Colors.transparent);
       MiUbicacionBloc().cancelarSeguimiento();
     }
     final currentPolylines = state.polylines;
@@ -66,6 +67,5 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
 
     yield state.copyWith(
         dibujarRecorrido: !state.dibujarRecorrido, polylines: currentPolylines);
-    print(state.dibujarRecorrido);
   }
 }

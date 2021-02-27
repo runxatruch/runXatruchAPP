@@ -2,6 +2,11 @@
 
 //verificando que sean tipo numerico
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
+
 bool isNumeric(String s) {
   if (s.isEmpty) return false;
 
@@ -52,4 +57,59 @@ bool passwordValid(String pass) {
   } else {
     return true;
   }
+}
+
+bool stopResumen(bool state, BuildContext context) {
+  // ignore: close_sinks
+  final mapaBloc = BlocProvider.of<MapaBloc>(context);
+  mapaBloc.add(OnMarcarRecorrido());
+  return mapaBloc.state.dibujarRecorrido;
+}
+
+bool startResumen(BuildContext context) {
+  // ignore: close_sinks
+  final mapaBloc = BlocProvider.of<MapaBloc>(context);
+  mapaBloc.add(OnMarcarRecorrido());
+  return mapaBloc.state.dibujarRecorrido;
+}
+
+showAbstract(Map<String, dynamic> data, BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Resumen'),
+          content: Container(
+            height: 180,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Km recorridos: ',
+                ),
+                Text('${data['km']}', style: TextStyle(fontSize: 25)),
+                Divider(),
+                Text(
+                  'Velociadad promedio: ',
+                ),
+                Text('${data['velocidad']} km/h',
+                    style: TextStyle(fontSize: 25)),
+                Divider(),
+                Text('Tiempo total:'),
+                Text('${data['time']}', style: TextStyle(fontSize: 25)),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            FlatButton(
+              child: Text('Guardar'),
+              onPressed: () => print('TODOs datos guardados'),
+            )
+          ],
+        );
+      });
 }

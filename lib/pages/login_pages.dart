@@ -299,7 +299,8 @@ class _LoginPagesState extends State<LoginPages> {
       setState(() {
         _check = false;
       });
-      mostrarAlerta(context, result['error']);
+      final data = {"msj": result['error']};
+      mostrarAlerta(context, data);
     }
   }
 }
