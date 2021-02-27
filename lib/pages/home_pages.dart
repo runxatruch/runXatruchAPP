@@ -50,8 +50,8 @@ class _BarraNavegacion extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final data = jsonDecode(PreferenciasUsuario().credential);
-    print('****asdad** ${data['email']}');
+
+   
 
     return Scaffold(
       body: Container(

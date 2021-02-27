@@ -138,8 +138,10 @@ class _CreateAccountState extends State<CreateAccount> {
                   children: [
                     Text(
                       'Crear cuenta',
-                      style:
-                          TextStyle(fontFamily: 'RobotoMono', fontSize: 30.0, color: Colors.lightBlue[700]),
+                      style: TextStyle(
+                          fontFamily: 'RobotoMono',
+                          fontSize: 30.0,
+                          color: Colors.lightBlue[700]),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -245,7 +247,10 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.account_box_rounded, color: Colors.lightBlue[700],),
+            icon: Icon(
+              Icons.account_box_rounded,
+              color: Colors.lightBlue[700],
+            ),
             hintText: 'Ejem: Juan Antonio',
             labelText: 'Primer y Segundo Nombre',
           ),
@@ -581,7 +586,8 @@ class _CreateAccountState extends State<CreateAccount> {
     if (result['ok']) {
       Navigator.pushReplacementNamed(context, 'home');
     } else {
-      mostrarAlerta(context, result['error']);
+      final data = {"msj": result['error']};
+      mostrarAlerta(context, data);
     }
   }
 }

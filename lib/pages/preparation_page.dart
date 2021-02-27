@@ -5,6 +5,7 @@ import 'package:runxatruch_app/Widget/btnMap.dart';
 import 'package:runxatruch_app/Widget/widgets.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
+import 'package:runxatruch_app/utils/util.dart';
 import 'timer.dart';
 
 bool _check = false;
@@ -106,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {},
               child: Icon(Icons.list),
             ),
-            Start(),
+            _btnStart(context),
             BtnMiRuta()
           ],
         ),
@@ -155,33 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
-}
 
-class TimerTextWidget extends HookWidget {
-  const TimerTextWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final timeLeft = useProvider(timerProvider.state).timeLeft;
-    print('building TimerTextWidget $timeLeft');
-    return Text(
-      timeLeft,
-      style: Theme.of(context).textTheme.headline2,
-    );
-  }
-}
-
-class Start extends StatefulWidget {
-  const Start({Key key}) : super(key: key);
-
-  @override
-  _StartButton createState() => _StartButton();
-}
-
-class _StartButton extends State<Start> {
-  // const StartButton({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
+  Widget _btnStart(BuildContext context) {
     return RaisedButton(
       child: Container(
           width: 95.0,
@@ -201,14 +177,41 @@ class _StartButton extends State<Start> {
   }
 
   playStop(BuildContext context) {
-    setState(() {
-      _check = !_check;
-    });
     if (_check == true) {
-      context.read(timerProvider).startTimer();
+      final bool value = stopResumen(true, context);
+      if (value) {
+        showAbstract({
+          "km": 3.0,
+          "time": context.read(timeLeftProvider),
+          "velocidad": 15
+        }, context);
+        context.read(timerProvider).reset();
+
+        setState(() {
+          _check = !_check;
+        });
+      }
     } else if (_check == false) {
-      print(context.read(timeLeftProvider));
-      context.read(timerProvider).pause();
+      final bool value = startResumen(context);
+      if (!value) {
+        context.read(timerProvider).startTimer();
+        setState(() {
+          _check = !_check;
+        });
+      }
     }
+  }
+}
+
+class TimerTextWidget extends HookWidget {
+  const TimerTextWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final timeLeft = useProvider(timerProvider.state).timeLeft;
+    return Text(
+      timeLeft,
+      style: Theme.of(context).textTheme.headline2,
+    );
   }
 }

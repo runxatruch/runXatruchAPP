@@ -46,6 +46,7 @@ class _MapPageState extends State<MapPage> {
 
     return Container(
       child: GoogleMap(
+        
         initialCameraPosition: cameraPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
