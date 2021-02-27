@@ -9,7 +9,7 @@ void mostrarAlerta(BuildContext context, Map<dynamic, dynamic> mensaje) {
           content: Text(mensaje['msj']),
           actions: <Widget>[
             FlatButton(
-              child: Text('Ok'),
+              child: Text('Ok', style: TextStyle(color: Colors.red[400]),),
               onPressed: () => Navigator.of(context).pop(),
             )
           ],

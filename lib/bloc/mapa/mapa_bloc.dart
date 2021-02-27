@@ -22,7 +22,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
     if (!state.mapaListo) {
       this._controller = controller;
       //Cambiar estilo del mapa
-      this._controller.setMapStyle(jsonEncode(uberMapTheme));
+      this._controller.setMapStyle(jsonEncode(uberMapTheme[0]));
 
       add(OnMapaListo());
     }
@@ -50,6 +50,16 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
       // ignore: await_only_futures
       yield* await (this._onMarcarRecorrido(event));
       // TODO: implement mapEventToState
+    } else if (event is OnNewTheme) {
+      if (state.theme == 0) {
+        this._controller.setMapStyle(jsonEncode(uberMapTheme[1]));
+        yield state.copyWith(theme: 1);
+        add(OnMapaListo());
+      } else {
+        this._controller.setMapStyle(jsonEncode(uberMapTheme[0]));
+        yield state.copyWith(theme: 0);
+        add(OnMapaListo());
+      }
     }
   }
 

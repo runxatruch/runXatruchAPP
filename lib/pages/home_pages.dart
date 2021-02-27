@@ -50,9 +50,6 @@ class _BarraNavegacion extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-   
-
     return Scaffold(
       body: Container(
         child: (_widgetOptions.elementAt(_selectedIndex)),

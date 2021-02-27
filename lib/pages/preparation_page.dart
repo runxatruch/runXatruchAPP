@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:runxatruch_app/Widget/btnMap.dart';
 import 'package:runxatruch_app/Widget/widgets.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
+import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'package:runxatruch_app/utils/util.dart';
 import 'timer.dart';
@@ -42,6 +43,7 @@ class PreparationPages extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MyHomePage(),
+        routes: {'historial': (BuildContext context) => HistorialTraining()},
         theme: ThemeData(
           // Define the default brightness and colors.
           brightness: Brightness.light,
@@ -104,11 +106,22 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.list),
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              onPressed: () => newTheme(context),
+              child: Icon(Icons.layers_outlined, color: Colors.red[400]),
             ),
             _btnStart(context),
-            BtnMiRuta()
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              maxRadius: 25,
+              child: IconButton(
+                icon: Icon(Icons.subject, color: Colors.red[400]),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'historial');
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -170,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
           )),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
       elevation: 5.0,
-      color: Colors.lightBlue[800],
+      color: Colors.red[400],
       textColor: Colors.white,
       onPressed: () => playStop(context),
     );
@@ -183,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
         showAbstract({
           "km": 3.0,
           "time": context.read(timeLeftProvider),
-          "velocidad": 15
+          "velocidad": 15.0
         }, context);
         context.read(timerProvider).reset();
 
