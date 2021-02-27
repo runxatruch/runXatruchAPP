@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
@@ -182,11 +184,11 @@ class PorfilePage extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
               IconButton(
-                icon: IconButton(
-                  icon: Icon(Icons.arrow_forward_ios_outlined),
-                  onPressed: () {},
-                ),
-                onPressed: () {},
+                icon: Icon(Icons.arrow_forward_ios_outlined),
+                onPressed: () {
+                  final data = jsonDecode(PreferenciasUsuario().credential);
+                  print('****asdad** ${data['uid']}');
+                },
               )
             ],
           )

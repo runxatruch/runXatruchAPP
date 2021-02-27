@@ -24,6 +24,7 @@ class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionState> {
   }
 
   void cancelarSeguimiento() {
+    print('cancelar');
     this._positionSucription?.cancel();
   }
 

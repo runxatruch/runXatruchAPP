@@ -14,6 +14,10 @@ class BtnMiRuta extends StatelessWidget {
         child: IconButton(
           icon: Icon(Icons.more_horiz, color: Colors.black87),
           onPressed: () {
+            for (var item in mapaBloc.state.polylines.values) {
+              print('*********');
+              print(item.points);
+            }
             mapaBloc.add(OnMarcarRecorrido());
           },
         ),

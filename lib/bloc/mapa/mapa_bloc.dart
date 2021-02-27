@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
+import 'package:runxatruch_app/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
 import 'package:runxatruch_app/theme/uber_map_theme.dart';
 
 part 'mapa_event.dart';
@@ -54,11 +55,11 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
 
   Stream<MapaState> _onMarcarRecorrido(OnMarcarRecorrido event) async* {
     if (!state.dibujarRecorrido) {
-      this._miRuta = this._miRuta.copyWith(colorParam: Colors.black87);
+      this._miRuta = this._miRuta.copyWith(colorParam: Colors.blue);
     } else {
       List<LatLng> points = [];
       this._miRuta = this._miRuta.copyWith(pointsParam: points);
-      this._miRuta = this._miRuta.copyWith(colorParam: Colors.transparent);
+      MiUbicacionBloc().cancelarSeguimiento();
     }
     final currentPolylines = state.polylines;
     currentPolylines['mi_ruta'] = this._miRuta;
