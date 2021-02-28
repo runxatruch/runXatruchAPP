@@ -54,12 +54,14 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
       if (state.theme == 0) {
         this._controller.setMapStyle(jsonEncode(uberMapTheme[1]));
         yield state.copyWith(theme: 1);
-        add(OnMapaListo());
-      } else {
+        print('Leego ${state.theme}');
+      } else if (state.theme == 1) {
         this._controller.setMapStyle(jsonEncode(uberMapTheme[0]));
         yield state.copyWith(theme: 0);
-        add(OnMapaListo());
+        print('Leego ${state.theme}');
       }
+
+      yield state.copyWith(mapaListo: true);
     }
   }
 
