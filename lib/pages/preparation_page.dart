@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:runxatruch_app/Widget/btnMap.dart';
+import 'package:runxatruch_app/Widget/calculateDistance.dart';
 import 'package:runxatruch_app/Widget/widgets.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
@@ -194,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final bool value = stopResumen(true, context);
       if (value) {
         showAbstract({
-          "km": 3.0,
+          "km": startDist(context, context.read(timeLeftProvider))[0],
           "time": context.read(timeLeftProvider),
           "velocidad": 15.0
         }, context);
