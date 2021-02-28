@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 
-startDist(BuildContext context, String seconds) {
+startDist(BuildContext context, String timer) {
   //.....Debo acceder a los segundos y minutos
   // ignore: close_sinks
   final mapaBloc = BlocProvider.of<MapaBloc>(context);
@@ -32,12 +32,18 @@ startDist(BuildContext context, String seconds) {
     list.add(double.parse(distancia));
     //distancia = 0;
     //print('distancia KM: $distanceKM');
-    print(seconds[2]);
+    final arrayTimer = timer.split(':');
+    final minutes = arrayTimer[0];
+    final seconds = arrayTimer[1];
+    final timerFinal =
+        double.parse(minutes) / 60 + double.parse(seconds) / 3600;
 
-    double average = calculateProm(200, distanceKM);
-    // print('promedio km/h: $average');
-    // position = position + 1;
-    //return double.parse(distancia);
+    //print(timerFinal);
+    double average = calculateProm(timerFinal, distanceKM);
+    String promedio = average.toStringAsPrecision(5);
+
+    list.add(double.parse(promedio));
+
     return list;
   }
 }
@@ -52,8 +58,7 @@ double distance(
   return distanceKM;
 }
 
-double calculateProm(double seconds, double km) {
-  double hours = seconds / 3600;
+double calculateProm(double hours, double km) {
   double kmMetros = km * 1000;
-  return hours / kmMetros;
+  return kmMetros / hours;
 }

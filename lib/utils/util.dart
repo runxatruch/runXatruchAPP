@@ -111,7 +111,7 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
                 Text(
                   'Velociadad promedio: ',
                 ),
-                Text('${data['velocidad']} km/h',
+                Text('${data['velocidad']} m/h',
                     style: TextStyle(fontSize: 25)),
                 Divider(),
                 Text('Tiempo total:'),

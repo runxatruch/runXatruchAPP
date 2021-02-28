@@ -37,7 +37,12 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget crearMap(MiUbicacionState state) {
-    if (!state.existeUbicacion) return Text('Ubicando...');
+    if (!state.existeUbicacion)
+      return Center(
+        child: Image(
+          image: AssetImage('assets/location.gif'),
+        ),
+      );
     // ignore: close_sinks
     final mapaBloc = BlocProvider.of<MapaBloc>(context);
     mapaBloc.add(OnNuevaUbicacion(ubicacion: state.ubicacion));
@@ -46,7 +51,6 @@ class _MapPageState extends State<MapPage> {
 
     return Container(
       child: GoogleMap(
-        
         initialCameraPosition: cameraPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,

@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Divider(),
           Container(
               width: size.width * 1,
-              height: size.height * 0.6,
+              height: size.height * 0.62,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   color: Colors.white,
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
         showAbstract({
           "km": startDist(context, context.read(timeLeftProvider))[0],
           "time": context.read(timeLeftProvider),
-          "velocidad": 15.0
+          "velocidad": startDist(context, context.read(timeLeftProvider))[1]
         }, context);
         context.read(timerProvider).reset();
 
