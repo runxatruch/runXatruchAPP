@@ -3,19 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
+import 'package:runxatruch_app/models/user_models.dart';
 
 import '../provider/auth_provider.dart';
 
 class PorfilePage extends StatelessWidget {
   const PorfilePage({Key key}) : super(key: key);
-
+    
   @override
   Widget build(BuildContext context) {
-    UserProvider _prov = UserProvider();
-    dynamic result = _prov.getDataUser();
-    print(result);
 
     final size = MediaQuery.of(context).size;
+    final pro = UserProvider(); 
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
@@ -28,57 +28,76 @@ class PorfilePage extends StatelessWidget {
         ],
         elevation: 0.0,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          Container(
-            height: size.height * 0.35,
-            child: _createPorfile(size.height),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text('Datos Personales'),
-          Divider(),
-          _createedad(),
-          SizedBox(
-            height: 10,
-          ),
-          _createIdenty(),
-          SizedBox(
-            height: 40,
-          ),
-          Text('Participaciones'),
-          Divider(),
-          _createPart(),
-          SizedBox(
-            height: 40,
-          ),
-          Text('Soporte'),
-          Divider(),
-          _createSuport(),
-          SizedBox(
-            height: 20,
-          ),
-          _createFooter(context)
-        ],
+      body: Center(
+        child: FutureBuilder(
+          future: pro.getDataUser(),
+          builder: 
+            (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot){            
+              if(snapshot.hasData){
+                final data = snapshot.data;
+                return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: data.length,
+                  itemBuilder: (context, i) {
+                    return Column(
+                      children: <Widget>[
+                          Container(
+                            height: size.height * 0.40,
+                            child: _createPorfile(data[i], context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text('Datos Personales', textAlign: TextAlign.end),
+                          Divider(),
+                          _createedad(data[i]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _createIdenty(data[i]),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Participaciones', textAlign: TextAlign.start),
+                          Divider(),
+                          _createPart(),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Soporte', textAlign: TextAlign.start),
+                          Divider(),
+                          _createSuport(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _createFooter(context)
+                      ],
+                    );
+                  }
+                );
+              }else{
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+        ),
       ),
     );
   }
 
-  Widget _createPorfile(size) {
+  Widget _createPorfile(UserModel data, context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
           'assets/unnamed.png',
-          height: size * 0.2,
+           height: size.height * 0.22,
         ),
         SizedBox(
           height: 10,
         ),
         Text(
-          'Angel Gabriel Chavez Vigil',
+          '${data.nombres} ${data.apellidos}',
           style: TextStyle(fontSize: 25),
         ),
         SizedBox(
@@ -92,7 +111,7 @@ class PorfilePage extends StatelessWidget {
               size: 20,
             ),
             Text(
-              ' agchavez@unah.hn',
+              '${data.email}',
               style: TextStyle(fontSize: 20),
             )
           ],
@@ -101,7 +120,7 @@ class PorfilePage extends StatelessWidget {
     );
   }
 
-  Widget _createedad() {
+  Widget _createedad(UserModel data) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -109,18 +128,18 @@ class PorfilePage extends StatelessWidget {
         children: [
           Text(
             'Fecha de nacimiento: ',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
           Text(
-            '25/03/1999',
-            style: TextStyle(fontSize: 20),
+            '${data.fechaNac}',
+            style: TextStyle(fontSize: 18),
           )
         ],
       ),
     );
   }
 
-  Widget _createIdenty() {
+  Widget _createIdenty(UserModel data) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -128,11 +147,11 @@ class PorfilePage extends StatelessWidget {
         children: [
           Text(
             'Numero de identidad: ',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
           Text(
-            '1201199900497',
-            style: TextStyle(fontSize: 20),
+            '${data.identidad}',
+            style: TextStyle(fontSize: 18),
           )
         ],
       ),
@@ -149,7 +168,7 @@ class PorfilePage extends StatelessWidget {
             children: [
               Text(
                 'Organizar un evento',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
               IconButton(
                 icon: Icon(Icons.arrow_forward_ios_outlined),
@@ -165,7 +184,7 @@ class PorfilePage extends StatelessWidget {
             children: [
               Text(
                 'Sobre nosotros',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
               IconButton(
                 icon: Icon(Icons.arrow_forward_ios_outlined),
@@ -188,7 +207,7 @@ class PorfilePage extends StatelessWidget {
             children: [
               Text(
                 '<Nombre de la carrera>',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
               IconButton(
                 icon: Icon(Icons.arrow_forward_ios_outlined),
