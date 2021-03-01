@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
+import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
 import 'package:runxatruch_app/pages/login_pages.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
@@ -63,13 +64,14 @@ class MyApp extends StatelessWidget {
             'recoverAccount': (BuildContext context) => RecoverAccount(),
             'createAccount': (BuildContext context) => CreateAccount(),
             'setting': (BuildContext context) => SettingPage(),
-            'map': (BuildContext context) => MapPage()
+            'map': (BuildContext context) => MapPage(),
+            'historial': (BuildContext context) => HistorialTraining()
           },
           theme: ThemeData(
             // Define the default brightness and colors.
             brightness: Brightness.light,
-            primaryColor: Colors.lightBlue[700], //red[400],
-            accentColor: Colors.lightBlue[700], //red[400],
+            primaryColor: Colors.red[400], //red[400],
+            accentColor: Colors.red[400], //red[400],
 
             // Define the default TextTheme. Use this to specify the default
             // text styling for headlines, titles, bodies of text, and more.

@@ -1,11 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
+import 'package:runxatruch_app/provider/user_provider.dart';
+
+import '../provider/auth_provider.dart';
 
 class PorfilePage extends StatelessWidget {
   const PorfilePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    UserProvider _prov = UserProvider();
+    dynamic result = _prov.getDataUser();
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -182,11 +190,11 @@ class PorfilePage extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
               IconButton(
-                icon: IconButton(
-                  icon: Icon(Icons.arrow_forward_ios_outlined),
-                  onPressed: () {},
-                ),
-                onPressed: () {},
+                icon: Icon(Icons.arrow_forward_ios_outlined),
+                onPressed: () {
+                  final data = jsonDecode(PreferenciasUsuario().credential);
+                  print('****asdad** ${data['uid']}');
+                },
               )
             ],
           )

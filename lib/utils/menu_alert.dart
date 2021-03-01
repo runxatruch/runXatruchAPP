@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-void mostrarAlerta(BuildContext context, String mensaje) {
+void mostrarAlerta(BuildContext context, Map<dynamic, dynamic> mensaje) {
   showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Información incorrecta'),
-          content: Text(mensaje),
+          content: Text(mensaje['msj']),
           actions: <Widget>[
             FlatButton(
-              child: Text('Ok'),
+              child: Text('Ok', style: TextStyle(color: Colors.red[400]),),
               onPressed: () => Navigator.of(context).pop(),
             )
           ],

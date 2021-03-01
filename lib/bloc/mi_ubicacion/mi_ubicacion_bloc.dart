@@ -18,13 +18,13 @@ class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionState> {
     this._positionSucription = Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.high, distanceFilter: 10)
         .listen((Position position) {
-      print(position);
       final newLocation = new LatLng(position.latitude, position.longitude);
       add(OnUbicacionCambio(ubicacion: newLocation));
     });
   }
 
   void cancelarSeguimiento() {
+    print('cancelar');
     this._positionSucription?.cancel();
   }
 
