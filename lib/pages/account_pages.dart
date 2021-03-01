@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/user_models.dart';
-//import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
