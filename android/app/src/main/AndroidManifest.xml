@@ -1,5 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.runxatruch_app">
+
+
+     <!-- Permissions options for the `location` group -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+     <!-- Internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- State -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -9,6 +22,15 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="runxatruch_app"
         android:icon="@mipmap/ic_launcher">
+
+
+        <!--esto es para implementar el mapa de google en la aplicacion, por los momentos no se esta usando
+        en: (adroid:value). hay que generar key(APIS) atraves de la plataforma de google para tener acceso al google 
+        del telefono en tiempo real-->
+        <meta-data
+          android:name="com.google.android.geo.API_KEY"
+          android:value="AIzaSyAyeYtCpr3Y1WPqEhlKHJX-IUhvhZBtxCs"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

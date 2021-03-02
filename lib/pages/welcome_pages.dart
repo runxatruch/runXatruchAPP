@@ -10,12 +10,13 @@ class WelcomePages extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/1.png'), fit: BoxFit.cover),
-            gradient: LinearGradient(
-                colors: [Colors.lightBlue[800], Colors.lightBlue[800]],
+          image: DecorationImage(
+              image: AssetImage('assets/fondo.png'), fit: BoxFit.cover),
+          /*gradient: LinearGradient(
+                colors: [Colors.cyan[700], Colors.lightBlue[800]],
                 begin: Alignment.bottomCenter,
-                end: Alignment.topCenter)),
+                end: Alignment.topCenter)*/
+        ),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,13 +63,16 @@ class WelcomePages extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Iniciar sesion'),
+                Text(
+                  'Iniciar sesion',
+                  style: TextStyle(color: Colors.white),
+                ),
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 10.0,
-      color: Colors.white,
+      color: Colors.red[400],
       textColor: Colors.lightBlue[800],
-      onPressed: () => Navigator.pushNamed(context, 'login'),
+      onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
     );
   }
 
@@ -83,11 +87,14 @@ class WelcomePages extends StatelessWidget {
               children: [
                 Text('Registrarse'),
               ])),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        //side: BorderSide(color: Colors.red[400], width: 2.0),
+      ),
       elevation: 10.0,
       color: Colors.white,
-      textColor: Colors.lightBlue[800],
-      onPressed: () => Navigator.pushNamed(context, 'createAccount'),
+      textColor: Colors.red[400],
+      onPressed: () => Navigator.pushReplacementNamed(context, 'createAccount'),
     );
   }
 }

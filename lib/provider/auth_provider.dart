@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
@@ -23,10 +26,19 @@ class AuthProvider {
       }
     }
     if (temp) {
-      _pref.credential = {
-        'email': userCredential.user.email,
-        'uid': userCredential.user.uid
-      }.toString();
+      final data = {
+        "email": userCredential.user.email,
+        "uid": userCredential.user.uid,
+        "mantener": true
+      };
+      _pref.credential = jsonEncode(data);
+    } else {
+      final data = {
+        "email": userCredential.user.email,
+        "uid": userCredential.user.uid,
+        "mantener": false
+      };
+      _pref.credential = jsonEncode(data);
     }
 
     return {'ok': true, 'credential': userCredential};
@@ -41,8 +53,19 @@ class AuthProvider {
       if (result.user.uid != null) {
         await _addCompetitor(userData);
         if (temp) {
-          _pref.credential =
-              {'email': result.user.email, 'uid': result.user.uid}.toString();
+          final data = {
+            "email": result.user.email,
+            "uid": result.user.uid,
+            "mantener": true
+          };
+          _pref.credential = jsonEncode(data);
+        } else {
+          final data = {
+            "email": result.user.email,
+            "uid": result.user.uid,
+            "mantener": false
+          };
+          _pref.credential = jsonEncode(data);
         }
         return {'ok': true, 'credential': result};
       }
@@ -57,14 +80,5 @@ class AuthProvider {
         .add(userData.toJson())
         .then((value) => print('Competidor agregado cone xito'))
         .catchError((e) => print("error $e"));
-  }
-
-  Future<Map<String, dynamic>> _getDataUser(String email) async {
-    _competitor.where('email', isEqualTo: email).get().then((value) {
-      value.docs.forEach((result) {
-        final user = UserModel.fromJson(result.data());
-        return {'data', user.toJson()};
-      });
-    });
   }
 }

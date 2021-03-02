@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/login_models.dart';
-import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
@@ -13,6 +11,7 @@ class LoginPages extends StatefulWidget {
 
 class _LoginPagesState extends State<LoginPages> {
   bool _checkbox = false;
+  bool _check = false;
   LoginModel login = new LoginModel();
   final keyLogin = GlobalKey<FormState>();
 
@@ -29,44 +28,29 @@ class _LoginPagesState extends State<LoginPages> {
     ));
   }
 
+  //Definicion de variables globales
+  bool _showpasword = true;
   Widget _createBackground(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fondoMorado = Container(
-      height: size.height * 0.45,
+      height: size.height * 0.5,
       width: double.infinity,
-      color: Colors.lightBlue[800],
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.white, Colors.red[800]])),
     );
 
     final circulo = Container(
       width: 100.0,
       height: 100.0,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.0),
-          color: Color.fromRGBO(255, 255, 255, 0.05)),
+          borderRadius: BorderRadius.circular(100.0), color: Colors.red[400]),
     );
     return Stack(
       children: [
         fondoMorado,
-        Positioned(
-          child: circulo,
-          top: 110.0,
-          left: 30.0,
-        ),
-        Positioned(
-          child: circulo,
-          top: -40.0,
-          right: -30.0,
-        ),
-        Positioned(
-          child: circulo,
-          bottom: 100.0,
-          right: 80.0,
-        ),
-        Positioned(
-          child: circulo,
-          bottom: -50.0,
-          right: 20.0,
-        ),
         Container(
           padding: EdgeInsets.only(top: 20.0),
           child: Column(
@@ -132,8 +116,8 @@ class _LoginPagesState extends State<LoginPages> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
-                            focusColor: Colors.lightBlue[800],
-                            activeColor: Colors.lightBlue[800],
+                            //focusColor: Colors.lightBlue[800],
+                            //activeColor: Colors.lightBlue[800],
                             value: _checkbox,
                             onChanged: (value) {
                               setState(() {
@@ -177,8 +161,13 @@ class _LoginPagesState extends State<LoginPages> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.email),
-            suffixIcon: Icon(Icons.alternate_email),
+            fillColor: Colors.orange,
+            icon: Icon(
+              Icons.email, /*color: Colors.lightBlue[800]*/
+            ),
+            suffixIcon: Icon(
+              Icons.alternate_email,
+            ),
             hintText: 'example@example.com',
             labelText: 'Correo Electornico',
           ),
@@ -197,14 +186,23 @@ class _LoginPagesState extends State<LoginPages> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
-        obscureText: true,
+        obscureText: _showpasword,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            labelText: 'Password',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+          labelText: 'Password',
+          suffixIcon: GestureDetector(
+            child: _showpasword ? Icon(Icons.lock) : Icon(Icons.lock_open),
+            onTap: () => {
+              setState(() {
+                _showpasword = !_showpasword;
+              })
+            },
+          ),
+          icon: Icon(
+            Icons.lock, /*color: Colors.lightBlue[800]*/
+          ),
+        ),
         onSaved: (value) => login.clave = value,
         validator: (value) {
           if (utils.passwordValid(value)) {
@@ -218,23 +216,28 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   Widget _createBottom(BuildContext context) {
-    return RaisedButton(
-      child: Container(
-          width: 220.0,
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Iniciar sesión'),
-                Icon(Icons.arrow_forward_ios_sharp)
-              ])),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      elevation: 5.0,
-      color: Colors.lightBlue[800],
-      textColor: Colors.white,
-      onPressed: () => _login(context),
-    );
+    if (_check) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return RaisedButton(
+        child: Container(
+            width: 220.0,
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Iniciar sesión'),
+                  Icon(Icons.arrow_forward_ios_sharp)
+                ])),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        elevation: 5.0,
+        color: Colors.red[400],
+        textColor: Colors.white,
+        onPressed: () => _login(context),
+      );
+    }
   }
 
   Widget _recuperar(BuildContext context) {
@@ -254,7 +257,7 @@ class _LoginPagesState extends State<LoginPages> {
   Widget _createAccount(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'createAccount');
+        Navigator.pushReplacementNamed(context, 'createAccount');
       },
       child: Container(
         child: Text(
@@ -269,11 +272,18 @@ class _LoginPagesState extends State<LoginPages> {
     AuthProvider _auth = new AuthProvider();
     if (!keyLogin.currentState.validate()) return;
     keyLogin.currentState.save();
+    setState(() {
+      _check = true;
+    });
     final result = await _auth.loginUser(login.correo, login.clave, _checkbox);
     if (result['ok']) {
-      Navigator.popAndPushNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
-      mostrarAlerta(context, result['error']);
+      setState(() {
+        _check = false;
+      });
+      final data = {"msj": result['error']};
+      mostrarAlerta(context, data);
     }
   }
 }

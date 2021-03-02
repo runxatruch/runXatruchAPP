@@ -1,8 +1,9 @@
 import 'dart:math';
+import 'package:intl/intl.dart';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/user_models.dart';
-import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
@@ -34,8 +35,7 @@ class _CreateAccountState extends State<CreateAccount> {
   dynamic icono2 = Icon(Icons.sports_handball_sharp);
   dynamic icono3 = Icon(Icons.sports_soccer_rounded);
 
-  String _opcionCategoria = 'Principiante';
-  List<String> _categorias = ['Principiante', 'Intermedio', 'Avanzado'];
+  bool _showpasword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _CreateAccountState extends State<CreateAccount> {
     final fondoMorado = Container(
       height: size.height * 0.45,
       width: double.infinity,
-      color: Colors.lightBlue[800],
+      color: Colors.teal[300],
     );
 
     final circulo = Container(
@@ -139,11 +139,13 @@ class _CreateAccountState extends State<CreateAccount> {
                   children: [
                     Text(
                       'Crear cuenta',
-                      style:
-                          TextStyle(fontFamily: 'RobotoMono', fontSize: 30.0),
+                      style: TextStyle(
+                          fontFamily: 'RobotoMono',
+                          fontSize: 30.0,
+                          color: Colors.lightBlue[700]),
                     ),
                     SizedBox(
-                      height: 15.0,
+                      height: 20.0,
                     ),
                     _createName(size.width),
                     SizedBox(
@@ -192,10 +194,6 @@ class _CreateAccountState extends State<CreateAccount> {
                       height: 20.0,
                     ),
                     SizedBox(
-                      height: 5.0,
-                    ),
-                    _createPassConfir(size.width),
-                    SizedBox(
                       height: 10.0,
                     ),
                     _mantenersecion(),
@@ -225,8 +223,8 @@ class _CreateAccountState extends State<CreateAccount> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Checkbox(
-            focusColor: Colors.lightBlue[800],
-            activeColor: Colors.lightBlue[800],
+            focusColor: Colors.lightBlue[700],
+            activeColor: Colors.lightBlue[700],
             value: _checkbox,
             onChanged: (value) {
               setState(() {
@@ -250,7 +248,10 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.account_box_rounded),
+            icon: Icon(
+              Icons.account_box_rounded,
+              color: Colors.lightBlue[700],
+            ),
             hintText: 'Ejem: Juan Antonio',
             labelText: 'Primer y Segundo Nombre',
           ),
@@ -275,7 +276,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle, color: Colors.lightBlue[700]),
             hintText: 'Ejem: Perez Ramos',
             labelText: 'Primer y Segundo apellido',
           ),
@@ -300,7 +301,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.tag),
+            icon: Icon(Icons.tag, color: Colors.lightBlue[700]),
             hintText: 'Ejem: 080119992000',
             labelText: 'Numero de Identidad sin Espacios',
           ),
@@ -326,7 +327,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.email),
+            icon: Icon(Icons.email, color: Colors.lightBlue[700]),
             hintText: 'example@example.com',
             labelText: 'Correo Electrónico',
           ),
@@ -351,7 +352,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.phone),
+            icon: Icon(Icons.phone, color: Colors.lightBlue[700]),
             hintText: 'Ejem: 88905690',
             labelText: 'Numero de telefono con código de área y sin espacios',
           ),
@@ -386,7 +387,7 @@ class _CreateAccountState extends State<CreateAccount> {
       child: Row(
         children: <Widget>[
           SizedBox(width: 10.0),
-          Icon(Icons.room_rounded, color: Colors.black45),
+          Icon(Icons.room_rounded, color: Colors.lightBlue[700]),
           SizedBox(width: 15.0),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 40.0),
@@ -428,7 +429,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.calendar_today),
+            icon: Icon(Icons.calendar_today, color: Colors.lightBlue[700]),
             labelText: 'Fecha de nacimiendo',
           ),
           onTap: () {
@@ -440,16 +441,17 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //funcion enlazada a crear fecha de nacimiento
   _selectDate(BuildContext context) async {
-    DateTime picked = await showDatePicker(
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    DateTime picker = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
-        firstDate: new DateTime(1960),
+        firstDate: new DateTime(1960, 01, 01),
         lastDate: new DateTime.now(),
         locale: Locale('es', 'ES'));
 
-    if (picked != null) {
+    if (picker != null) {
       setState(() {
-        _fecha = picked.toString();
+        _fecha = formatter.format(picker).toString(); //picker.toString();
         _inputFieldDateController.text = _fecha;
       });
     }
@@ -461,14 +463,22 @@ class _CreateAccountState extends State<CreateAccount> {
       width: size * 0.8,
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: TextFormField(
+        obscureText: _showpasword,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             hintText: 'Ejem: PajaroAzul1980',
             labelText: 'Al menos 8 caracteres',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
+            suffixIcon: GestureDetector(
+              child: _showpasword ? Icon(Icons.lock) : Icon(Icons.lock_open),
+              onTap: () => {
+                setState(() {
+                  _showpasword = !_showpasword;
+                })
+              },
+            ),
+            icon: Icon(Icons.lock, color: Colors.lightBlue[700])),
         key: keyClave,
         controller: pass1,
         onSaved: (value) => userAccount.password = value,
@@ -485,32 +495,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   //Crear el input para confirmar la contraseña
-  Widget _createPassConfir(size) {
-    return Container(
-      width: size * 0.8,
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: TextFormField(
-        textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            labelText: 'Ingrese su Contraseña Nuevamente',
-            suffixIcon: Icon(Icons.lock_open),
-            icon: Icon(Icons.lock)),
-        controller: pass2,
-        onSaved: (value) => userAccount.password = value,
-        validator: (value) {
-          if (value != pass1.text) {
-            return 'Las claves no coinciden';
-          } else
-            return null;
-        },
-      ),
-    );
-  }
 
   //funcion enlazada a crear categoria
-  List<DropdownMenuItem<String>> getCategoriaDropdown() {
+  /*List<DropdownMenuItem<String>> getCategoriaDropdown() {
     List<DropdownMenuItem<String>> listaCategorias = new List();
 
     _categorias.forEach((categoria) {
@@ -521,10 +508,10 @@ class _CreateAccountState extends State<CreateAccount> {
     });
 
     return listaCategorias;
-  }
+  }*/
 
   //funcion para crear categoria
-  Widget _createCategoriaDropdown(size) {
+  /*Widget _createCategoriaDropdown(size) {
     return Container(
       child: Row(
         children: <Widget>[
@@ -556,12 +543,12 @@ class _CreateAccountState extends State<CreateAccount> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget _loginPages(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'login');
+        Navigator.pushReplacementNamed(context, 'login');
       },
       child: Container(
         child: Text(
@@ -585,7 +572,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ])),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 5.0,
-      color: Colors.lightBlue[800],
+      color: Colors.red[400],
       textColor: Colors.white,
       onPressed: () => _login(context),
     );
@@ -599,9 +586,10 @@ class _CreateAccountState extends State<CreateAccount> {
     formkey.currentState.save();
     dynamic result = await _auth.registerUser(userAccount, _checkbox);
     if (result['ok']) {
-      Navigator.popAndPushNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
-      mostrarAlerta(context, result['error']);
+      final data = {"msj": result['error']};
+      mostrarAlerta(context, data);
     }
   }
 }
