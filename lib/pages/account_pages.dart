@@ -1,8 +1,9 @@
 import 'dart:math';
+import 'package:intl/intl.dart';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/user_models.dart';
-import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/auth_provider.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:runxatruch_app/utils/util.dart' as utils;
@@ -440,16 +441,17 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //funcion enlazada a crear fecha de nacimiento
   _selectDate(BuildContext context) async {
-    DateTime picked = await showDatePicker(
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    DateTime picker = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
-        firstDate: new DateTime(1960),
+        firstDate: new DateTime(1960, 01, 01),
         lastDate: new DateTime.now(),
         locale: Locale('es', 'ES'));
 
-    if (picked != null) {
+    if (picker != null) {
       setState(() {
-        _fecha = picked.toString();
+        _fecha = formatter.format(picker).toString(); //picker.toString();
         _inputFieldDateController.text = _fecha;
       });
     }

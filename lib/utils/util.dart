@@ -107,25 +107,48 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Resumen'),
+          title: Text('Resumen:',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent)),
           content: Container(
-            height: 180,
+            height: 190,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  'Km recorridos: ',
-                ),
-                Text('${data['km']}', style: TextStyle(fontSize: 25)),
+                Text('Km recorridos: ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text('${data['km']}',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
                 Divider(),
-                Text(
-                  'Velociadad promedio: ',
-                ),
-                Text('${data['velocidad']} km/h',
-                    style: TextStyle(fontSize: 25)),
+                Text('Velocidad promedio: ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text('${data['velocidad']} m/h',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
                 Divider(),
-                Text('Tiempo total:'),
-                Text('${data['time']}', style: TextStyle(fontSize: 25)),
+                Text('Tiempo total: mm:ss',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text('${data['time']}',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
               ],
             ),
           ),

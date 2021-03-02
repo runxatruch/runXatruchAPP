@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:runxatruch_app/Widget/btnMap.dart';
-import 'package:runxatruch_app/Widget/widgets.dart';
-import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
+import 'package:runxatruch_app/Widget/calculateDistance.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'package:runxatruch_app/utils/util.dart';
@@ -71,23 +69,27 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           Container(
-            height: size.height * 0.2,
             margin: EdgeInsets.only(top: 60),
             child: Column(
               children: <Widget>[
                 TimerTextWidget(),
-                Text('Duracion'),
+                Text('Duración',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.redAccent)),
+
                 SizedBox(
                   height: 30,
                 ),
-                _createInformation()
+                //_createInformation()
               ],
             ),
           ),
           Divider(),
           Container(
               width: size.width * 1,
-              height: size.height * 0.62,
+              height: size.height * 0.67,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   color: Colors.white,
@@ -195,9 +197,9 @@ class _MyHomePageState extends State<MyHomePage> {
       final bool value = stopResumen(true, context);
       if (value) {
         showAbstract({
-          "km": 3.0,
+          "km": startDist(context, context.read(timeLeftProvider))[0],
           "time": context.read(timeLeftProvider),
-          "velocidad": 15.0
+          "velocidad": startDist(context, context.read(timeLeftProvider))[1]
         }, context);
         context.read(timerProvider).reset();
 
