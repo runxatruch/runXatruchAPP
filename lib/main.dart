@@ -9,6 +9,7 @@ import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
 import 'package:runxatruch_app/pages/login_pages.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
+import 'package:runxatruch_app/pages/participations_pages.dart';
 import 'package:runxatruch_app/pages/recover_pages.dart';
 
 import 'package:runxatruch_app/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
@@ -30,10 +31,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return temp();
-  }
-
-  Widget temp() {
     final _pref = PreferenciasUsuario();
     if (_pref.credential == "") {
       return MultiBlocProvider(
@@ -70,7 +67,8 @@ class MyApp extends StatelessWidget {
                 'createAccount': (BuildContext context) => CreateAccount(),
                 'setting': (BuildContext context) => SettingPage(),
                 'map': (BuildContext context) => MapPage(),
-                'historial': (BuildContext context) => HistorialTraining()
+                'historial': (BuildContext context) => HistorialTraining(),
+                'participation': (BuildContext context) => ParticipationsPage()
               },
               theme: ThemeData(
                 // Define the default brightness and colors.
@@ -118,7 +116,8 @@ class MyApp extends StatelessWidget {
                 'createAccount': (BuildContext context) => CreateAccount(),
                 'setting': (BuildContext context) => SettingPage(),
                 'map': (BuildContext context) => MapPage(),
-                'historial': (BuildContext context) => HistorialTraining()
+                'historial': (BuildContext context) => HistorialTraining(),
+                'participation': (BuildContext context) => ParticipationsPage()
               },
               theme: ThemeData(
                 // Define the default brightness and colors.

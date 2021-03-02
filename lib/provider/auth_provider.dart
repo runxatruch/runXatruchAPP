@@ -81,29 +81,4 @@ class AuthProvider {
         .then((value) => print('Competidor agregado cone xito'))
         .catchError((e) => print("error $e"));
   }
-
-  Future<List<UserModel>> getDataUser() async {
-    final data = jsonDecode(PreferenciasUsuario().credential);
-    final firestoreInstance = FirebaseFirestore.instance;
-    final mantener = data['mantener'];
-    final List<UserModel> dataUser = new List();
-    await firestoreInstance
-        .collection("users")
-        .where("email", isEqualTo: data['email'])
-        .get()
-        .then((value) {
-      value.docs.forEach((result) {
-        print(result.data());
-        final user = UserModel.fromJson(result.data());
-        final id = result.id;
-        user.id = id;
-        
-        final data = {"email": user.email, "uid": user.id,"mantener":mantener};
-        _pref.credential = jsonEncode(data);
-        dataUser.add(user);
-      });
-    });
-
-    return dataUser;
-  }
 }
