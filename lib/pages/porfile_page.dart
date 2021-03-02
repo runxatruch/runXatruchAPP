@@ -1,20 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 
-import '../provider/auth_provider.dart';
-
 class PorfilePage extends StatelessWidget {
   const PorfilePage({Key key}) : super(key: key);
-    
+
   @override
   Widget build(BuildContext context) {
-
     final size = MediaQuery.of(context).size;
-    final pro = UserProvider(); 
+    final pro = UserProvider();
 
     return Scaffold(
       appBar: AppBar(
@@ -31,54 +26,53 @@ class PorfilePage extends StatelessWidget {
       body: Center(
         child: FutureBuilder(
           future: pro.getDataUser(),
-          builder: 
-            (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot){            
-              if(snapshot.hasData){
-                final data = snapshot.data;
-                return ListView.builder(
+          builder:
+              (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
+            if (snapshot.hasData) {
+              final data = snapshot.data;
+              return ListView.builder(
                   padding: const EdgeInsets.all(8),
                   itemCount: data.length,
                   itemBuilder: (context, i) {
                     return Column(
                       children: <Widget>[
-                          Container(
-                            height: size.height * 0.40,
-                            child: _createPorfile(data[i], context),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text('Datos Personales', textAlign: TextAlign.end),
-                          Divider(),
-                          _createedad(data[i]),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          _createIdenty(data[i]),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Text('Participaciones', textAlign: TextAlign.start),
-                          Divider(),
-                          _createPart(),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Text('Soporte', textAlign: TextAlign.start),
-                          Divider(),
-                          _createSuport(),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          _createFooter(context)
+                        Container(
+                          height: size.height * 0.40,
+                          child: _createPorfile(data[i], context),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text('Datos Personales', textAlign: TextAlign.end),
+                        Divider(),
+                        _createedad(data[i]),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _createIdenty(data[i]),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Text('Participaciones', textAlign: TextAlign.start),
+                        Divider(),
+                        _createPart(data[i], context),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Text('Soporte', textAlign: TextAlign.start),
+                        Divider(),
+                        _createSuport(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        _createFooter(context)
                       ],
                     );
-                  }
-                );
-              }else{
-                return Center(child: CircularProgressIndicator());
-              }
-            },
+                  });
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );
@@ -91,7 +85,7 @@ class PorfilePage extends StatelessWidget {
       children: [
         Image.asset(
           'assets/unnamed.png',
-           height: size.height * 0.22,
+          height: size.height * 0.22,
         ),
         SizedBox(
           height: 10,
@@ -121,6 +115,7 @@ class PorfilePage extends StatelessWidget {
   }
 
   Widget _createedad(UserModel data) {
+    final date = DateTime.parse(data.fechaNac);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -131,7 +126,7 @@ class PorfilePage extends StatelessWidget {
             style: TextStyle(fontSize: 18),
           ),
           Text(
-            '${data.fechaNac}',
+            '${date.day}/${date.month}/${date.year}',
             style: TextStyle(fontSize: 18),
           )
         ],
@@ -197,7 +192,7 @@ class PorfilePage extends StatelessWidget {
     );
   }
 
-  Widget _createPart() {
+  Widget _createPart(UserModel data, BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -206,15 +201,13 @@ class PorfilePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '<Nombre de la carrera>',
+                'Ir a mis participaciones',
                 style: TextStyle(fontSize: 18),
               ),
               IconButton(
                 icon: Icon(Icons.arrow_forward_ios_outlined),
-                onPressed: () {
-                  final data = jsonDecode(PreferenciasUsuario().credential);
-                  print('****asdad** ${data['uid']}');
-                },
+                onPressed: () => Navigator.pushNamed(context, 'participation',
+                    arguments: data.participations),
               )
             ],
           )
