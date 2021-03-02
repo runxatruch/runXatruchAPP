@@ -13,6 +13,7 @@ class PorfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     UserProvider _prov = UserProvider();
     dynamic result = _prov.getDataUser();
+    print(PreferenciasUsuario().credential);
 
     final size = MediaQuery.of(context).size;
     return Scaffold(

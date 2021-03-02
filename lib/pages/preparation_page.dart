@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Divider(),
           Container(
               width: size.width * 1,
-              height: size.height * 0.62,
+              height: size.height * 0.67,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   color: Colors.white,

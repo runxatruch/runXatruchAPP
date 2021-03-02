@@ -11,7 +11,7 @@ class UserProvider {
 
   Future<List<UserModel>> getDataUser() async {
     final data = jsonDecode(_pref.credential);
-
+    final mantener = data['mantener'];
     final List<UserModel> dataUser = new List();
     await firestoreInstance
         .collection("users")
@@ -22,7 +22,11 @@ class UserProvider {
         final user = UserModel.fromJson(result.data());
         final id = result.id;
         user.id = id;
-        final data = {"email": user.email, "uid": user.id};
+        final data = {
+          "email": user.email,
+          "uid": user.id,
+          "mantener": mantener
+        };
         _pref.credential = jsonEncode(data);
         dataUser.add(user);
       });

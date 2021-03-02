@@ -28,7 +28,15 @@ class AuthProvider {
     if (temp) {
       final data = {
         "email": userCredential.user.email,
-        "uid": userCredential.user.uid
+        "uid": userCredential.user.uid,
+        "mantener": true
+      };
+      _pref.credential = jsonEncode(data);
+    } else {
+      final data = {
+        "email": userCredential.user.email,
+        "uid": userCredential.user.uid,
+        "mantener": false
       };
       _pref.credential = jsonEncode(data);
     }
@@ -45,8 +53,19 @@ class AuthProvider {
       if (result.user.uid != null) {
         await _addCompetitor(userData);
         if (temp) {
-          _pref.credential =
-              {'email': result.user.email, 'uid': result.user.uid}.toString();
+          final data = {
+            "email": result.user.email,
+            "uid": result.user.uid,
+            "mantener": true
+          };
+          _pref.credential = jsonEncode(data);
+        } else {
+          final data = {
+            "email": result.user.email,
+            "uid": result.user.uid,
+            "mantener": false
+          };
+          _pref.credential = jsonEncode(data);
         }
         return {'ok': true, 'credential': result};
       }
@@ -66,6 +85,7 @@ class AuthProvider {
   Future<List<UserModel>> getDataUser() async {
     final data = jsonDecode(PreferenciasUsuario().credential);
     final firestoreInstance = FirebaseFirestore.instance;
+    final mantener = data['mantener'];
     final List<UserModel> dataUser = new List();
     await firestoreInstance
         .collection("users")
@@ -77,7 +97,8 @@ class AuthProvider {
         final user = UserModel.fromJson(result.data());
         final id = result.id;
         user.id = id;
-        final data = {"email": user.email, "uid": user.id};
+        
+        final data = {"email": user.email, "uid": user.id,"mantener":mantener};
         _pref.credential = jsonEncode(data);
         dataUser.add(user);
       });

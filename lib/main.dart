@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,56 +28,107 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final initialapp =
-      PreferenciasUsuario().credential == '' ? 'welcome' : 'home';
   @override
   Widget build(BuildContext context) {
-    print(PreferenciasUsuario().credential);
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => MiUbicacionBloc(),
-        ),
-        BlocProvider(
-          create: (_) => MapaBloc(),
-        )
-      ],
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('en', 'US'), // English
-            const Locale('es', 'ES'),
-          ],
-          title: 'Material App',
-          home: Scaffold(
-            appBar: AppBar(
-              title: Text('Material App Bar'),
-            ),
-          ),
-          initialRoute: initialapp,
-          routes: {
-            'welcome': (BuildContext context) => WelcomePages(),
-            'login': (BuildContext context) => LoginPages(),
-            'home': (BuildContext context) => HomePage(),
-            'recoverAccount': (BuildContext context) => RecoverAccount(),
-            'createAccount': (BuildContext context) => CreateAccount(),
-            'setting': (BuildContext context) => SettingPage(),
-            'map': (BuildContext context) => MapPage(),
-            'historial': (BuildContext context) => HistorialTraining()
-          },
-          theme: ThemeData(
-            // Define the default brightness and colors.
-            brightness: Brightness.light,
-            primaryColor: Colors.red[400], //red[400],
-            accentColor: Colors.red[400], //red[400],
+    return temp();
+  }
 
-            // Define the default TextTheme. Use this to specify the default
-            // text styling for headlines, titles, bodies of text, and more.
-          )),
-    );
+  Widget temp() {
+    final _pref = PreferenciasUsuario();
+    if (_pref.credential == "") {
+      return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => MiUbicacionBloc(),
+            ),
+            BlocProvider(
+              create: (_) => MapaBloc(),
+            )
+          ],
+          child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('en', 'US'), // English
+                const Locale('es', 'ES'),
+              ],
+              title: 'Material App',
+              home: Scaffold(
+                appBar: AppBar(
+                  title: Text('Material App Bar'),
+                ),
+              ),
+              initialRoute: 'welcome',
+              routes: {
+                'welcome': (BuildContext context) => WelcomePages(),
+                'login': (BuildContext context) => LoginPages(),
+                'home': (BuildContext context) => HomePage(),
+                'recoverAccount': (BuildContext context) => RecoverAccount(),
+                'createAccount': (BuildContext context) => CreateAccount(),
+                'setting': (BuildContext context) => SettingPage(),
+                'map': (BuildContext context) => MapPage(),
+                'historial': (BuildContext context) => HistorialTraining()
+              },
+              theme: ThemeData(
+                // Define the default brightness and colors.
+                brightness: Brightness.light,
+                primaryColor: Colors.red[400], //red[400],
+                accentColor: Colors.red[400], //red[400],
+
+                // Define the default TextTheme. Use this to specify the default
+                // text styling for headlines, titles, bodies of text, and more.
+              )));
+    } else {
+      final data = jsonDecode(_pref.credential);
+      final initialapp = data['mantener'] ? 'home' : 'welcome';
+      return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => MiUbicacionBloc(),
+            ),
+            BlocProvider(
+              create: (_) => MapaBloc(),
+            )
+          ],
+          child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('en', 'US'), // English
+                const Locale('es', 'ES'),
+              ],
+              title: 'Material App',
+              home: Scaffold(
+                appBar: AppBar(
+                  title: Text('Material App Bar'),
+                ),
+              ),
+              initialRoute: initialapp,
+              routes: {
+                'welcome': (BuildContext context) => WelcomePages(),
+                'login': (BuildContext context) => LoginPages(),
+                'home': (BuildContext context) => HomePage(),
+                'recoverAccount': (BuildContext context) => RecoverAccount(),
+                'createAccount': (BuildContext context) => CreateAccount(),
+                'setting': (BuildContext context) => SettingPage(),
+                'map': (BuildContext context) => MapPage(),
+                'historial': (BuildContext context) => HistorialTraining()
+              },
+              theme: ThemeData(
+                // Define the default brightness and colors.
+                brightness: Brightness.light,
+                primaryColor: Colors.red[400], //red[400],
+                accentColor: Colors.red[400], //red[400],
+
+                // Define the default TextTheme. Use this to specify the default
+                // text styling for headlines, titles, bodies of text, and more.
+              )));
+    }
   }
 }
