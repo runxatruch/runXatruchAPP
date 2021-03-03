@@ -69,7 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           Container(
-            //height: size.height * 0.2,
             margin: EdgeInsets.only(top: 60),
             child: Column(
               children: <Widget>[

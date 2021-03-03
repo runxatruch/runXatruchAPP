@@ -64,7 +64,17 @@ bool passwordValid(String pass) {
 newTheme(BuildContext context) {
   // ignore: close_sinks
   final mapaBloc = BlocProvider.of<MapaBloc>(context);
-  mapaBloc.add(OnNewTheme());
+  try {
+    mapaBloc.add(OnNewTheme());
+  } catch (e) {}
+}
+
+Widget tempWidget(BuildContext context) {
+  // ignore: close_sinks
+  final mapaBloc = BlocProvider.of<MapaBloc>(context);
+  return Container(
+    child: Text('${mapaBloc}'),
+  );
 }
 
 bool stopResumen(bool state, BuildContext context) {
