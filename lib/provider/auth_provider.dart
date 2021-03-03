@@ -23,7 +23,7 @@ class AuthProvider {
       if (e.code == 'user-not-found') {
         return {'ok': false, 'error': 'No existe correo electronico'};
       } else if (e.code == 'wrong-password') {
-        return {'ok': false, 'error': 'Contraseña incorrecra'};
+        return {'ok': false, 'error': 'Contraseña incorrecta'};
       }
     }
     if (temp) {
@@ -79,7 +79,7 @@ class AuthProvider {
   Future _addCompetitor(UserModel userData) async {
     return await _competitor
         .add(userData.toJson())
-        .then((value) => print('Competidor agregado cone xito'))
+        .then((value) => print('Competidor agregado con éxito'))
         .catchError((e) => print("error $e"));
   }
 }

@@ -133,7 +133,7 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
-                Text('${data['velocidad']} m/h',
+                Text('${data['velocidad']} km/h',
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
