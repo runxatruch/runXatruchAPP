@@ -21,11 +21,11 @@ import 'package:runxatruch_app/prefUser/preferent_user.dart';
 //import 'package:runxatruch_app/pages/sign_pages.dart';
 
 void main() async {
+  await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();
   runApp(MyApp());
-  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
