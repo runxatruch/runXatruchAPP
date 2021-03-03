@@ -18,6 +18,7 @@ class AuthProvider {
     try {
       userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      //print(userCredential.credential.token);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return {'ok': false, 'error': 'No existe correo electronico'};

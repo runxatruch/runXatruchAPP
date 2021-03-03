@@ -51,22 +51,25 @@ class HistorialTraining extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Image(
+                    image: AssetImage('assets/run.png'),
+                    width: 50,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(
                     width: 20,
                   ),
                   Container(
+                    padding: EdgeInsets.only(top: 10),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 10,
-                        ),
                         Text('${date.day}/${date.month}/${date.year}',
                             style: TextStyle(
-                                fontSize: 20, color: Colors.red[400])),
+                                fontSize: 15, color: Colors.red[400])),
                         SizedBox(
-                          height: 20,
+                          height: 5,
                         ),
                         Row(
                           children: [
@@ -93,8 +96,7 @@ class HistorialTraining extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                  Icon(Icons.arrow_forward_ios_rounded, size: 40),
+                  )
                 ],
               )
             ],
