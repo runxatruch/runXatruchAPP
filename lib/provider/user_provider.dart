@@ -20,6 +20,7 @@ class UserProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
+        print(user);
         final id = result.id;
         user.id = id;
         final data = {
@@ -50,11 +51,13 @@ class UserProvider {
   }
 
   Future<List<TrainingModel>> getRouteUser() async {
+    Query firestoreInstance =
+        FirebaseFirestore.instance.collection("userTraining");
     final data = jsonDecode(_pref.credential);
     final List<TrainingModel> userRoute = new List();
     await firestoreInstance
-        .collection("userTraining")
         .where("iduser", isEqualTo: data['uid'])
+        .orderBy("date")
         .get()
         .then((value) {
       value.docs.forEach((result) {

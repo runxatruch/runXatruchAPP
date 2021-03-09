@@ -39,7 +39,7 @@ class _LoginPagesState extends State<LoginPages> {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.white, Colors.red[800]])),
+              colors: [Colors.red[200], Colors.red[800]])),
     );
 
     final circulo = Container(
