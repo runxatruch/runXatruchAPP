@@ -1,31 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 
-class PorfilePage extends StatelessWidget {
+class PorfilePage extends StatefulWidget {
   const PorfilePage({Key key}) : super(key: key);
 
+  @override
+  _PorfilePageState createState() => _PorfilePageState();
+}
+
+class _PorfilePageState extends State<PorfilePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final pro = UserProvider();
+    Future<List<UserModel>> user = pro.getDataUser();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Ajustes',
-            onPressed: () => Navigator.pushNamed(context, 'setting'),
-          )
+              icon: const Icon(Icons.settings),
+              tooltip: 'Ajustes',
+              onPressed: () {
+                setState(() {
+                  Navigator.pushNamed(context, 'setting', arguments: user);
+                  print("here");
+                });
+              })
         ],
         elevation: 0.0,
       ),
       body: Center(
         child: FutureBuilder(
-          future: pro.getDataUser(),
+          future: user,
           builder:
               (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
             if (snapshot.hasData) {
@@ -83,10 +94,7 @@ class PorfilePage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          'assets/unnamed.png',
-          height: size.height * 0.22,
-        ),
+        _createImg(data, size.height * 0.22),
         SizedBox(
           height: 10,
         ),
@@ -236,5 +244,27 @@ class PorfilePage extends StatelessWidget {
         Text('RunXaTruch v0.1')
       ],
     );
+  }
+
+  Widget _createImg(UserModel data, double temp) {
+    return Container(
+      width: temp,
+      height: temp,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(image: _mostrarFoto(data), fit: BoxFit.fill),
+      ),
+    );
+  }
+
+  _mostrarFoto(UserModel data) {
+    print(data.fotoUrl);
+    if (data.fotoUrl == "" || data.fotoUrl == null) {
+      return AssetImage('assets/unnamed.png');
+    } else {
+      return NetworkImage(
+        data.fotoUrl,
+      );
+    }
   }
 }

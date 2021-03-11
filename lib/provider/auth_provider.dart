@@ -83,4 +83,31 @@ class AuthProvider {
         .then((value) => print('Competidor agregado con éxito'))
         .catchError((e) => print("error $e"));
   }
+
+  Future<Map<String, dynamic>> updateuser(String emaild, Map passwordd) async {
+    String email = emaild;
+    String password = passwordd["actual"];
+    // Reauthenticate
+    EmailAuthCredential credential =
+        EmailAuthProvider.credential(email: email, password: password);
+    try {
+      // Reauthenticate
+      UserCredential authresult = await FirebaseAuth.instance.currentUser
+          .reauthenticateWithCredential(credential);
+      if (authresult.user != null) {
+        User currentUser = _auth.currentUser;
+        currentUser.updatePassword(passwordd["nueva"]).then((value) {
+          print("****** nueva pasword");
+        }).catchError((err) {
+          print(err);
+        });
+      } else {
+        return {"ok": false, "error": "Datos Incorrectos"};
+      }
+      return {"ok": true};
+    } catch (e) {
+      print("**** $e");
+      return {"ok": false, "error": "Datos Incorrectos"};
+    }
+  }
 }
