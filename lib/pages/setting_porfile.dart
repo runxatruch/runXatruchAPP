@@ -150,27 +150,31 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _createImg(UserModel data) {
     return GestureDetector(
-      onTap: () {
-        _procesarImge();
+      onTap: () async {
+        await _procesarImge();
+        setState(() {});
       },
-      child: Container(
-        width: 140,
-        height: 140,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(image: _mostrarFoto(data), fit: BoxFit.fill),
-        ),
-      ),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(60), child: _mostrarFoto(data)),
     );
   }
 
   _mostrarFoto(UserModel data) {
-    print(data.fotoUrl);
     if (data.fotoUrl == "" || foto != null || data.fotoUrl == null) {
-      return AssetImage(foto?.path ?? 'assets/unnamed.png');
+      return Image.file(
+        foto,
+        width: 120,
+        height: 140,
+        fit: BoxFit.fitHeight,
+      );
     } else {
-      return NetworkImage(
-        data.fotoUrl,
+      return Image(
+        width: 100,
+        height: 130,
+        fit: BoxFit.fitHeight,
+        image: NetworkImage(
+          data.fotoUrl,
+        ),
       );
     }
   }
@@ -180,12 +184,11 @@ class _SettingPageState extends State<SettingPage> {
     final pickerImagen = await _picker.getImage(source: ImageSource.gallery);
     if (pickerImagen != null) {
       foto = File(pickerImagen.path);
+      cambios = true;
+
       if (foto != null) {
         user.fotoUrl = "";
       }
-      setState(() {
-        cambios = true;
-      });
     }
   }
 

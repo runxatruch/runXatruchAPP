@@ -94,7 +94,7 @@ class _PorfilePageState extends State<PorfilePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _createImg(data, size.height * 0.22),
+        _createImg(data, size.height * 0.28),
         SizedBox(
           height: 10,
         ),
@@ -248,8 +248,8 @@ class _PorfilePageState extends State<PorfilePage> {
 
   Widget _createImg(UserModel data, double temp) {
     return Container(
-      width: temp,
-      height: temp,
+      width: temp * 0.8,
+      height: temp * 0.9,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         image: DecorationImage(image: _mostrarFoto(data), fit: BoxFit.fill),

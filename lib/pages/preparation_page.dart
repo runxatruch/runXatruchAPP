@@ -66,43 +66,47 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 40),
-            child: Column(
-              children: <Widget>[
-                TimerTextWidget(),
-                Text('Duración',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.redAccent)),
+      body: Stack(children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 40),
+                child: Column(
+                  children: <Widget>[
+                    TimerTextWidget(),
+                    Text('Duración',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.redAccent)),
 
-                SizedBox(
-                  height: 5,
+                    SizedBox(
+                      height: 5,
+                    ),
+                    //_createInformation()
+                  ],
                 ),
-                //_createInformation()
-              ],
-            ),
+              ),
+              Divider(),
+              Container(
+                  width: size.width * 1,
+                  height: size.height * 0.75,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset.zero, //(x,y)
+                          blurRadius: 2.0,
+                        )
+                      ]),
+                  child: MapPage())
+            ],
           ),
-          Divider(),
-          Container(
-              width: size.width * 1,
-              height: size.height * 0.73,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset.zero, //(x,y)
-                      blurRadius: 2.0,
-                    )
-                  ]),
-              child: MapPage())
-        ],
-      ),
+        )
+      ]),
       floatingActionButton: Container(
         margin: EdgeInsets.only(left: 27),
         child: Row(

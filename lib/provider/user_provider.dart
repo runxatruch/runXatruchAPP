@@ -119,7 +119,7 @@ class UserProvider {
     final List<TrainingModel> userRoute = new List();
     await firestoreInstance
         .where("iduser", isEqualTo: data['uid'])
-        .orderBy("date")
+        .orderBy("date", descending: true)
         .get()
         .then((value) {
       value.docs.forEach((result) {
