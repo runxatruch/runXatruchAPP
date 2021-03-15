@@ -40,6 +40,7 @@ class UserProvider {
         dataUser.add(user);
       });
     });
+    print(dataUser);
 
     return dataUser;
   }
@@ -132,6 +133,8 @@ class UserProvider {
   }
 
   uploadImg(File img, String name) async {
+    print("*****${img.existsSync()}");
+
     final data = jsonDecode(_pref.credential);
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("PostImg");

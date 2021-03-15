@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
@@ -41,45 +43,51 @@ class _PorfilePageState extends State<PorfilePage> {
               (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.data;
-              return ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: data.length,
-                  itemBuilder: (context, i) {
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                          height: size.height * 0.40,
-                          child: _createPorfile(data[i], context),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text('Datos Personales', textAlign: TextAlign.end),
-                        Divider(),
-                        _createedad(data[i]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _createIdenty(data[i]),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Text('Participaciones', textAlign: TextAlign.start),
-                        Divider(),
-                        _createPart(data[i], context),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Text('Soporte', textAlign: TextAlign.start),
-                        Divider(),
-                        _createSuport(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _createFooter(context)
-                      ],
-                    );
-                  });
+              if (data.length == 0) return Container();
+              return RefreshIndicator(
+                onRefresh: obtenerData,
+                child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: data.length,
+                    itemBuilder: (context, i) {
+                      return Column(
+                        children: <Widget>[
+                          Container(
+                            height: size.height * 0.40,
+                            child: _createPorfile(data[i], context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text('Datos Personales', textAlign: TextAlign.end),
+                          Divider(),
+                          _createedad(data[i]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _createIdenty(data[i]),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Participaciones', textAlign: TextAlign.start),
+                          Divider(),
+                          _createPart(data[i], context),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Soporte', textAlign: TextAlign.start),
+                          Divider(),
+                          _createSuport(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _createFooter(context)
+                        ],
+                      );
+                    }),
+              );
+
+              print(data);
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -249,12 +257,23 @@ class _PorfilePageState extends State<PorfilePage> {
   Widget _createImg(UserModel data, double temp) {
     return Container(
       width: temp * 0.8,
-      height: temp * 0.9,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(image: _mostrarFoto(data), fit: BoxFit.fill),
-      ),
+      height: temp * 0.8,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(90),
+          child: FadeInImage(
+              height: 120,
+              width: 140,
+              fit: BoxFit.fitHeight,
+              placeholder: AssetImage("assets/load.gif"),
+              image: _mostrarFoto(data))),
     );
+  }
+
+  Future<void> obtenerData() async {
+    final duration = new Duration(microseconds: 200);
+    new Timer(duration, () {
+      setState(() {});
+    });
   }
 
   _mostrarFoto(UserModel data) {

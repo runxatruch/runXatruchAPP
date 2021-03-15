@@ -66,47 +66,43 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 40),
-                child: Column(
-                  children: <Widget>[
-                    TimerTextWidget(),
-                    Text('Duración',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.redAccent)),
+      body: Column(
+        children: [
+          Container(
+            height: size.height * 0.12,
+            margin: EdgeInsets.only(top: size.height * 0.05),
+            child: Column(
+              children: <Widget>[
+                TimerTextWidget(),
+                Text('Duración',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.redAccent)),
 
-                    SizedBox(
-                      height: 5,
-                    ),
-                    //_createInformation()
-                  ],
+                SizedBox(
+                  height: 5,
                 ),
-              ),
-              Divider(),
-              Container(
-                  width: size.width * 1,
-                  height: size.height * 0.75,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset.zero, //(x,y)
-                          blurRadius: 2.0,
-                        )
-                      ]),
-                  child: MapPage())
-            ],
+                //_createInformation()
+              ],
+            ),
           ),
-        )
-      ]),
+          Container(
+              width: size.width * 1,
+              height: size.height * 0.75,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset.zero, //(x,y)
+                      blurRadius: 2.0,
+                    )
+                  ]),
+              child: MapPage())
+        ],
+      ),
       floatingActionButton: Container(
         margin: EdgeInsets.only(left: 27),
         child: Row(

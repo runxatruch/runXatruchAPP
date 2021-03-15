@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
-import 'package:runxatruch_app/utils/util.dart' as utils;
+import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
+import 'package:runxatruch_app/pages/example.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key key}) : super(key: key);
@@ -26,7 +26,7 @@ class _SettingPageState extends State<SettingPage> {
   bool _check = false;
   TextEditingController _inputFieldDateController = new TextEditingController();
 
-  File foto;
+  File foto, newImage;
   UserModel user = new UserModel();
   double size;
   final _formKey = GlobalKey<FormState>();
@@ -55,7 +55,6 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _createBody(UserModel data) {
-    print(data.id);
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -68,7 +67,7 @@ class _SettingPageState extends State<SettingPage> {
                 height: 10,
               ),
               Center(
-                child: _createImg(data),
+                child: _createImg(data, context),
               ),
               Text("Nombre"),
               Container(
@@ -148,29 +147,43 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget _createImg(UserModel data) {
-    return GestureDetector(
-      onTap: () async {
-        await _procesarImge();
-        setState(() {});
-      },
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(60), child: _mostrarFoto(data)),
-    );
+  Widget _createImg(UserModel data, BuildContext context) {
+    if (data.fotoUrl == "" || data.fotoUrl == null && foto == null) {
+      return GestureDetector(
+        onTap: () async {
+          _navigateAndDisplaySelection(context);
+          //Navigator.pushNamed(context, "example");
+        },
+        child: Image(
+          image: AssetImage('assets/unnamed.png'),
+          width: 160,
+          height: 160,
+        ),
+      );
+    } else {
+      return GestureDetector(
+        onTap: () async {
+          _navigateAndDisplaySelection(context);
+        },
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(80), child: _mostrarFoto(data)),
+      );
+    }
   }
 
   _mostrarFoto(UserModel data) {
-    if (data.fotoUrl == "" || foto != null || data.fotoUrl == null) {
+    if (foto != null) {
+      print("****$foto");
       return Image.file(
-        foto,
-        width: 120,
+        newImage,
+        width: 140,
         height: 140,
         fit: BoxFit.fitHeight,
       );
     } else {
       return Image(
-        width: 100,
-        height: 130,
+        width: 140,
+        height: 140,
         fit: BoxFit.fitHeight,
         image: NetworkImage(
           data.fotoUrl,
@@ -293,9 +306,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   _login(UserModel data, BuildContext context) async {
-    print(clave);
     if (clave["nueva"] != "") {
-      print("here");
       if (clave["nueva"] == clave["actual"]) {
         mostrarAlerta(
             context, {"msj": "Las contraseñas no tienen que coincidir"});
@@ -309,22 +320,48 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       _check = true;
     });
+    print("here");
 
     final result = await userProvider.updateUser(data, foto, clave);
     if (result["ok"]) {
-      final data = {"msj": "Datos actualizados con exito"};
+      final data = {"msj": "Datos actualizados con exito", "route": true};
       mostrarAlerta(context, data);
+
       if (clave["nueva"] != "") {
         PreferenciasUsuario().credentialClear();
         Navigator.pushReplacementNamed(context, 'welcome');
       }
     } else {
-      print(result);
       final data = {"msj": result["error"]};
       mostrarAlerta(context, data);
     }
     setState(() {
       _check = false;
+    });
+  }
+
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    final File antImage = File('$tempPath/image2.png');
+    try {
+      await antImage.delete();
+      print("---true");
+    } catch (e) {
+      print("---error");
+    }
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Example()),
+    );
+    newImage = new File(result);
+
+    foto = await newImage.copy('$tempPath/image2.png');
+    print('ruta ${foto.path}');
+    setState(() {
+      cambios = true;
     });
   }
 }

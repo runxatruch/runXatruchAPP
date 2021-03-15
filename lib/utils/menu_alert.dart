@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 void mostrarAlerta(BuildContext context, Map<dynamic, dynamic> mensaje) {
+  int count = 0;
   showDialog(
       context: context,
       builder: (context) {
@@ -13,7 +14,13 @@ void mostrarAlerta(BuildContext context, Map<dynamic, dynamic> mensaje) {
                 'Ok',
                 style: TextStyle(color: Colors.red[400]),
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                !mensaje['route']
+                    ? Navigator.of(context).pop()
+                    : Navigator.popUntil(context, (route) {
+                        return count++ == 2;
+                      });
+              },
             )
           ],
         );
