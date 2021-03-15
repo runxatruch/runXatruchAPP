@@ -51,7 +51,7 @@ bool numberTel(String tel) {
 }
 
 //validar clave
-RegExp regExp2 = RegExp(r'^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$');
+RegExp regExp2 = RegExp(r'^(?=\w*\d)(?=\w*[a-z])\S{8,16}$');
 
 bool passwordValid(String pass) {
   if (!regExp2.hasMatch(pass)) {

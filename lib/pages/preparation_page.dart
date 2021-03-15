@@ -69,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 40),
+            height: size.height * 0.12,
+            margin: EdgeInsets.only(top: size.height * 0.05),
             child: Column(
               children: <Widget>[
                 TimerTextWidget(),
@@ -86,10 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Divider(),
           Container(
               width: size.width * 1,
-              height: size.height * 0.64,
+              height: size.height * 0.75,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   color: Colors.white,
