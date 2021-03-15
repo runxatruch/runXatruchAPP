@@ -110,4 +110,15 @@ class AuthProvider {
       return {"ok": false, "error": "Datos Incorrectos"};
     }
   }
+
+  //Reset password
+  Future<Map<String, dynamic>> resetPassword(String email) async {
+    print(email);
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return {"ok": true};
+    } catch (e) {
+      return {"ok": false, "error": e};
+    }
+  }
 }
