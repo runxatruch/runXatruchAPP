@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
                 'participation': (BuildContext context) => ParticipationsPage(),
-                'example': (BuildContext context) => Example()
+                //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(
                 // Define the default brightness and colors.
@@ -121,7 +121,7 @@ class MyApp extends StatelessWidget {
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
                 'participation': (BuildContext context) => ParticipationsPage(),
-                'example': (BuildContext context) => Example()
+                //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(
                 // Define the default brightness and colors.
