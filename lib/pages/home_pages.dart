@@ -56,7 +56,7 @@ class _BarraNavegacion extends State<HomePage> {
         child: (_widgetOptions.elementAt(_selectedIndex)),
       ),
       bottomNavigationBar: Container(
-        height: size.height * 0.08,
+        height: size.height * 0.09,
         child: BottomNavigationBar(
           //la linea  de abajo  lo que hace es mostrar los datos de los iconos
           type: BottomNavigationBarType.fixed,

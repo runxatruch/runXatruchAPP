@@ -87,6 +87,7 @@ class _ExampleState extends State<Example> {
 
   Future<void> _openImage(context) async {
     final file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (file == null) return;
     final sample = await ImageCrop.sampleImage(
       file: file,
       preferredSize: context.size.longestSide.ceil(),

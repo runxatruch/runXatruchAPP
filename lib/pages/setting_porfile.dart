@@ -358,6 +358,7 @@ class _SettingPageState extends State<SettingPage> {
       context,
       MaterialPageRoute(builder: (context) => Example()),
     );
+    if (result == null) return;
     newImage = new File(result);
 
     foto = await newImage.copy('$tempPath/image2.png');
