@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 
 void mostrarAlerta(BuildContext context, Map<dynamic, dynamic> mensaje) {
+  int count = 0;
   showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Información incorrecta'),
+          title: Text('Alerta'),
           content: Text(mensaje['msj']),
           actions: <Widget>[
             FlatButton(
-              child: Text('Ok', style: TextStyle(color: Colors.red[400]),),
-              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Ok',
+                style: TextStyle(color: Colors.red[400]),
+              ),
+              onPressed: () {
+                mensaje['route'] == null
+                    ? Navigator.of(context).pop()
+                    : Navigator.popUntil(context, (route) {
+                        return count++ == 2;
+                      });
+              },
             )
           ],
         );

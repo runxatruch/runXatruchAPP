@@ -51,7 +51,7 @@ bool numberTel(String tel) {
 }
 
 //validar clave
-RegExp regExp2 = RegExp(r'^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$');
+RegExp regExp2 = RegExp(r'^(?=\w*\d)(?=\w*[a-z])\S{8,16}$');
 
 bool passwordValid(String pass) {
   if (!regExp2.hasMatch(pass)) {
@@ -133,7 +133,7 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
-                Text('${data['velocidad']} m/h',
+                Text('${data['velocidad']} km/h',
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

@@ -441,7 +441,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //funcion enlazada a crear fecha de nacimiento
   _selectDate(BuildContext context) async {
-    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    DateFormat formatter = DateFormat('yyyy-MM-dd');
     DateTime picker = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),

@@ -1,74 +1,93 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 
-class PorfilePage extends StatelessWidget {
+class PorfilePage extends StatefulWidget {
   const PorfilePage({Key key}) : super(key: key);
 
+  @override
+  _PorfilePageState createState() => _PorfilePageState();
+}
+
+class _PorfilePageState extends State<PorfilePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final pro = UserProvider();
+    Future<List<UserModel>> user = pro.getDataUser();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Ajustes',
-            onPressed: () => Navigator.pushNamed(context, 'setting'),
-          )
+              icon: const Icon(Icons.settings),
+              tooltip: 'Ajustes',
+              onPressed: () {
+                setState(() {
+                  Navigator.pushNamed(context, 'setting', arguments: user);
+                  print("here");
+                });
+              })
         ],
         elevation: 0.0,
       ),
       body: Center(
         child: FutureBuilder(
-          future: pro.getDataUser(),
+          future: user,
           builder:
               (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.data;
-              return ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: data.length,
-                  itemBuilder: (context, i) {
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                          height: size.height * 0.40,
-                          child: _createPorfile(data[i], context),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text('Datos Personales', textAlign: TextAlign.end),
-                        Divider(),
-                        _createedad(data[i]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _createIdenty(data[i]),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Text('Participaciones', textAlign: TextAlign.start),
-                        Divider(),
-                        _createPart(data[i], context),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Text('Soporte', textAlign: TextAlign.start),
-                        Divider(),
-                        _createSuport(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _createFooter(context)
-                      ],
-                    );
-                  });
+              if (data.length == 0) return Container();
+              return RefreshIndicator(
+                onRefresh: obtenerData,
+                child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: data.length,
+                    itemBuilder: (context, i) {
+                      return Column(
+                        children: <Widget>[
+                          Container(
+                            height: size.height * 0.40,
+                            child: _createPorfile(data[i], context),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text('Datos Personales', textAlign: TextAlign.end),
+                          Divider(),
+                          _createedad(data[i]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _createIdenty(data[i]),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Participaciones', textAlign: TextAlign.start),
+                          Divider(),
+                          _createPart(data[i], context),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text('Soporte', textAlign: TextAlign.start),
+                          Divider(),
+                          _createSuport(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _createFooter(context)
+                        ],
+                      );
+                    }),
+              );
+
+              print(data);
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -83,10 +102,7 @@ class PorfilePage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          'assets/unnamed.png',
-          height: size.height * 0.22,
-        ),
+        _createImg(data, size.height * 0.28),
         SizedBox(
           height: 10,
         ),
@@ -236,5 +252,38 @@ class PorfilePage extends StatelessWidget {
         Text('RunXaTruch v0.1')
       ],
     );
+  }
+
+  Widget _createImg(UserModel data, double temp) {
+    return Container(
+      width: temp * 0.8,
+      height: temp * 0.8,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(90),
+          child: FadeInImage(
+              height: 120,
+              width: 140,
+              fit: BoxFit.fitHeight,
+              placeholder: AssetImage("assets/Spinner-1s-200px.gif"),
+              image: _mostrarFoto(data))),
+    );
+  }
+
+  Future<void> obtenerData() async {
+    final duration = new Duration(microseconds: 200);
+    new Timer(duration, () {
+      setState(() {});
+    });
+  }
+
+  _mostrarFoto(UserModel data) {
+    print(data.fotoUrl);
+    if (data.fotoUrl == "" || data.fotoUrl == null) {
+      return AssetImage('assets/unnamed.png');
+    } else {
+      return NetworkImage(
+        data.fotoUrl,
+      );
+    }
   }
 }

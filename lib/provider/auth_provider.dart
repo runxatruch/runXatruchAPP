@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
@@ -23,7 +24,7 @@ class AuthProvider {
       if (e.code == 'user-not-found') {
         return {'ok': false, 'error': 'No existe correo electronico'};
       } else if (e.code == 'wrong-password') {
-        return {'ok': false, 'error': 'Contraseña incorrecra'};
+        return {'ok': false, 'error': 'Contraseña incorrecta'};
       }
     }
     if (temp) {
@@ -79,7 +80,45 @@ class AuthProvider {
   Future _addCompetitor(UserModel userData) async {
     return await _competitor
         .add(userData.toJson())
-        .then((value) => print('Competidor agregado cone xito'))
+        .then((value) => print('Competidor agregado con éxito'))
         .catchError((e) => print("error $e"));
+  }
+
+  Future<Map<String, dynamic>> updateuser(String emaild, Map passwordd) async {
+    String email = emaild;
+    String password = passwordd["actual"];
+    // Reauthenticate
+    EmailAuthCredential credential =
+        EmailAuthProvider.credential(email: email, password: password);
+    try {
+      // Reauthenticate
+      UserCredential authresult = await FirebaseAuth.instance.currentUser
+          .reauthenticateWithCredential(credential);
+      if (authresult.user != null) {
+        User currentUser = _auth.currentUser;
+        currentUser.updatePassword(passwordd["nueva"]).then((value) {
+          print("****** nueva pasword");
+        }).catchError((err) {
+          print(err);
+        });
+      } else {
+        return {"ok": false, "error": "Datos Incorrectos"};
+      }
+      return {"ok": true};
+    } catch (e) {
+      print("**** $e");
+      return {"ok": false, "error": "Datos Incorrectos"};
+    }
+  }
+
+  //Reset password
+  Future<Map<String, dynamic>> resetPassword(String email) async {
+    print(email);
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return {"ok": true};
+    } catch (e) {
+      return {"ok": false, "error": e};
+    }
   }
 }

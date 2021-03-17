@@ -40,7 +40,7 @@ startDist(BuildContext context, String timer) {
 
     //print(timerFinal);
     double average = calculateProm(timerFinal, distanceKM);
-    String promedio = average.toStringAsPrecision(5);
+    String promedio = average.toStringAsPrecision(2);
 
     list.add(double.parse(promedio));
 
@@ -59,6 +59,5 @@ double distance(
 }
 
 double calculateProm(double hours, double km) {
-  double kmMetros = km * 1000;
-  return kmMetros / hours;
+  return km / hours;
 }

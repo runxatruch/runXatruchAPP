@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
+import 'package:runxatruch_app/pages/example.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
 import 'package:runxatruch_app/pages/login_pages.dart';
@@ -24,8 +25,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();
-  runApp(MyApp());
+
   await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -68,7 +70,8 @@ class MyApp extends StatelessWidget {
                 'setting': (BuildContext context) => SettingPage(),
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
-                'participation': (BuildContext context) => ParticipationsPage()
+                'participation': (BuildContext context) => ParticipationsPage(),
+                //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(
                 // Define the default brightness and colors.
@@ -117,7 +120,8 @@ class MyApp extends StatelessWidget {
                 'setting': (BuildContext context) => SettingPage(),
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
-                'participation': (BuildContext context) => ParticipationsPage()
+                'participation': (BuildContext context) => ParticipationsPage(),
+                //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(
                 // Define the default brightness and colors.

@@ -50,55 +50,59 @@ class _BarraNavegacion extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         child: (_widgetOptions.elementAt(_selectedIndex)),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        //la linea  de abajo  lo que hace es mostrar los datos de los iconos
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.directions_run,
-              size: 30.0,
-              //color: Colors.orangeAccent,
+      bottomNavigationBar: Container(
+        height: size.height * 0.09,
+        child: BottomNavigationBar(
+          //la linea  de abajo  lo que hace es mostrar los datos de los iconos
+          type: BottomNavigationBarType.fixed,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.directions_run,
+                size: 25.0,
+                //color: Colors.orangeAccent,
+              ),
+              label: 'Entrenar',
             ),
-            label: 'Entrenar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.emoji_events_sharp,
-              size: 30.0,
-              //color: Colors.tealAccent,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.emoji_events_sharp,
+                size: 25.0,
+                //color: Colors.tealAccent,
+              ),
+              label: 'Competir',
             ),
-            label: 'Competir',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.drag_handle_sharp,
-              size: 30.0,
-              //color: Colors.redAccent,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.drag_handle_sharp,
+                size: 25.0,
+                //color: Colors.redAccent,
+              ),
+              label: 'Carreras',
             ),
-            label: 'Carreras',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 30.0,
-              //color: Colors.black26,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                size: 25.0,
+                //color: Colors.black26,
+              ),
+              label: 'Perfil',
             ),
-            label: 'Perfil',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        //fixedColor: Colors.white60,         estilo que hector le dio
-        //backgroundColor: Colors.teal[300],
-        //color del  iten cuando es seleccionado
-        //color del iten cuando no esta seleccionadao
-        //color de los iconos  por defecto esta en gris
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
+          ],
+          currentIndex: _selectedIndex,
+          //fixedColor: Colors.white60,         estilo que hector le dio
+          //backgroundColor: Colors.teal[300],
+          //color del  iten cuando es seleccionado
+          //color del iten cuando no esta seleccionadao
+          //color de los iconos  por defecto esta en gris
+          unselectedItemColor: Colors.grey,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
