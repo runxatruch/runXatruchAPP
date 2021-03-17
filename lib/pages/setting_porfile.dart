@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:runxatruch_app/utils/util.dart' as utils;
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:path_provider/path_provider.dart';
@@ -277,6 +278,14 @@ class _SettingPageState extends State<SettingPage> {
           })
         },
       )),
+      validator: (value) {
+        if (value == "") return null;
+        if (utils.passwordValid(value)) {
+          return null;
+        } else {
+          return 'Ingrese una contraseña valida';
+        }
+      },
       onChanged: (value) {
         clave["nueva"] = value;
         cambios = true;
@@ -308,6 +317,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   _login(UserModel data, BuildContext context) async {
+    if (!_formKey.currentState.validate()) return;
     if (clave["nueva"] != "") {
       if (clave["nueva"] == clave["actual"]) {
         mostrarAlerta(
