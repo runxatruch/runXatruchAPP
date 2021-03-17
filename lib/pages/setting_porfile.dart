@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:runxatruch_app/utils/util.dart' as utils;
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/utils/menu_alert.dart';
 import 'package:path_provider/path_provider.dart';
@@ -114,7 +115,7 @@ class _SettingPageState extends State<SettingPage> {
               SizedBox(
                 height: 10,
               ),
-              Text("Fecha de naciento"),
+              Text("Fecha de nacimiento"),
               _createBirthDate(context, data),
               SizedBox(
                 height: 20,
@@ -220,13 +221,13 @@ class _SettingPageState extends State<SettingPage> {
       ),
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
-        _selectDate(context);
+        _selectDate(context, data);
       },
     ));
   }
 
   //funcion enlazada a crear fecha de nacimiento
-  _selectDate(BuildContext context) async {
+  _selectDate(BuildContext context, UserModel data) async {
     DateFormat formatter = DateFormat('yyyy-MM-dd');
     DateTime picker = await showDatePicker(
         context: context,
@@ -239,6 +240,8 @@ class _SettingPageState extends State<SettingPage> {
       setState(() {
         _fecha = formatter.format(picker).toString(); //picker.toString();
         _inputFieldDateController.text = _fecha;
+        cambios = true;
+        data.fechaNac = _fecha;
       });
     }
   }
@@ -275,6 +278,14 @@ class _SettingPageState extends State<SettingPage> {
           })
         },
       )),
+      validator: (value) {
+        if (value == "") return null;
+        if (utils.passwordValid(value)) {
+          return null;
+        } else {
+          return 'Ingrese una contraseña valida';
+        }
+      },
       onChanged: (value) {
         clave["nueva"] = value;
         cambios = true;
@@ -306,6 +317,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   _login(UserModel data, BuildContext context) async {
+    if (!_formKey.currentState.validate()) return;
     if (clave["nueva"] != "") {
       if (clave["nueva"] == clave["actual"]) {
         mostrarAlerta(
@@ -342,7 +354,7 @@ class _SettingPageState extends State<SettingPage> {
 
   _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
-    // Navigator.pop on the Selection Screen.
+    // // Navigator.pop on the Selection Screen.
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     final File antImage = File('$tempPath/image2.png');
@@ -356,6 +368,7 @@ class _SettingPageState extends State<SettingPage> {
       context,
       MaterialPageRoute(builder: (context) => Example()),
     );
+    if (result == null) return;
     newImage = new File(result);
 
     foto = await newImage.copy('$tempPath/image2.png');

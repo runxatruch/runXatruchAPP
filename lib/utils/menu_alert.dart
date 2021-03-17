@@ -15,7 +15,7 @@ void mostrarAlerta(BuildContext context, Map<dynamic, dynamic> mensaje) {
                 style: TextStyle(color: Colors.red[400]),
               ),
               onPressed: () {
-                !mensaje['route']
+                mensaje['route'] == null
                     ? Navigator.of(context).pop()
                     : Navigator.popUntil(context, (route) {
                         return count++ == 2;

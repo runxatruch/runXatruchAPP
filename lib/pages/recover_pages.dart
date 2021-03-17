@@ -35,7 +35,7 @@ class _RecoverAccountState extends State<RecoverAccount> {
           children: [
             Row(
               children: [
-                Text('Se envio un mensaje al correo '),
+                Text('Se envio un mensaje a '),
                 Text(
                   "$email",
                   style: TextStyle(color: Colors.red[400]),

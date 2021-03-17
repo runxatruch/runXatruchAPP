@@ -52,8 +52,9 @@ dependencies:
   dio: ^3.0.10
   image_picker:
   firebase_storage:
-  image_crop: ^0.3.4
-  path_provider: ^1.6.8
+  image_crop:
+  path_provider: 
+  
 
 dev_dependencies:
   flutter_test:

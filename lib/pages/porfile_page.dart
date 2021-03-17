@@ -264,7 +264,7 @@ class _PorfilePageState extends State<PorfilePage> {
               height: 120,
               width: 140,
               fit: BoxFit.fitHeight,
-              placeholder: AssetImage("assets/load.gif"),
+              placeholder: AssetImage("assets/Spinner-1s-200px.gif"),
               image: _mostrarFoto(data))),
     );
   }
