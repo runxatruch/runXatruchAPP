@@ -29,7 +29,16 @@ class _CareersPagesState extends State<CareersPages> {
   Widget _createBody() {
     return Container(
       child: Column(
-        children: [_menuFilter(), _createListEvent(), _createListEvent()],
+        children: [
+          _menuFilter(),
+          Divider(),
+          Text(
+            "Lista de eventos",
+            style: TextStyle(fontSize: 20),
+          ),
+          _createListEvent(),
+          _createListEvent()
+        ],
       ),
     );
   }
@@ -39,7 +48,7 @@ class _CareersPagesState extends State<CareersPages> {
       padding: EdgeInsets.only(top: heightScreen * 0.09, bottom: 10),
       decoration: BoxDecoration(boxShadow: <BoxShadow>[
         BoxShadow(
-            color: Colors.black54, blurRadius: 9.0, offset: Offset(0.0, 0.75))
+            color: Colors.black54, blurRadius: 5.0, offset: Offset(0.0, 0.5))
       ], color: Colors.white),
       child: Column(
         children: [
@@ -69,31 +78,36 @@ class _CareersPagesState extends State<CareersPages> {
     );
   }
 
-  // Widget _showEvent() {
-  //   FutureBuilder(
-  //     future: _eventprovider.getEvents(),
-  //     builder:
-  //         (BuildContext context, AsyncSnapshot<List<EventModel>> snapshot) {
-  //       if (snapshot.hasData) {
-  //         final data = snapshot.data;
-  //         return ListView.builder(
-  //             itemCount: data.length,
-  //             itemBuilder: (context, i) => _createListEvent(data[i], context));
-  //       } else {
-  //         return Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
+  Widget _showEvent() {
+    return FutureBuilder(
+      future: _eventprovider.getEvents(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<EventModel>> snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data;
+          return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, i) => temp(data[i], context));
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  temp(data, context) {
+    print(data);
+  }
 
   Widget _createListEvent() {
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.only(top: 10, right: 10, left: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        color: Color.fromRGBO(253, 253, 253, 1),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -121,7 +135,9 @@ class _CareersPagesState extends State<CareersPages> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Divider(),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       children: [
                         Text(
@@ -133,7 +149,9 @@ class _CareersPagesState extends State<CareersPages> {
                         Text("Hola Hola como estas")
                       ],
                     ),
-                    Divider(),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       children: [
                         Text(
@@ -144,14 +162,28 @@ class _CareersPagesState extends State<CareersPages> {
                         ),
                         Text("25/03/2025")
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Ciudad:",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red[400]),
+                        ),
+                        Text("Tegucigalpa")
+                      ],
+                    ),
                   ],
                 ),
               )
             ],
           ),
           Container(
-            margin: EdgeInsets.only(left: widthScreen * 0.7),
+            margin: EdgeInsets.only(left: widthScreen * 0.65),
             child: Row(
               children: [
                 Text(
