@@ -1,15 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
-import 'package:runxatruch_app/pages/porfile_page.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
-import 'package:runxatruch_app/provider/user_provider.dart';
 
 class EventProvider {
   final _pref = PreferenciasUsuario();
@@ -81,7 +76,7 @@ class EventProvider {
         });
       });
     });
-    print(events[0].categories.length);
+
     return events;
   }
 
