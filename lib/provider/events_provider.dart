@@ -2,15 +2,42 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:runxatruch_app/models/events_model.dart';
+import 'package:runxatruch_app/models/user_models.dart';
+import 'package:runxatruch_app/pages/porfile_page.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
+import 'package:runxatruch_app/provider/user_provider.dart';
 
 class EventProvider {
   final _pref = PreferenciasUsuario();
   final firestoreInstance = FirebaseFirestore.instance;
 
   Future<List<EventModel>> getEvents() async {
+    final data = jsonDecode(_pref.credential);
+    int ageUser;
+//Instancia coleccion users para saber su edad
+    Query firestoreInstanceU = FirebaseFirestore.instance.collection("users");
+
+    await firestoreInstanceU
+        .where("email", isEqualTo: data['email'])
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        final user = UserModel.fromJson(result.data());
+        //print(user);
+        final id = result.id;
+        user.id = id;
+        int subsY = int.parse(user.fechaNac.substring(0, 4));
+        var dateNow = DateTime.now();
+        var anioActual = dateNow.year;
+        ageUser = anioActual - subsY;
+      });
+    });
+
+//Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
     final List<EventModel> events = new List();
 
@@ -22,11 +49,20 @@ class EventProvider {
       value.docs.forEach((result) {
         final value = EventModel.fromJson(result.data());
 
-        events.add(value);
-        //print(value.startTime);
+        value.categories.forEach((element) {
+          final d = element['rangeEge'];
+
+          int ageMin = int.parse(d['min']);
+          int ageMax = int.parse(d['max']);
+          //print(element);
+          if (ageUser >= ageMin && ageUser <= ageMax) {
+            //return cuando ya se encuentre una categoria con esa edad
+            events.add(value);
+          }
+        });
       });
     });
-
+    //print(events.length);
     return events;
   }
 
