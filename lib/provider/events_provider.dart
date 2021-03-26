@@ -16,6 +16,10 @@ class EventProvider {
   final firestoreInstance = FirebaseFirestore.instance;
 
   Future<List<EventModel>> getEvents() async {
+    final List<EventModel> events = new List();
+    //final categories = {};
+    final categories = [];
+
     final data = jsonDecode(_pref.credential);
     int ageUser;
 //Instancia coleccion users para saber su edad
@@ -39,8 +43,29 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
-    final List<EventModel> events = new List();
+    Query firestoreInstanceRoute =
+        FirebaseFirestore.instance.collection("category");
 
+//
+    await firestoreInstanceRoute.get().then((valueCat) {
+      //categories.add(valueCat.docs);
+      valueCat.docs.forEach((element) {
+        final data = {"id": element.id, "rute": element['rute']};
+
+        categories.add(jsonEncode(data));
+
+        // categories['id'] = element.id;
+        // categories['cat'] = element['rute'];
+      });
+    });
+    // categories[0].forEach(( element) {
+    //   print(element['nameCategory']);
+    // });
+
+    // for (var i = 0; i < categories.length; i++) {
+    //   print(categories[i][0]);
+    // }
+//
     await firestoreInstance
         .where("startTime", isLessThanOrEqualTo: monthNext())
         .where("startTime", isGreaterThanOrEqualTo: DateTime.now().toString())
@@ -48,13 +73,29 @@ class EventProvider {
         .then((value) {
       value.docs.forEach((result) {
         final value = EventModel.fromJson(result.data());
+        //print(value.categories);
 
-        value.categories.forEach((element) {
+        value.categories.forEach((element) async {
           final d = element['rangeEge'];
+          var idCat = element['id'];
 
           int ageMin = int.parse(d['min']);
           int ageMax = int.parse(d['max']);
-          //print(element);
+
+          //CATEGORIAS////////////////////
+
+          // print('aver');
+          // print(cate);
+
+          categories.forEach((elementCat) {
+            final dataC = jsonDecode(elementCat);
+            if (dataC['id'] == idCat) {
+              element['ruteArray'] = dataC['rute'];
+              //print(element['ruteArray']);
+            }
+          });
+
+          /////////////////////////////
           if (ageUser >= ageMin && ageUser <= ageMax) {
             //return cuando ya se encuentre una categoria con esa edad
             events.add(value);
@@ -62,7 +103,7 @@ class EventProvider {
         });
       });
     });
-    //print(events.length);
+    print(events[1].categories);
     return events;
   }
 
