@@ -16,6 +16,7 @@ double heightScreen, widthScreen;
 bool _filter = false;
 
 class _CareersPagesState extends State<CareersPages> {
+  final _eventprovider = new EventProvider();
   @override
   Widget build(BuildContext context) {
     heightScreen = MediaQuery.of(context).size.height;
@@ -27,74 +28,65 @@ class _CareersPagesState extends State<CareersPages> {
 
   Widget _createBody() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      margin: EdgeInsets.only(top: heightScreen * 0.09),
       child: Column(
-        children: [
-          _menuFilter(),
-          _createListEvent(),
-          _createListEvent(),
-        ],
+        children: [_menuFilter(), _createListEvent(), _createListEvent()],
       ),
     );
   }
 
   Widget _menuFilter() {
     return Container(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("HELLO"),
+      padding: EdgeInsets.only(top: heightScreen * 0.09, bottom: 10),
+      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        BoxShadow(
+            color: Colors.black54, blurRadius: 9.0, offset: Offset(0.0, 0.75))
+      ], color: Colors.white),
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: <Widget>[
+                _createCity(),
+                _createCity(),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text("HELLO"),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text("HELLO"),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text("HELLO"),
+                )
+              ],
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("HELLO"),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("HELLO"),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("HELLO"),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Text("HELLO"),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _createFilter() {
-    if (!_filter) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Filtrar"),
-          IconButton(
-            onPressed: () {
-              _filter = !_filter;
-              setState(() {});
-            },
-            icon: Icon(
-              Icons.arrow_downward,
-              color: Colors.red[400],
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Container(
-        child: Text("filtar"),
-      );
-    }
-  }
+  // Widget _showEvent() {
+  //   FutureBuilder(
+  //     future: _eventprovider.getEvents(),
+  //     builder:
+  //         (BuildContext context, AsyncSnapshot<List<EventModel>> snapshot) {
+  //       if (snapshot.hasData) {
+  //         final data = snapshot.data;
+  //         return ListView.builder(
+  //             itemCount: data.length,
+  //             itemBuilder: (context, i) => _createListEvent(data[i], context));
+  //       } else {
+  //         return Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
   Widget _createListEvent() {
     return Container(
@@ -175,6 +167,58 @@ class _CareersPagesState extends State<CareersPages> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  var _currencies = [
+    "Food",
+    "Transport",
+    "Personal",
+    "Shopping",
+    "Medical",
+    "Rent",
+    "Movie",
+    "Salary"
+  ];
+  String _currentSelectedValue;
+
+  Widget _createCity() {
+    return Container(
+      width: widthScreen * 0.4,
+      height: 65,
+      padding: EdgeInsets.only(top: 5),
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      child: FormField<String>(
+        builder: (FormFieldState<String> state) {
+          return InputDecorator(
+            decoration: InputDecoration(
+                labelText: "Ciudad",
+                errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
+                hintText: 'Please select expense',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0))),
+            isEmpty: _currentSelectedValue == '',
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: _currentSelectedValue,
+                isDense: true,
+                onChanged: (String newValue) {
+                  setState(() {
+                    _currentSelectedValue = newValue;
+                    state.didChange(newValue);
+                  });
+                },
+                items: _currencies.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
