@@ -16,6 +16,8 @@ class EventProvider {
   final firestoreInstance = FirebaseFirestore.instance;
 
   Future<List<EventModel>> getEvents() async {
+    final List<EventModel> events = new List();
+    final categories = [];
     final data = jsonDecode(_pref.credential);
     int ageUser;
 //Instancia coleccion users para saber su edad
@@ -39,7 +41,16 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
-    final List<EventModel> events = new List();
+    Query firestoreInstanceRoute =
+        FirebaseFirestore.instance.collection("category");
+
+    //obteniendo las categorias existentes
+    await firestoreInstanceRoute.get().then((valueCat) {
+      valueCat.docs.forEach((element) {
+        final data = {"id": element.id, "rute": element['rute']};
+        categories.add(jsonEncode(data));
+      });
+    });
 
     await firestoreInstance
         .where("startTime", isLessThanOrEqualTo: monthNext())
@@ -51,10 +62,18 @@ class EventProvider {
 
         value.categories.forEach((element) {
           final d = element['rangeEge'];
+          var idCat = element['id'];
 
           int ageMin = int.parse(d['min']);
           int ageMax = int.parse(d['max']);
           //print(element);
+
+          categories.forEach((elementCat) {
+            final dataC = jsonDecode(elementCat);
+            if (dataC['id'] == idCat) {
+              element['ruteArray'] = dataC['rute'];
+            }
+          });
           if (ageUser >= ageMin && ageUser <= ageMax) {
             //return cuando ya se encuentre una categoria con esa edad
             events.add(value);
@@ -62,7 +81,7 @@ class EventProvider {
         });
       });
     });
-    //print(events.length);
+    print(events[0].categories.length);
     return events;
   }
 
