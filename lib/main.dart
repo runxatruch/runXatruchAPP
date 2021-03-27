@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
+import 'package:runxatruch_app/pages/event_page.dart';
 import 'package:runxatruch_app/pages/example.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
                 'participation': (BuildContext context) => ParticipationsPage(),
+                'event': (BuildContext context) => EventPage()
                 //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(
@@ -121,6 +123,7 @@ class MyApp extends StatelessWidget {
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
                 'participation': (BuildContext context) => ParticipationsPage(),
+                'event': (BuildContext context) => EventPage()
                 //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(

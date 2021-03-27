@@ -71,6 +71,7 @@ class EventProvider {
             validate = true;
           }
         });
+        validate = true;
         if (validate == true) {
           events.add(value);
         }
@@ -78,8 +79,7 @@ class EventProvider {
     });
     //print(events.length);
     // Future<List> cat = category("0bvPah3DhO6LDTTLh1DY");
-    // print(cat.then((value) => print(value)));
-
+    // print(cat.then((value) => print(value)));\
     return events;
   }
 
