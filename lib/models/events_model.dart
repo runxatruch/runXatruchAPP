@@ -9,6 +9,7 @@ class EventModel {
   EventModel({
     this.categories,
     this.city,
+    this.descripEvent,
     this.endTime,
     this.nameEvent,
     this.patrocinator,
@@ -17,23 +18,25 @@ class EventModel {
 
   List categories;
   String city;
+  String descripEvent;
   String endTime;
   String nameEvent;
   List patrocinator;
   String startTime;
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
-        categories: json["categories"],
-        city: json["city"],
-        endTime: json["endTime"],
-        nameEvent: json["nameEvent"],
-        patrocinator: json["patrocinator"],
-        startTime: json["startTime"],
-      );
+      categories: json["categories"],
+      city: json["city"],
+      descripEvent: json["descripEvent"],
+      endTime: json["endTime"],
+      nameEvent: json["nameEvent"],
+      patrocinator: json["patrocinator"],
+      startTime: json["startTime"]);
 
   Map<String, dynamic> toJson() => {
         "categories": categories,
         "city": city,
+        "descripEvent": descripEvent,
         "endTime": endTime,
         "nameEvent": nameEvent,
         "patrocinator": patrocinator,

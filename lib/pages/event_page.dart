@@ -1,3 +1,7 @@
+import 'dart:ffi';
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 
@@ -53,7 +57,13 @@ class _EventPageState extends State<EventPages> {
       child: Column(
         children: [
           _dataEvent(data),
+          SizedBox(height: 10),
           _category(data.categories),
+          // Divider(
+          //   color: Colors.black,
+          //   thickness: 3.0,
+          // ),
+          SizedBox(height: 10),
           _showCategory(data.categories)
         ],
       ),
@@ -88,8 +98,8 @@ class _EventPageState extends State<EventPages> {
                   setState(() {
                     _categoryCurrent = newValue;
                     state.didChange(newValue);
+                    _showCategory(categories);
                   });
-                  _showCategory(categories);
                 },
                 items: _categoryName.map((String value) {
                   return DropdownMenuItem<String>(
@@ -106,6 +116,16 @@ class _EventPageState extends State<EventPages> {
   }
 
   Widget _showCategory(List categories) {
+    final rnd = new Random();
+    final width = rnd.nextInt(30) + widthScreen * 0.9;
+    final r = rnd.nextInt(255);
+    final g = rnd.nextInt(255);
+    final b = rnd.nextInt(255);
+
+    final border = Border.all(
+        width: rnd.nextInt(20).toDouble() + 2,
+        color: Color.fromRGBO(r, g, b, 1));
+
     int cat = 0;
     for (var i = 0; i < categories.length; i++) {
       if (categories[i]['nameCategory'] == _categoryCurrent) {
@@ -114,123 +134,175 @@ class _EventPageState extends State<EventPages> {
       }
       // }
     }
-    return Container(
-      margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.zero,
-        color: Color.fromRGBO(253, 253, 253, 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 1,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top: 12),
-                  child: Image(
-                    image: AssetImage("assets/lugares.jpg"),
-                    width: 45,
-                  )),
-              SizedBox(
-                width: 20,
-              ),
-              Container(
-                width: widthScreen * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("Categoria: ",
+    return PhysicalModel(
+      // margin: EdgeInsets.only(top: 10, right: 10, left: 10),
+      // padding: EdgeInsets.symmetric(horizontal: 10),
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage("assets/marat.jpg"),
+      //     colorFilter: ColorFilter.linearToSrgbGamma(),
+      //     repeat: ImageRepeat.repeat,
+      //     //fit: BoxFit.fill,
+      //   ),
+      //   borderRadius: BorderRadius.zero,
+      //   color: Color.fromRGBO(253, 253, 253, 1),
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: Colors.black.withOpacity(0.2),
+      //       spreadRadius: 2,
+      //       blurRadius: 1,
+      //       offset: Offset(0, 3), // changes position of shadow
+      //     ),
+      //   ],
+      // ),
+
+      child: AnimatedContainer(
+        duration: Duration(seconds: 1),
+        color: Colors.white,
+        // decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //         colors: [Colors.blueGrey[50], Colors.blue, Colors.red[100]],
+        //         stops: [0.5, 0.5, 0.3],
+        //         end: FractionalOffset.bottomCenter)),
+        width: width.toDouble(),
+        curve: Curves.elasticOut,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  width: widthScreen * 0.7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.category),
+                          Text(
+                            "Categoria: ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.red[400],
+                              fontStyle: FontStyle.italic,
+                              fontSize: 18.0,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            categories[cat]['nameCategory'].toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.red[400],
-                                fontSize: 18.0)),
-                        Text(
-                          categories[cat]['nameCategory'].toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              //color: Colors.red[400]
-                              fontSize: 23.0),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Premios: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(categories[cat]['prize'].toString())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Rango de Edad admitido: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(categories[cat]['ageMin'] +
-                            " - " +
-                            categories[cat]['ageMax'] +
-                            " años")
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "kilómetros a recorrer: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(categories[cat]['km'].toString())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Ruta a Seguir: ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
-                    ),
-                    SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: Text('Aquí va el mapa'),
-                        ))
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
+                                //color: Colors.red[400]
+                                fontSize: 18.0),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.compare_arrows_sharp),
+                          Text(
+                            "Premios: ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.red[400],
+                              fontStyle: FontStyle.italic,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                          SizedBox(width: 18),
+                          Text(categories[cat]['prize'].toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.verified_user_sharp),
+                          Text(
+                            "Edad: ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.red[400],
+                              fontStyle: FontStyle.italic,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                              categories[cat]['ageMin'] +
+                                  " - " +
+                                  categories[cat]['ageMax'] +
+                                  " años",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.directions_run),
+                          Text(
+                            "kilómetros a recorrer: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 18.0,
+                                color: Colors.red[400]),
+                          ),
+                          SizedBox(width: 18),
+                          Text(categories[cat]['km'].toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Icon(Icons.directions),
+                      Text(
+                        "Ruta a Seguir: ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red[400]),
+                      ),
+                      SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: Text('Aquí va el mapa',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
+      elevation: 15.0,
+      color: Colors.black,
+      shape: BoxShape.circle,
+      shadowColor: Colors.redAccent,
     );
     //return Container(child: Text(cat.toString()));
   }
@@ -357,7 +429,8 @@ class _EventPageState extends State<EventPages> {
                               fontWeight: FontWeight.bold,
                               color: Colors.red[400]),
                         ),
-                        Text(cat['km'].toString())
+                        Text(cat['km'].toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold))
                       ],
                     ),
                     SizedBox(
@@ -386,51 +459,51 @@ class _EventPageState extends State<EventPages> {
   Widget _dataEvent(EventModel data) {
     return Container(
       padding: EdgeInsets.only(top: heightScreen * 0.04, bottom: 10),
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.red[400])),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.black54,
-                blurRadius: 5.0,
-                offset: Offset(0.0, 0.5))
-          ],
-          color: Colors.white),
+      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        BoxShadow(
+            color: Colors.black54, blurRadius: 2.0, offset: Offset(0.1, 0.5))
+      ], color: Colors.white),
       child: Column(
         children: [
-          Text("Detalle Evento"),
+          Text(
+            data.descripEvent,
+            textAlign: TextAlign.center,
+          ),
           Divider(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Column(
               children: <Widget>[
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    //margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
-                      children: [
-                        Text(
-                          "Se llevará a cabo en: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(data.city),
-                      ],
-                    )),
+                  children: [
+                    Text(
+                      "Ciudad: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: Colors.red[400]),
+                    ),
+                    Text(data.city),
+                  ],
+                )),
                 SizedBox(
                   height: 5,
                 ),
                 Row(
                   children: [
                     Text(
-                      "Dará Inicio el: ",
+                      "Inicia: ",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
+                          fontWeight: FontWeight.normal,
+                          color: Colors.red[400]),
                     ),
                     Text(data.startTime.substring(0, 10)),
                     Text(
                       " Hora: ",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
+                          fontWeight: FontWeight.normal,
+                          color: Colors.red[400]),
                     ),
                     Text(data.startTime.substring(11, 16)),
                   ],
@@ -441,15 +514,19 @@ class _EventPageState extends State<EventPages> {
                 Row(
                   children: [
                     Text(
-                      "Finaliza el: ",
+                      "Finaliza: ",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
+                          fontWeight: FontWeight.normal,
+                          color: Colors.red[400]),
                     ),
-                    Text(data.endTime.substring(0, 10)),
+                    Text(
+                      data.endTime.substring(0, 10),
+                    ),
                     Text(
                       " Hora: ",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
+                          fontWeight: FontWeight.normal,
+                          color: Colors.red[400]),
                     ),
                     Text(data.endTime.substring(11, 16)),
                   ],
@@ -457,6 +534,22 @@ class _EventPageState extends State<EventPages> {
                 SizedBox(
                   height: 5,
                 ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        // Text(
+                        //   "Descripción: ",
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.red[400]),
+                        // ),
+                        // Text(
+                        //   data.descripEvent,
+                        //   textAlign: TextAlign.end,
+                        // ),
+                      ],
+                    )),
               ],
             ),
           ),
