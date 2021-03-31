@@ -52,15 +52,16 @@ class _MapPageState extends State<MapPage> {
         color: Colors.blue,
       ));
       _markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
         markerId: MarkerId(_lastMapPosition.toString()),
-        //_lastMapPosition is any coordinate which should be your default
-        //position when map opens up
         position: _lastMapPosition,
-
+        infoWindow: InfoWindow(title: 'Inicio de la carrera'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(30.0),
+      ));
+      _markers.add(Marker(
+        markerId: MarkerId(widget.route.last.toString()),
+        position: widget.route.last,
         infoWindow: InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
+          title: 'Linea de meta',
         ),
         icon: BitmapDescriptor.defaultMarker,
       ));
