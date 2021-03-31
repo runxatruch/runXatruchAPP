@@ -31,28 +31,7 @@ class _EventPageState extends State<EventPages> {
         ),
         body: SingleChildScrollView(
           child: _bodyCreate(data),
-        )
-
-        //  Container(
-        //     margin: EdgeInsets.only(left: widthScreen * 0.65),
-        //      child: Row(
-        //       children: [
-        //         Text(
-        //           "Ver mas",
-        //           style: TextStyle(
-        //               fontWeight: FontWeight.bold, color: Colors.red[400]),
-        //         ),
-        //         IconButton(
-        //             icon: Icon(Icons.arrow_forward_ios_outlined,
-        //                 color: Colors.red[400]),
-        //             onPressed: () =>
-        //                 Navigator.pushNamed(context, 'event', arguments: data)
-        //             ),
-        //       ],
-        //      ),
-        //      //_showDetail()
-        //    ),
-        );
+        ));
   }
 
   Widget _bodyCreate(EventModel data) {
