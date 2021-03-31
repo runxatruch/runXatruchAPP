@@ -268,34 +268,38 @@ class _EventPageState extends State<EventPages> {
 
   Widget _inscribir(String admit) {
     if (admit.toString() == 'true') {
-      return Container(
-          width: 150.0,
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.red,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.zero,
-              bottomLeft: Radius.zero,
-              bottomRight: Radius.zero,
+      return RaisedButton(
+          disabledColor: Colors.transparent,
+          child: Container(
+            width: 150.0,
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.red,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.zero,
+                bottomLeft: Radius.zero,
+                bottomRight: Radius.zero,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Inscribirme',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18.0,
+                  ),
+                ),
+                Icon(Icons.add_circle)
+              ],
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Inscribirme',
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 18.0,
-                ),
-              ),
-              Icon(Icons.add_circle)
-            ],
-          ));
+          onPressed: null);
     } else {
       return Text(
         'Su edad no es admitida para esta categoria',
@@ -307,6 +311,30 @@ class _EventPageState extends State<EventPages> {
         ),
       );
     }
+  }
+
+  Widget _buttonIncription() {
+    return RaisedButton(
+        onPressed: null,
+        child: Container(
+          //width: 250.0,
+          padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Inscribirme',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 12.0,
+                ),
+              ),
+              Icon(Icons.add_circle)
+            ],
+          ),
+        ));
   }
 
   Widget _dataEvent(EventModel data) {
