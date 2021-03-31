@@ -70,6 +70,9 @@ class EventProvider {
           if (ageUser >= ageMin && ageUser <= ageMax) {
             //return cuando ya se encuentre una categoria con esa edad
             validate = true;
+            element['admitido'] = true;
+          } else {
+            element['admitido'] = false;
           }
         });
         validate = true;
@@ -81,6 +84,7 @@ class EventProvider {
     //print(events.length);
     // Future<List> cat = category("0bvPah3DhO6LDTTLh1DY");
     // print(cat.then((value) => print(value)));\
+    print(events[0].categories);
     return events;
   }
 

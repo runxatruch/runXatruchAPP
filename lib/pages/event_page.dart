@@ -108,11 +108,6 @@ class _EventPageState extends State<EventPages> {
     final r = rnd.nextInt(255);
     final g = rnd.nextInt(255);
     final b = rnd.nextInt(255);
-
-    final border = Border.all(
-        width: rnd.nextInt(20).toDouble() + 2,
-        color: Color.fromRGBO(r, g, b, 1));
-
     int cat = 0;
     for (var i = 0; i < categories.length; i++) {
       if (categories[i]['nameCategory'] == _categoryCurrent) {
@@ -121,28 +116,8 @@ class _EventPageState extends State<EventPages> {
       }
       // }
     }
-    return PhysicalModel(
-      // margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-      // padding: EdgeInsets.symmetric(horizontal: 10),
-      // decoration: BoxDecoration(
-      //   image: DecorationImage(
-      //     image: AssetImage("assets/marat.jpg"),
-      //     colorFilter: ColorFilter.linearToSrgbGamma(),
-      //     repeat: ImageRepeat.repeat,
-      //     //fit: BoxFit.fill,
-      //   ),
-      //   borderRadius: BorderRadius.zero,
-      //   color: Color.fromRGBO(253, 253, 253, 1),
-      //   boxShadow: [
-      //     BoxShadow(
-      //       color: Colors.black.withOpacity(0.2),
-      //       spreadRadius: 2,
-      //       blurRadius: 1,
-      //       offset: Offset(0, 3), // changes position of shadow
-      //     ),
-      //   ],
-      // ),
 
+    return PhysicalModel(
       child: AnimatedContainer(
         duration: Duration(seconds: 1),
         color: Colors.white,
@@ -272,6 +247,8 @@ class _EventPageState extends State<EventPages> {
                       ),
                       SizedBox(height: 50),
                       _createMap(categories[cat]),
+                      SizedBox(height: 50),
+                      _inscribir(categories[cat]['admitido'].toString()),
                       SizedBox(height: 90),
                     ],
                   ),
@@ -288,154 +265,48 @@ class _EventPageState extends State<EventPages> {
     );
     //return Container(child: Text(cat.toString()));
   }
-  // Widget _showCategory(List categories) {
-  //   return FutureBuilder(
-  //     //future: _eventprovider.getEvents(),
-  //     builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-  //       if (categories.length > 0) {
-  //         final data = categories;
-  //         if (data.length > 0) {
-  //           return Expanded(
-  //             child: ListView.builder(
-  //                 itemCount: data.length,
-  //                 itemBuilder: (context, i) =>
-  //                     _createListEvent(data[i], context)),
-  //           );
-  //         } else {
-  //           return Center(
-  //             child: Text("No se encontraron Categorias"),
-  //           );
-  //         }
-  //       } else {
-  //         print('jmmm');
-  //         return Container(
-  //           margin: EdgeInsets.only(top: 300),
-  //           child: Center(
-  //             child: CircularProgressIndicator(),
-  //           ),
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
 
-  Widget _createListEvent(Map cat, BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Color.fromRGBO(253, 253, 253, 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 1,
-            offset: Offset(0, 3), // changes position of shadow
+  Widget _inscribir(String admit) {
+    if (admit.toString() == 'true') {
+      return Container(
+          width: 150.0,
+          padding: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.red,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.zero,
+              bottomLeft: Radius.zero,
+              bottomRight: Radius.zero,
+            ),
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  margin: EdgeInsets.only(top: 12),
-                  child: Image(
-                    image: AssetImage("assets/lugares.jpg"),
-                    width: 45,
-                  )),
-              SizedBox(
-                width: 20,
-              ),
-              Container(
-                width: widthScreen * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("Categoria: ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red[400],
-                                fontSize: 18.0)),
-                        Text(
-                          cat['nameCategory'].toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              //color: Colors.red[400]
-                              fontSize: 23.0),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Premios: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['prize'].toString())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Rango de Edad admitido: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['ageMin'] + " - " + cat['ageMax'] + " años")
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "kilómetros a recorrer: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['km'].toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Ruta a Seguir: ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
-                    ),
-                    SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: Text('Aquí va el mapa'),
-                        ))
-                  ],
+              Text(
+                'Inscribirme',
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 18.0,
                 ),
-              )
+              ),
+              Icon(Icons.add_circle)
             ],
-          ),
-        ],
-      ),
-    );
+          ));
+    } else {
+      return Text(
+        'Su edad no es admitida para esta categoria',
+        style: TextStyle(
+          fontWeight: FontWeight.normal,
+          color: Colors.red[400],
+          fontStyle: FontStyle.italic,
+          fontSize: 14.0,
+        ),
+      );
+    }
   }
 
   Widget _dataEvent(EventModel data) {
