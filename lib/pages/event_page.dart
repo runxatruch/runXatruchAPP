@@ -1,11 +1,16 @@
-import 'dart:ffi';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/models/events_model.dart';
+import 'package:runxatruch_app/models/route_model.dart';
+import 'package:runxatruch_app/provider/events_provider.dart';
 
 import 'careers_page.dart';
+import 'map_page.dart';
 
 class EventPages extends StatefulWidget {
   const EventPages({Key key}) : super(key: key);
@@ -14,42 +19,45 @@ class EventPages extends StatefulWidget {
   _EventPageState createState() => _EventPageState();
 }
 
+String categoriaSelect;
+
 class _EventPageState extends State<EventPages> {
   @override
   Widget build(BuildContext context) {
     EventModel data = ModalRoute.of(context).settings.arguments;
-
-    print(data.categories);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(data.nameEvent),
-      ),
-      body: _bodyCreate(data),
+        appBar: AppBar(
+          title: Text(data.nameEvent),
+        ),
+        body: SingleChildScrollView(
+          child: _bodyCreate(data),
+        )
 
-      //  Container(
-      //     margin: EdgeInsets.only(left: widthScreen * 0.65),
-      //      child: Row(
-      //       children: [
-      //         Text(
-      //           "Ver mas",
-      //           style: TextStyle(
-      //               fontWeight: FontWeight.bold, color: Colors.red[400]),
-      //         ),
-      //         IconButton(
-      //             icon: Icon(Icons.arrow_forward_ios_outlined,
-      //                 color: Colors.red[400]),
-      //             onPressed: () =>
-      //                 Navigator.pushNamed(context, 'event', arguments: data)
-      //             ),
-      //       ],
-      //      ),
-      //      //_showDetail()
-      //    ),
-    );
+        //  Container(
+        //     margin: EdgeInsets.only(left: widthScreen * 0.65),
+        //      child: Row(
+        //       children: [
+        //         Text(
+        //           "Ver mas",
+        //           style: TextStyle(
+        //               fontWeight: FontWeight.bold, color: Colors.red[400]),
+        //         ),
+        //         IconButton(
+        //             icon: Icon(Icons.arrow_forward_ios_outlined,
+        //                 color: Colors.red[400]),
+        //             onPressed: () =>
+        //                 Navigator.pushNamed(context, 'event', arguments: data)
+        //             ),
+        //       ],
+        //      ),
+        //      //_showDetail()
+        //    ),
+        );
   }
 
   Widget _bodyCreate(EventModel data) {
     _categoryName = [];
+
     for (var i = 0; i < data.categories.length; i++) {
       _categoryName.add(data.categories[i]['nameCategory']);
     }
@@ -76,7 +84,7 @@ class _EventPageState extends State<EventPages> {
   Widget _category(List categories) {
     //_categoryCurrent = _categoryName[0];
     return Container(
-      width: widthScreen * 0.9,
+      width: widthScreen,
       height: 65,
       padding: EdgeInsets.only(top: 5),
       margin: EdgeInsets.symmetric(horizontal: 5),
@@ -117,7 +125,7 @@ class _EventPageState extends State<EventPages> {
 
   Widget _showCategory(List categories) {
     final rnd = new Random();
-    final width = rnd.nextInt(30) + widthScreen * 0.9;
+    final width = rnd.nextInt(30) + widthScreen;
     final r = rnd.nextInt(255);
     final g = rnd.nextInt(255);
     final b = rnd.nextInt(255);
@@ -174,7 +182,7 @@ class _EventPageState extends State<EventPages> {
                   width: 20,
                 ),
                 Container(
-                  width: widthScreen * 0.7,
+                  width: widthScreen * 0.9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -283,14 +291,9 @@ class _EventPageState extends State<EventPages> {
                             fontWeight: FontWeight.bold,
                             color: Colors.red[400]),
                       ),
-                      SizedBox(
-                          height: 50,
-                          child: Center(
-                            child: Text('Aquí va el mapa',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ))
+                      SizedBox(height: 50),
+                      _createMap(categories[cat]),
+                      SizedBox(height: 90),
                     ],
                   ),
                 )
@@ -555,6 +558,38 @@ class _EventPageState extends State<EventPages> {
           ),
         ],
       ),
+    );
+  }
+
+  //Generar mapa con la ruta
+  Widget _createMap(categories) {
+    List<LatLng> route = [];
+    return FutureBuilder(
+      future: EventProvider().category(categories['id']),
+      builder: (BuildContext context, AsyncSnapshot<RuteModel> snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data;
+          route.clear();
+
+          for (var item in data.rute) {
+            if (item["log"] != null || item["lat"] != null) {
+              LatLng ite = new LatLng(double.parse(item["lat"].toString()),
+                  double.parse(item["log"].toString()));
+              route.add(ite);
+            }
+          }
+
+          return Container(
+            height: heightScreen * 0.5,
+            width: widthScreen,
+            child: MapPage(
+              route: route,
+            ),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }

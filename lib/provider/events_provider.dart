@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
+import 'package:runxatruch_app/models/route_model.dart';
 import 'package:runxatruch_app/pages/porfile_page.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
@@ -90,8 +91,8 @@ class EventProvider {
     return date;
   }
 
-  Future<List> category(String id) async {
-    final categories = [];
+  Future<RuteModel> category(String id) async {
+    RuteModel categories = new RuteModel();
 
     Query firestoreInstanceRoute =
         FirebaseFirestore.instance.collection("category");
@@ -100,9 +101,8 @@ class EventProvider {
         .get()
         .then((valueCat) {
       valueCat.docs.forEach((element) {
-        final data = {"id": element.id, "rute": element['rute']};
-        //print(element['nameCategory']);
-        categories.add(jsonEncode(data));
+        categories.id = element.id;
+        categories.rute = element['rute'];
       });
     });
     return categories;
