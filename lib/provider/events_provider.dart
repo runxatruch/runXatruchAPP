@@ -14,11 +14,14 @@ import 'package:runxatruch_app/provider/user_provider.dart';
 class EventProvider {
   final _pref = PreferenciasUsuario();
   final firestoreInstance = FirebaseFirestore.instance;
+  final List<int> age = new List();
+  var av;
 
   Future<List<EventModel>> getEvents() async {
     final List<EventModel> events = new List();
     final data = jsonDecode(_pref.credential);
     int ageUser;
+    av = ageUser;
 //Instancia coleccion users para saber su edad
     Query firestoreInstanceU = FirebaseFirestore.instance.collection("users");
 
@@ -80,7 +83,14 @@ class EventProvider {
     //print(events.length);
     // Future<List> cat = category("0bvPah3DhO6LDTTLh1DY");
     // print(cat.then((value) => print(value)));\
+    age.add(2);
+
     return events;
+  }
+
+  ageU() {
+    print(age);
+    return age.length;
   }
 
   monthNext() {

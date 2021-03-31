@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/events_model.dart';
+import 'package:runxatruch_app/models/user_models.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
+import 'package:runxatruch_app/provider/events_provider.dart';
 
 import 'careers_page.dart';
 
@@ -15,36 +20,20 @@ class EventPages extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPages> {
+  final _pref = PreferenciasUsuario();
+  int avs = EventProvider().av;
+
   @override
   Widget build(BuildContext context) {
-    EventModel data = ModalRoute.of(context).settings.arguments;
+    print(avs);
 
+    EventModel data = ModalRoute.of(context).settings.arguments;
     print(data.categories);
     return Scaffold(
       appBar: AppBar(
         title: Text(data.nameEvent),
       ),
       body: _bodyCreate(data),
-
-      //  Container(
-      //     margin: EdgeInsets.only(left: widthScreen * 0.65),
-      //      child: Row(
-      //       children: [
-      //         Text(
-      //           "Ver mas",
-      //           style: TextStyle(
-      //               fontWeight: FontWeight.bold, color: Colors.red[400]),
-      //         ),
-      //         IconButton(
-      //             icon: Icon(Icons.arrow_forward_ios_outlined,
-      //                 color: Colors.red[400]),
-      //             onPressed: () =>
-      //                 Navigator.pushNamed(context, 'event', arguments: data)
-      //             ),
-      //       ],
-      //      ),
-      //      //_showDetail()
-      //    ),
     );
   }
 
@@ -135,39 +124,14 @@ class _EventPageState extends State<EventPages> {
       // }
     }
     return PhysicalModel(
-      // margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-      // padding: EdgeInsets.symmetric(horizontal: 10),
-      // decoration: BoxDecoration(
-      //   image: DecorationImage(
-      //     image: AssetImage("assets/marat.jpg"),
-      //     colorFilter: ColorFilter.linearToSrgbGamma(),
-      //     repeat: ImageRepeat.repeat,
-      //     //fit: BoxFit.fill,
-      //   ),
-      //   borderRadius: BorderRadius.zero,
-      //   color: Color.fromRGBO(253, 253, 253, 1),
-      //   boxShadow: [
-      //     BoxShadow(
-      //       color: Colors.black.withOpacity(0.2),
-      //       spreadRadius: 2,
-      //       blurRadius: 1,
-      //       offset: Offset(0, 3), // changes position of shadow
-      //     ),
-      //   ],
-      // ),
-
       child: AnimatedContainer(
         duration: Duration(seconds: 1),
         color: Colors.white,
-        // decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //         colors: [Colors.blueGrey[50], Colors.blue, Colors.red[100]],
-        //         stops: [0.5, 0.5, 0.3],
-        //         end: FractionalOffset.bottomCenter)),
         width: width.toDouble(),
         curve: Curves.elasticOut,
         child: Column(
           children: [
+            _inscribir(),
             Row(
               children: [
                 SizedBox(
@@ -286,10 +250,12 @@ class _EventPageState extends State<EventPages> {
                       SizedBox(
                           height: 50,
                           child: Center(
-                            child: Text('Aquí va el mapa',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )),
+                            child: Text(
+                              'Aquí va el mapa',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ))
                     ],
                   ),
@@ -306,154 +272,36 @@ class _EventPageState extends State<EventPages> {
     );
     //return Container(child: Text(cat.toString()));
   }
-  // Widget _showCategory(List categories) {
-  //   return FutureBuilder(
-  //     //future: _eventprovider.getEvents(),
-  //     builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-  //       if (categories.length > 0) {
-  //         final data = categories;
-  //         if (data.length > 0) {
-  //           return Expanded(
-  //             child: ListView.builder(
-  //                 itemCount: data.length,
-  //                 itemBuilder: (context, i) =>
-  //                     _createListEvent(data[i], context)),
-  //           );
-  //         } else {
-  //           return Center(
-  //             child: Text("No se encontraron Categorias"),
-  //           );
-  //         }
-  //       } else {
-  //         print('jmmm');
-  //         return Container(
-  //           margin: EdgeInsets.only(top: 300),
-  //           child: Center(
-  //             child: CircularProgressIndicator(),
-  //           ),
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
 
-  Widget _createListEvent(Map cat, BuildContext context) {
+  Widget _inscribir() {
     return Container(
-      margin: EdgeInsets.only(top: 10, right: 10, left: 10),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Color.fromRGBO(253, 253, 253, 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 1,
-            offset: Offset(0, 3), // changes position of shadow
+        width: 150.0,
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.red,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.zero,
+            bottomLeft: Radius.zero,
+            bottomRight: Radius.zero,
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top: 12),
-                  child: Image(
-                    image: AssetImage("assets/lugares.jpg"),
-                    width: 45,
-                  )),
-              SizedBox(
-                width: 20,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Inscribirme",
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+                fontStyle: FontStyle.normal,
+                fontSize: 18.0,
               ),
-              Container(
-                width: widthScreen * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("Categoria: ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red[400],
-                                fontSize: 18.0)),
-                        Text(
-                          cat['nameCategory'].toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              //color: Colors.red[400]
-                              fontSize: 23.0),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Premios: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['prize'].toString())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Rango de Edad admitido: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['ageMin'] + " - " + cat['ageMax'] + " años")
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "kilómetros a recorrer: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['km'].toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Ruta a Seguir: ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
-                    ),
-                    SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: Text('Aquí va el mapa'),
-                        ))
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+            ),
+            Icon(Icons.add_circle)
+          ],
+        ));
   }
 
   Widget _dataEvent(EventModel data) {
@@ -534,22 +382,6 @@ class _EventPageState extends State<EventPages> {
                 SizedBox(
                   height: 5,
                 ),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        // Text(
-                        //   "Descripción: ",
-                        //   style: TextStyle(
-                        //       fontWeight: FontWeight.bold,
-                        //       color: Colors.red[400]),
-                        // ),
-                        // Text(
-                        //   data.descripEvent,
-                        //   textAlign: TextAlign.end,
-                        // ),
-                      ],
-                    )),
               ],
             ),
           ),
