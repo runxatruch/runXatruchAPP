@@ -10,6 +10,7 @@ import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/route_model.dart';
 import 'package:runxatruch_app/provider/events_provider.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
+import 'package:runxatruch_app/utils/menu_alert.dart';
 
 import 'careers_page.dart';
 import 'map_page.dart';
@@ -22,12 +23,14 @@ class EventPages extends StatefulWidget {
 }
 
 String categoriaSelect;
+bool _check = false;
+EventModel data;
 
 class _EventPageState extends State<EventPages> {
   final _inscriptionProvider = new InscriptionProvider();
   @override
   Widget build(BuildContext context) {
-    EventModel data = ModalRoute.of(context).settings.arguments;
+    data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
           title: Text(data.nameEvent),
@@ -251,7 +254,8 @@ class _EventPageState extends State<EventPages> {
                       SizedBox(height: 50),
                       _createMap(categories[cat]),
                       SizedBox(height: 50),
-                      _inscribir(categories[cat]['admitido'].toString()),
+                      _inscribir(categories[cat]['admitido'].toString(),
+                          categories[cat]),
                       SizedBox(height: 90),
                     ],
                   ),
@@ -269,7 +273,7 @@ class _EventPageState extends State<EventPages> {
     //return Container(child: Text(cat.toString()));
   }
 
-  Widget _inscribir(String admit) {
+  Widget _inscribir(String admit, Map categories) {
     if (admit.toString() == 'true') {
       return RaisedButton(
           disabledColor: Colors.transparent,
@@ -305,7 +309,7 @@ class _EventPageState extends State<EventPages> {
               ],
             ),
           ),
-          onPressed: () => _insciptionRegister(context));
+          onPressed: () => _insciptionRegister(context, categories));
     } else {
       return Text(
         'Su edad no es admitida para esta categoria',
@@ -319,14 +323,27 @@ class _EventPageState extends State<EventPages> {
     }
   }
 
-  _insciptionRegister(BuildContext context) {
-    final data = {
-      "idUser": 'idU2',
-      "idEvent": 'idE2',
-      "idCategory": 'idC2',
+  _insciptionRegister(BuildContext context, Map categories) async {
+    final temp = {
+      "idUser": categoriaSelect,
+      "idEvent": ['id'],
+      "idCategory": categories['id'],
       "date": DateTime.now()
     };
-    _inscriptionProvider.addInscription(context, data);
+    print(temp);
+
+    final result = await _inscriptionProvider.addInscription(context, temp);
+    ;
+    if (result["ok"]) {
+      final resp = {"msj": "Incripcion realizada con exito", "route": true};
+      mostrarAlerta(context, resp);
+    } else {
+      final resp = {"msj": result["error"]};
+      mostrarAlerta(context, resp);
+    }
+    setState(() {
+      _check = false;
+    });
   }
 
   // _inscriptionRegister(BuildContext context) async {
