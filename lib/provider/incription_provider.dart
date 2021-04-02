@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
 CollectionReference _inscription =
     FirebaseFirestore.instance.collection('userInscription');
 
 class InscriptionProvider {
+  final _pref = PreferenciasUsuario();
 //recibir argumento el model
   // Future<Map<String, dynamic>> addInscription() async {
   //   await _registerInscription();
@@ -12,7 +16,10 @@ class InscriptionProvider {
   // }
   var _exist;
 
-  addInscription(BuildContext context, Map data) {
+  addInscription(Map data) {
+    final preferences = jsonDecode(_pref.credential);
+    print(preferences);
+    data['idUser'] = preferences['uid'];
     DateTime date = DateTime.parse("2021-04-15T15:30");
     final firestoreInstance = FirebaseFirestore.instance;
     //aca tengo que  verificar si ya hay un registro de evento y usuario en el que la fecha de evento sea igual
@@ -30,7 +37,7 @@ class InscriptionProvider {
         }
       });
       //probar en poner en if el exist...
-      print(_exist);
+      print("***** $_exist");
       //agregar condicion de si ya esta inscrito
       if (_exist == false) {
         firestoreInstance.collection("userInscription").add(data).then((value) {
@@ -56,6 +63,7 @@ class InscriptionProvider {
           //       );
           //     });
         });
+        return {"ok": true};
       } else {
         // showDialog(
         //     context: context,
@@ -77,10 +85,10 @@ class InscriptionProvider {
         //         ],
         //       );
         //     });
+        return {"ok": false, "msj": "Ya estas incrito a este evento"};
       }
-      return true;
     } catch (e) {
-      return false;
+      return {"ok": false, "msj": e};
     }
   }
 }

@@ -274,6 +274,10 @@ class _EventPageState extends State<EventPages> {
   }
 
   Widget _inscribir(String admit, Map categories) {
+    if (_check)
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     if (admit.toString() == 'true') {
       return RaisedButton(
           disabledColor: Colors.transparent,
@@ -324,21 +328,22 @@ class _EventPageState extends State<EventPages> {
   }
 
   _insciptionRegister(BuildContext context, Map categories) async {
+    setState(() {
+      _check = true;
+    });
     final temp = {
       "idUser": categoriaSelect,
-      "idEvent": ['id'],
+      "idEvent": 'asdasdpiipoi09',
       "idCategory": categories['id'],
       "date": DateTime.now()
     };
-    print(temp);
 
-    final result = await _inscriptionProvider.addInscription(context, temp);
-    ;
+    final result = await _inscriptionProvider.addInscription(temp);
     if (result["ok"]) {
       final resp = {"msj": "Incripcion realizada con exito", "route": true};
       mostrarAlerta(context, resp);
     } else {
-      final resp = {"msj": result["error"]};
+      final resp = {"msj": result["msj"]};
       mostrarAlerta(context, resp);
     }
     setState(() {
