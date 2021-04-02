@@ -40,6 +40,10 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
   ) async* {
     if (event is OnMapaListo) {
       yield state.copyWith(mapaListo: true);
+    } else if (event is OnCearMap) {
+      List<LatLng> points = [];
+      this._miRuta = this._miRuta.copyWith(pointsParam: points);
+      this._miRuta = this._miRuta.copyWith(colorParam: Colors.transparent);
     } else if (event is OnNuevaUbicacion) {
       List<LatLng> points = [...this._miRuta.points, event.ubicacion];
       this._miRuta = this._miRuta.copyWith(pointsParam: points);

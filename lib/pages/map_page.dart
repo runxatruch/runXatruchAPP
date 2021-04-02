@@ -106,7 +106,7 @@ class _MapPageState extends State<MapPage> {
         initialCameraPosition: cameraPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
-        zoomControlsEnabled: true,
+        zoomControlsEnabled: type ? true : false,
         polylines: type ? _polyline : mapaBloc.state.polylines.values.toSet(),
       ),
     );

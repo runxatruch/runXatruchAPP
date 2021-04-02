@@ -87,6 +87,7 @@ bool stopResumen(bool state, BuildContext context) {
 bool startResumen(BuildContext context) {
   // ignore: close_sinks
   final mapaBloc = BlocProvider.of<MapaBloc>(context);
+  mapaBloc.add(OnCearMap());
   mapaBloc.add(OnMarcarRecorrido());
   return mapaBloc.state.dibujarRecorrido;
 }

@@ -190,17 +190,22 @@ class _EventPageState extends State<EventPages> {
                         height: 10,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.category),
-                          Text(
-                            "Categoria: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.red[400],
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18.0,
-                            ),
-                            textAlign: TextAlign.end,
+                          Row(
+                            children: [
+                              Icon(Icons.category),
+                              Text(
+                                "Categoria: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red[400],
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 18.0,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
                           ),
                           SizedBox(width: 10),
                           Text(
@@ -216,16 +221,21 @@ class _EventPageState extends State<EventPages> {
                         height: 10,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.compare_arrows_sharp),
-                          Text(
-                            "Premios: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.red[400],
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18.0,
-                            ),
+                          Row(
+                            children: [
+                              Icon(Icons.compare_arrows_sharp),
+                              Text(
+                                "Premios: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red[400],
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(width: 18),
                           Text(categories[cat]['prize'].toString(),
@@ -238,16 +248,21 @@ class _EventPageState extends State<EventPages> {
                         height: 10,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.verified_user_sharp),
-                          Text(
-                            "Edad: ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.red[400],
-                              fontStyle: FontStyle.italic,
-                              fontSize: 18.0,
-                            ),
+                          Row(
+                            children: [
+                              Icon(Icons.verified_user_sharp),
+                              Text(
+                                "Edad: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red[400],
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(width: 10),
                           Text(
@@ -264,15 +279,20 @@ class _EventPageState extends State<EventPages> {
                         height: 10,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.directions_run),
-                          Text(
-                            "kilómetros a recorrer: ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontStyle: FontStyle.italic,
-                                fontSize: 18.0,
-                                color: Colors.red[400]),
+                          Row(
+                            children: [
+                              Icon(Icons.directions_run),
+                              Text(
+                                "kilómetros a recorrer: ",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 18.0,
+                                    color: Colors.red[400]),
+                              ),
+                            ],
                           ),
                           SizedBox(width: 18),
                           Text(categories[cat]['km'].toString(),
@@ -369,87 +389,92 @@ class _EventPageState extends State<EventPages> {
               SizedBox(
                 width: 20,
               ),
-              Container(
-                width: widthScreen * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("Categoria: ",
+              Expanded(
+                child: Container(
+                  width: widthScreen,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Text("Categoria: ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red[400],
+                                  fontSize: 18.0)),
+                          Text(
+                            cat['nameCategory'].toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.red[400],
-                                fontSize: 18.0)),
-                        Text(
-                          cat['nameCategory'].toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              //color: Colors.red[400]
-                              fontSize: 23.0),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Premios: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['prize'].toString())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Rango de Edad admitido: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['ageMin'] + " - " + cat['ageMax'] + " años")
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "kilómetros a recorrer: ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[400]),
-                        ),
-                        Text(cat['km'].toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Ruta a Seguir: ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red[400]),
-                    ),
-                    SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: Text('Aquí va el mapa'),
-                        ))
-                  ],
+                                //color: Colors.red[400]
+                                fontSize: 23.0),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Premios: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[400]),
+                          ),
+                          Text(cat['prize'].toString())
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Rango de Edad admitido: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[400]),
+                          ),
+                          Text(cat['ageMin'] + " - " + cat['ageMax'] + " años")
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "kilómetros a recorrer: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[400]),
+                          ),
+                          Text(cat['km'].toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Ruta a Seguir: ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red[400]),
+                      ),
+                      SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: Text('Aquí va el mapa'),
+                          ))
+                    ],
+                  ),
                 ),
               )
             ],
