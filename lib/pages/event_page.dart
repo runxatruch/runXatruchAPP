@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/route_model.dart';
 import 'package:runxatruch_app/provider/events_provider.dart';
+import 'package:runxatruch_app/provider/incription_provider.dart';
 
 import 'careers_page.dart';
 import 'map_page.dart';
@@ -22,6 +24,7 @@ class EventPages extends StatefulWidget {
 String categoriaSelect;
 
 class _EventPageState extends State<EventPages> {
+  final _inscriptionProvider = new InscriptionProvider();
   @override
   Widget build(BuildContext context) {
     EventModel data = ModalRoute.of(context).settings.arguments;
@@ -270,6 +273,9 @@ class _EventPageState extends State<EventPages> {
     if (admit.toString() == 'true') {
       return RaisedButton(
           disabledColor: Colors.transparent,
+          color: Colors.white,
+          elevation: 0.0,
+          focusColor: Colors.amber,
           child: Container(
             width: 150.0,
             padding: const EdgeInsets.all(10.0),
@@ -299,7 +305,7 @@ class _EventPageState extends State<EventPages> {
               ],
             ),
           ),
-          onPressed: null);
+          onPressed: () => _insciptionRegister(context));
     } else {
       return Text(
         'Su edad no es admitida para esta categoria',
@@ -313,29 +319,28 @@ class _EventPageState extends State<EventPages> {
     }
   }
 
-  Widget _buttonIncription() {
-    return RaisedButton(
-        onPressed: null,
-        child: Container(
-          //width: 250.0,
-          padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Inscribirme',
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 12.0,
-                ),
-              ),
-              Icon(Icons.add_circle)
-            ],
-          ),
-        ));
+  _insciptionRegister(BuildContext context) {
+    final data = {
+      "idUser": 'idU2',
+      "idEvent": 'idE2',
+      "idCategory": 'idC2',
+      "date": DateTime.now()
+    };
+    _inscriptionProvider.addInscription(context, data);
   }
+
+  // _inscriptionRegister(BuildContext context) async {
+  //   //Pendiente de completacion
+
+  //   dynamic result = await _inscriptionProvider.addInscription();
+
+  //   if (result['ok']) {
+  //     //Navigator.pushReplacementNamed(context, 'home');
+  //     AlertDialog(semanticLabel: 'agregado');
+  //   } else {
+  //     AlertDialog(semanticLabel: 'Error');
+  //   }
+  // }
 
   Widget _dataEvent(EventModel data) {
     return Container(
