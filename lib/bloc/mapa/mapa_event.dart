@@ -9,6 +9,8 @@ class OnMarcarRecorrido extends MapaEvent {}
 
 class OnNewTheme extends MapaEvent {}
 
+class OnCearMap extends MapaEvent {}
+
 class OnNuevaUbicacion extends MapaEvent {
   final LatLng ubicacion;
   OnNuevaUbicacion({this.ubicacion});

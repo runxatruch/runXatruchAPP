@@ -55,7 +55,7 @@ class UserProvider {
     return await firestoreInstance
         .collection("userTraining")
         .add(data.toJson())
-        .then((value) => print('agregado cone xito'))
+        .then((value) => print('agregado con éxito'))
         .catchError((e) => print("error $e"));
   }
 
