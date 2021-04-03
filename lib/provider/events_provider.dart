@@ -111,4 +111,66 @@ class EventProvider {
     });
     return categories;
   }
+
+  Future<List<EventModel>> getEventsInscription() async {
+    final List<EventModel> eventsUser = new List();
+    final data = jsonDecode(_pref.credential);
+
+    String idUser;
+//Instancia coleccion users para saber su edad
+    Query firestoreInstanceU = FirebaseFirestore.instance.collection("users");
+
+    await firestoreInstanceU
+        .where("email", isEqualTo: data['email'])
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        final user = UserModel.fromJson(result.data());
+        //print(user);
+        final id = result.id;
+        idUser = id;
+        user.id = id;
+      });
+    });
+//Instancia coleccion userInscription para saber los eventos a los que esta inscrito
+    List events = [];
+    Query firestoreInstanceUI =
+        FirebaseFirestore.instance.collection("userInscription");
+
+    await firestoreInstanceUI
+        .where("idUser", isEqualTo: idUser)
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        events
+            .add({'idEvent': result['idEvent'], 'idCat': result['idCategory']});
+      });
+    });
+
+//Intancia coleccion evento
+    Query firestoreInstance = FirebaseFirestore.instance.collection("event");
+    //obteniendo las categorias existentes
+    for (var i = 0; i < events.length; i++) {
+      await firestoreInstance
+          .where("id", isEqualTo: events[i]['idEvent'])
+          .get()
+          .then((value) {
+        value.docs.forEach((result) {
+          final value = EventModel.fromJson(result.data());
+
+          value.categories.forEach((element) {
+            if (element['id'] == events[i]['idCat']) {
+              element['inscrito'] = true;
+            } else {
+              element['inscrito'] = false;
+            }
+          });
+
+          eventsUser.add(value);
+        });
+      });
+    }
+    print(eventsUser[0].categories);
+    return eventsUser;
+  }
 }
