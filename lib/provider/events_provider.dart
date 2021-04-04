@@ -51,34 +51,38 @@ class EventProvider {
         .then((value) {
       value.docs.forEach((result) {
         final value = EventModel.fromJson(result.data());
-        bool validate = false;
+        getInscription(result.id, data['uid']).then((result) {
+          if (result.length == 0) {
+            bool validate = false;
 
-        value.categories.forEach((element) {
-          //final d = element['rangeEge'];
-          var idCat = element['id'];
+            value.categories.forEach((element) {
+              //final d = element['rangeEge'];
+              var idCat = element['id'];
 
-          int ageMin = int.parse(element['ageMin']);
-          int ageMax = int.parse(element['ageMax']);
-          //print(element);
+              int ageMin = int.parse(element['ageMin']);
+              int ageMax = int.parse(element['ageMax']);
+              //print(element);
 
-          // categories.forEach((elementCat) {
-          //   final dataC = jsonDecode(elementCat);
-          //   if (dataC['id'] == idCat) {
-          //     element['ruteArray'] = dataC['rute'];
-          //   }
-          // });
-          if (ageUser >= ageMin && ageUser <= ageMax) {
-            //return cuando ya se encuentre una categoria con esa edad
+              // categories.forEach((elementCat) {
+              //   final dataC = jsonDecode(elementCat);
+              //   if (dataC['id'] == idCat) {
+              //     element['ruteArray'] = dataC['rute'];
+              //   }
+              // });
+              if (ageUser >= ageMin && ageUser <= ageMax) {
+                //return cuando ya se encuentre una categoria con esa edad
+                validate = true;
+                element['admitido'] = true;
+              } else {
+                element['admitido'] = false;
+              }
+            });
             validate = true;
-            element['admitido'] = true;
-          } else {
-            element['admitido'] = false;
+            if (validate == true) {
+              events.add(value);
+            }
           }
         });
-        validate = true;
-        if (validate == true) {
-          events.add(value);
-        }
       });
     });
     //print(events.length);
@@ -110,5 +114,14 @@ class EventProvider {
       });
     });
     return categories;
+  }
+
+  Future getInscription(String idEvent, String uid) async {
+    Query instanceInscription =
+        FirebaseFirestore.instance.collection("userInscription");
+    return await instanceInscription
+        .where("idEvent", isEqualTo: idEvent)
+        .where("idUser", isEqualTo: uid)
+        .get();
   }
 }
