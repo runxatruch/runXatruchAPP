@@ -194,7 +194,7 @@ class _CareersPagesState extends State<CareersPages> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(left: widthScreen * 0.65),
+            margin: EdgeInsets.only(left: widthScreen * 0.6),
             child: Row(
               children: [
                 Text(
