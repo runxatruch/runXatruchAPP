@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -85,10 +87,13 @@ class _CareersPagesState extends State<CareersPages> {
           final data = snapshot.data;
           if (data.length > 0) {
             return Expanded(
-              child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, i) =>
-                      _createListEvent(data[i], context)),
+              child: RefreshIndicator(
+                onRefresh: obtenerData,
+                child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, i) =>
+                        _createListEvent(data[i], context)),
+              ),
             );
           } else {
             return Center(
@@ -200,8 +205,12 @@ class _CareersPagesState extends State<CareersPages> {
                 IconButton(
                     icon: Icon(Icons.arrow_forward_ios_outlined,
                         color: Colors.red[400]),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, 'event', arguments: data)),
+                    onPressed: () => {
+                          setState(() {
+                            Navigator.pushNamed(context, 'event',
+                                arguments: data);
+                          })
+                        })
               ],
             ),
           )
@@ -312,5 +321,13 @@ class _CareersPagesState extends State<CareersPages> {
         },
       ),
     );
+  }
+
+  Future<void> obtenerData() async {
+    print("refescar");
+    final duration = new Duration(microseconds: 200);
+    new Timer(duration, () {
+      setState(() {});
+    });
   }
 }

@@ -9,18 +9,12 @@ CollectionReference _inscription =
 
 class InscriptionProvider {
   final _pref = PreferenciasUsuario();
-//recibir argumento el model
-  // Future<Map<String, dynamic>> addInscription() async {
-  //   await _registerInscription();
-  //   return {'ok': true}; //recibir user data
-  // }
-  var _exist;
 
   addInscription(Map data) {
+    bool _exist = false;
     final preferences = jsonDecode(_pref.credential);
     print(preferences);
     data['idUser'] = preferences['uid'];
-    DateTime date = DateTime.parse("2021-04-15T15:30");
     final firestoreInstance = FirebaseFirestore.instance;
     //aca tengo que  verificar si ya hay un registro de evento y usuario en el que la fecha de evento sea igual
     try {
@@ -89,6 +83,15 @@ class InscriptionProvider {
       }
     } catch (e) {
       return {"ok": false, "msj": e};
+    }
+  }
+
+  Future<bool> deleteUser(String id) async {
+    try {
+      await _inscription.doc(id).delete();
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

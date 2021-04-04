@@ -328,14 +328,19 @@ class _EventPageState extends State<EventPages> {
   }
 
   _insciptionRegister(BuildContext context, Map categories) async {
+    data = ModalRoute.of(context).settings.arguments;
+    DateTime date = DateTime.now();
+    String dateStr = date.toString();
+    String dateIns = dateStr.substring(0, dateStr.length - 7);
+    print(dateIns);
     setState(() {
       _check = true;
     });
     final temp = {
       "idUser": categoriaSelect,
-      "idEvent": 'asdasdpiipoi09',
+      "idEvent": data.id,
       "idCategory": categories['id'],
-      "date": DateTime.now()
+      "date": dateIns
     };
 
     final result = await _inscriptionProvider.addInscription(temp);

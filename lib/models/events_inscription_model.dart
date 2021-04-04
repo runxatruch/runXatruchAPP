@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-EventModel eventModelFromJson(String str) =>
-    EventModel.fromJson(json.decode(str));
+EventModelUser eventModelFromJson(String str) =>
+    EventModelUser.fromJson(json.decode(str));
 
-String eventModelToJson(EventModel data) => json.encode(data.toJson());
+String eventModelToJson(EventModelUser data) => json.encode(data.toJson());
 
-class EventModel {
-  EventModel({
+class EventModelUser {
+  EventModelUser({
     this.categories,
     this.city,
     this.descripEvent,
     this.endTime,
-    this.id,
+    this.idInscription,
     this.nameEvent,
     this.patrocinator,
     this.startTime,
@@ -21,17 +21,17 @@ class EventModel {
   String city;
   String descripEvent;
   String endTime;
-  String id;
+  String idInscription;
   String nameEvent;
   List patrocinator;
   String startTime;
 
-  factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
+  factory EventModelUser.fromJson(Map<String, dynamic> json) => EventModelUser(
       categories: json["categories"],
       city: json["city"],
       descripEvent: json["descripEvent"],
       endTime: json["endTime"],
-      id: json["id"],
+      idInscription: json["idInscription"],
       nameEvent: json["nameEvent"],
       patrocinator: json["patrocinator"],
       startTime: json["startTime"]);
@@ -41,7 +41,7 @@ class EventModel {
         "city": city,
         "descripEvent": descripEvent,
         "endTime": endTime,
-        "id": id,
+        "idInscription": idInscription,
         "nameEvent": nameEvent,
         "patrocinator": patrocinator,
         "startTime": startTime,
