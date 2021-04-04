@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/models/route_model.dart';
@@ -112,8 +113,8 @@ class EventProvider {
     return categories;
   }
 
-  Future<List<EventModel>> getEventsInscription() async {
-    final List<EventModel> eventsUser = new List();
+  Future<List<EventModelUser>> getEventsInscription() async {
+    final List<EventModelUser> eventsUser = new List();
     final data = jsonDecode(_pref.credential);
 
     String idUser;
@@ -134,6 +135,7 @@ class EventProvider {
     });
 //Instancia coleccion userInscription para saber los eventos a los que esta inscrito
     List events = [];
+    String idInscriptionUser;
     Query firestoreInstanceUI =
         FirebaseFirestore.instance.collection("userInscription");
 
@@ -144,6 +146,7 @@ class EventProvider {
       value.docs.forEach((result) {
         events
             .add({'idEvent': result['idEvent'], 'idCat': result['idCategory']});
+        idInscriptionUser = result.id;
       });
     });
 
@@ -156,8 +159,8 @@ class EventProvider {
           .get()
           .then((value) {
         value.docs.forEach((result) {
-          final value = EventModel.fromJson(result.data());
-
+          final value = EventModelUser.fromJson(result.data());
+          value.idInscription = idInscriptionUser;
           value.categories.forEach((element) {
             if (element['id'] == events[i]['idCat']) {
               element['inscrito'] = true;

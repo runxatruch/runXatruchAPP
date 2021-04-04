@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/provider/events_provider.dart';
 
@@ -58,7 +59,7 @@ class _ToRunPage extends State<ToRunPage> {
     return FutureBuilder(
       future: _eventprovider.getEventsInscription(),
       builder:
-          (BuildContext context, AsyncSnapshot<List<EventModel>> snapshot) {
+          (BuildContext context, AsyncSnapshot<List<EventModelUser>> snapshot) {
         if (snapshot.hasData) {
           final data = snapshot.data;
           if (data.length > 0) {
@@ -66,7 +67,7 @@ class _ToRunPage extends State<ToRunPage> {
               child: ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, i) {
-                    final item = data[i].id;
+                    final item = data[i].idInscription;
                     final name = data[i].nameEvent;
                     //return _createListEvent(data[i], context);
                     return Dismissible(
@@ -115,7 +116,7 @@ class _ToRunPage extends State<ToRunPage> {
     );
   }
 
-  Widget _createListEvent(EventModel data, BuildContext context) {
+  Widget _createListEvent(EventModelUser data, BuildContext context) {
     return Column(
       children: [
         Container(
