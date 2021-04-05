@@ -206,10 +206,6 @@ class _ToRunPage extends State<ToRunPage> {
             ],
           ),
         ),
-        Divider(
-          color: Colors.red,
-          thickness: 3.0,
-        ),
       ],
     );
   }

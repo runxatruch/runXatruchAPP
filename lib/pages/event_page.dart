@@ -46,6 +46,7 @@ class _EventPageState extends State<EventPages> {
     for (var i = 0; i < data.categories.length; i++) {
       _categoryName.add(data.categories[i]['nameCategory']);
     }
+
     return Container(
       child: Column(
         children: [
@@ -67,7 +68,9 @@ class _EventPageState extends State<EventPages> {
   String _categoryCurrent;
 
   Widget _category(List categories) {
-    //_categoryCurrent = _categoryName[0];
+    if (_categoryCurrent == null) {
+      _categoryCurrent = _categoryName[0];
+    }
     return Container(
       width: widthScreen,
       height: 65,
@@ -89,9 +92,9 @@ class _EventPageState extends State<EventPages> {
                 isDense: true,
                 onChanged: (String newValue) {
                   setState(() {
-                    _categoryCurrent = newValue;
                     state.didChange(newValue);
                     _showCategory(categories);
+                    _categoryCurrent = newValue;
                   });
                 },
                 items: _categoryName.map((String value) {
@@ -111,9 +114,6 @@ class _EventPageState extends State<EventPages> {
   Widget _showCategory(List categories) {
     final rnd = new Random();
     final width = rnd.nextInt(30) + widthScreen;
-    final r = rnd.nextInt(255);
-    final g = rnd.nextInt(255);
-    final b = rnd.nextInt(255);
     int cat = 0;
     for (var i = 0; i < categories.length; i++) {
       if (categories[i]['nameCategory'] == _categoryCurrent) {
