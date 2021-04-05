@@ -145,6 +145,7 @@ class EventProvider {
     });
 //Instancia coleccion userInscription para saber los eventos a los que esta inscrito
     List events = [];
+    List listid = [];
     String idInscriptionUser;
     Query firestoreInstanceUI =
         FirebaseFirestore.instance.collection("userInscription");
@@ -156,6 +157,8 @@ class EventProvider {
       value.docs.forEach((result) {
         events
             .add({'idEvent': result['idEvent'], 'idCat': result['idCategory']});
+        listid.add(result.id);
+
         idInscriptionUser = result.id;
       });
     });
@@ -171,7 +174,8 @@ class EventProvider {
         value.docs.forEach((result) {
           final value = EventModelUser.fromJson(result.data());
 
-          value.idInscription = idInscriptionUser;
+          value.idInscription = listid[i];
+          print("value id ${value.idInscription}");
           value.categories.forEach((element) {
             if (element['id'] == events[i]['idCat']) {
               element['inscrito'] = true;

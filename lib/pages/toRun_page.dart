@@ -75,7 +75,7 @@ class _ToRunPage extends State<ToRunPage> {
                     final name = data[i].nameEvent;
                     //return _createListEvent(data[i], context);
                     return Dismissible(
-                      key: Key(item),
+                      key: UniqueKey(),
                       onDismissed: (direction) {
                         _deleteInscription(data[i].idInscription);
                         setState(() {
