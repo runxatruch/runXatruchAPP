@@ -285,23 +285,22 @@ class _EventPageState extends State<EventPages> {
           elevation: 0.0,
           focusColor: Colors.amber,
           child: Container(
-            width: 150.0,
+            width: widthScreen * 0.8,
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.red,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.zero,
-                bottomLeft: Radius.zero,
-                bottomRight: Radius.zero,
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Icon(
+                  Icons.add_circle,
+                  color: Colors.white,
+                ),
                 Text(
-                  'Inscribirme',
+                  ' Inscribirme',
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
                     color: Colors.white,
@@ -309,7 +308,6 @@ class _EventPageState extends State<EventPages> {
                     fontSize: 18.0,
                   ),
                 ),
-                Icon(Icons.add_circle)
               ],
             ),
           ),

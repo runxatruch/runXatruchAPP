@@ -84,7 +84,7 @@ class _ToRunPage extends State<ToRunPage> {
 
                         // Then show a snackbar.
                         Scaffold.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.red[400],
+                            backgroundColor: Colors.white,
                             content: Text(
                               "Ya no está inscrito en el evento: $name",
                               style: TextStyle(color: Colors.white),
@@ -92,10 +92,10 @@ class _ToRunPage extends State<ToRunPage> {
                       },
                       // Show a red background as the item is swiped away.
                       background: Container(
-                        child: Image(
-                          image: AssetImage("assets/delete.png"),
-                        ),
-                      ),
+                          child: Icon(
+                        Icons.delete_sweep_outlined,
+                        color: Colors.red,
+                      )),
                       //child: ListTile(title: Text('$item')),
                       child: _createListEvent(data[i], context),
                     );

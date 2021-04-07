@@ -58,18 +58,7 @@ class _CareersPagesState extends State<CareersPages> {
               children: <Widget>[
                 _createCity(),
                 _createState(),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("HELLO"),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("HELLO"),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("HELLO"),
-                )
+                // _createOrder()
               ],
             ),
           ),
@@ -222,12 +211,7 @@ class _CareersPagesState extends State<CareersPages> {
   var _city = [
     "La Paz",
     "Atraltida",
-    "Distrito central",
-    "Shopping",
-    "Medical",
-    "Rent",
-    "Movie",
-    "Salary"
+    "Distrito central"
   ];
   String _currentSelectedValue = "La Paz";
 
@@ -272,14 +256,7 @@ class _CareersPagesState extends State<CareersPages> {
   }
 
   var _state = [
-    "La Paz",
-    "Guajiquiro",
-    "LASJDKLASJD",
-    "ASDAD",
-    "MedASDASDical",
-    "ASDAD",
-    "Movie",
-    "Salary"
+    "La Paz"
   ];
   String _valueState = "La Paz";
 
@@ -315,6 +292,48 @@ class _CareersPagesState extends State<CareersPages> {
                     child: Text(value),
                   );
                 }).toList(),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  String _valueOrder = "Desencente";
+
+  Widget _createOrder() {
+    return Container(
+      width: widthScreen * 0.4,
+      height: 65,
+      padding: EdgeInsets.only(top: 5),
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      child: FormField<String>(
+        builder: (FormFieldState<String> state) {
+          return InputDecorator(
+            decoration: InputDecoration(
+                labelText: "Ciudad",
+                errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
+                hintText: 'Please select expense',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0))),
+            isEmpty: _valueOrder == '',
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: _valueOrder,
+                onChanged: (String newValue) {
+                  setState(() {
+                    _valueOrder = newValue;
+                    state.didChange(newValue);
+                  });
+                },
+                items: [
+                  DropdownMenuItem<String>(
+                      value: "Desendente",
+                      child: Icon(Icons.delete_forever_rounded)),
+                  DropdownMenuItem<String>(
+                      value: "Acendente", child: Icon(Icons.add))
+                ],
               ),
             ),
           );
