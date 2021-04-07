@@ -208,16 +208,12 @@ class _CareersPagesState extends State<CareersPages> {
     );
   }
 
-  var _city = [
-    "La Paz",
-    "Atraltida",
-    "Distrito central"
-  ];
+  var _city = ["La Paz", "Atraltida", "Distrito central"];
   String _currentSelectedValue = "La Paz";
 
   Widget _createCity() {
     return Container(
-      width: widthScreen * 0.4,
+      width: widthScreen * 0.45,
       height: 65,
       padding: EdgeInsets.only(top: 5),
       margin: EdgeInsets.symmetric(horizontal: 5),
@@ -255,9 +251,7 @@ class _CareersPagesState extends State<CareersPages> {
     );
   }
 
-  var _state = [
-    "La Paz"
-  ];
+  var _state = ["La Paz"];
   String _valueState = "La Paz";
 
   Widget _createState() {
