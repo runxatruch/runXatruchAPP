@@ -45,6 +45,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
       this._miRuta = this._miRuta.copyWith(pointsParam: points);
       final curretPolylines = state.polylines;
       curretPolylines['mi_ruta'] = this._miRuta;
+      //moverCamera(event.ubicacion);
       yield state.copyWith(polylines: curretPolylines, dibujarRecorrido: false);
     } else if (event is OnMarcarRecorrido) {
       // ignore: await_only_futures
@@ -79,5 +80,18 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
 
     yield state.copyWith(
         dibujarRecorrido: !state.dibujarRecorrido, polylines: currentPolylines);
+  }
+
+  Stream categories(List<LatLng> rute) async* {
+    print("here1");
+    final cameraUpdate = CameraUpdate.newLatLng(rute[0]);
+    this._controller?.animateCamera(cameraUpdate);
+    List<LatLng> points = [...rute];
+    print(points);
+    this._miRuta = this._miRuta.copyWith(pointsParam: points);
+    this._miRuta = this._miRuta.copyWith(colorParam: Colors.blue);
+    final curretPolylines = state.polylines;
+    curretPolylines['mi_ruta'] = this._miRuta;
+    yield state.copyWith(polylines: curretPolylines, dibujarRecorrido: false);
   }
 }

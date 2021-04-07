@@ -270,6 +270,7 @@ class _PorfilePageState extends State<PorfilePage> {
   }
 
   Future<void> obtenerData() async {
+    print("refescar");
     final duration = new Duration(microseconds: 200);
     new Timer(duration, () {
       setState(() {});
