@@ -7,7 +7,6 @@ import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
 import 'package:runxatruch_app/pages/careers_page.dart';
 import 'package:runxatruch_app/pages/event_page.dart';
-import 'package:runxatruch_app/pages/example.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
 import 'package:runxatruch_app/pages/login_pages.dart';
