@@ -54,6 +54,7 @@ class EventProvider {
     await firestoreInstance
         .where("startTime", isLessThanOrEqualTo: monthNext())
         .where("startTime", isGreaterThanOrEqualTo: DateTime.now().toString())
+        .orderBy("startTime")
         .get()
         .then((value) {
       value.docs.forEach((result) {

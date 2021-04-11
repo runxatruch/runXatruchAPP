@@ -262,7 +262,7 @@ class _ToRunPage extends State<ToRunPage> {
             children: [
               days(dateEvent),
               SizedBox(
-                width: widthScreen * 0.3,
+                width: widthScreen * 0.25,
               ),
               timer(dateEvent)
             ],
@@ -328,7 +328,7 @@ class _ToRunPage extends State<ToRunPage> {
     print(difference.inDays);
     if (difference.inDays <= 1) {
       return Container(
-        width: 80,
+        width: 120,
         child: TimerBuilder.scheduled([date], builder: (context) {
           // This function will be called once the alert time is reached
           //
@@ -336,14 +336,14 @@ class _ToRunPage extends State<ToRunPage> {
           var reached = now.compareTo(dates) >= 0;
           final textStyle = Theme.of(context).textTheme.title;
           return Center(
-            child: Column(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Icon(
                   reached ? Icons.alarm_on : Icons.alarm,
                   color: reached ? Colors.red : Colors.red,
-                  size: 43,
+                  size: 33,
                 ),
                 !reached
                     ? TimerBuilder.periodic(Duration(seconds: 1),
