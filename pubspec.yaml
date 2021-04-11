@@ -21,11 +21,14 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  timer_builder: ^1.3.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.14.0
   hooks_riverpod: ^0.11.1
   intl: ^0.16.1
+
+  
 
   flutter_localizations:
     sdk: flutter

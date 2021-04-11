@@ -9,8 +9,37 @@ import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/provider/events_provider.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'timer.dart';
+
+import 'package:timer_builder/timer_builder.dart';
 
 import 'careers_page.dart';
+
+final timerProvider = StateNotifierProvider<TimerNotifier>(
+  (ref) => TimerNotifier(),
+);
+
+final _buttonState = Provider<ButtonState>((ref) {
+  return ref.watch(timerProvider.state).buttonState;
+});
+
+final buttonProvider = Provider<ButtonState>((ref) {
+  return ref.watch(_buttonState);
+});
+
+final state = useProvider(buttonProvider);
+
+final _timeLeftProvider = Provider<String>((ref) {
+  return ref.watch(timerProvider.state).timeLeft;
+});
+
+final timeLeftProvider = Provider<String>((ref) {
+  return ref.watch(_timeLeftProvider);
+});
+
+final timeLeft = useProvider(timeLeftProvider);
 
 class ToRunPage extends StatefulWidget {
   const ToRunPage({Key key}) : super(key: key);
@@ -49,14 +78,15 @@ class _ToRunPage extends State<ToRunPage> {
                   fontWeight: FontWeight.bold),
             ),
           )),
-          _showEvent()
+          _showEvent(),
+          // StatusIndicator(DateTime.now(), DateTime.parse('2021-04-30T08:00'))
+          Text('reloj')
         ],
       ),
     );
   }
 
 //mostrar eventos de usuario
-
   Widget _showEvent() {
     final _eventprovider = new EventProvider();
 
@@ -194,15 +224,15 @@ class _ToRunPage extends State<ToRunPage> {
                                   fontWeight: FontWeight.normal,
                                   color: Colors.red[400]),
                             ),
-                            Text(data.city)
+                            Text(data.city),
                           ],
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
-              _dataCategory(data.categories),
+              _dataCategory(data.categories, data.startTime),
             ],
           ),
         ),
@@ -210,7 +240,8 @@ class _ToRunPage extends State<ToRunPage> {
     );
   }
 
-  Widget _dataCategory(List<dynamic> categories) {
+  Widget _dataCategory(List<dynamic> categories, String dateEvent) {
+    print(dateEvent);
     var catIncrita;
 
     for (var i = 0; i < categories.length; i++) {
@@ -250,7 +281,7 @@ class _ToRunPage extends State<ToRunPage> {
             height: 5,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(Icons.lock_clock),
               Text(
@@ -258,7 +289,11 @@ class _ToRunPage extends State<ToRunPage> {
                 style: TextStyle(
                     color: Colors.red[400], fontStyle: FontStyle.italic),
               ),
-              Text('2')
+              Text(days(dateEvent).toString()),
+              SizedBox(
+                width: widthScreen * 0.3,
+              ),
+              Text('reloj'),
             ],
           )
         ],
@@ -278,4 +313,47 @@ class _ToRunPage extends State<ToRunPage> {
       setState(() {});
     });
   }
+
+  days(String date) {
+    DateTime dates = DateTime.parse(date);
+    final dateNow = DateTime.now();
+    final difference = dates.difference(dateNow).inDays;
+    return (difference + 1);
+  }
 }
+
+class TimerTextWidget2 extends HookWidget {
+  const TimerTextWidget2({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final timeLeft = useProvider(timerProvider.state).timeLeft;
+    return Text(
+      timeLeft,
+      style: Theme.of(context).textTheme.headline2,
+    );
+  }
+}
+
+// class StatusIndicator extends StatelessWidget {
+//   final DateTime startTime;
+//   final DateTime endTime;
+
+//   StatusIndicator(this.startTime, this.endTime);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TimerBuilder.scheduled([startTime, endTime], builder: (context) {
+//       final now = DateTime.now();
+//       final started = now.compareTo(startTime) >= 0;
+//       final ended = now.compareTo(endTime) >= 0;
+//       return Text(started
+//           ? ended
+//               ? "Ended"
+//               : "Started"
+//           : "Not Started");
+//     });
+//   }
+// }
+//
+//
