@@ -17,30 +17,6 @@ import 'package:timer_builder/timer_builder.dart';
 
 import 'careers_page.dart';
 
-final timerProvider = StateNotifierProvider<TimerNotifier>(
-  (ref) => TimerNotifier(),
-);
-
-final _buttonState = Provider<ButtonState>((ref) {
-  return ref.watch(timerProvider.state).buttonState;
-});
-
-final buttonProvider = Provider<ButtonState>((ref) {
-  return ref.watch(_buttonState);
-});
-
-final state = useProvider(buttonProvider);
-
-final _timeLeftProvider = Provider<String>((ref) {
-  return ref.watch(timerProvider.state).timeLeft;
-});
-
-final timeLeftProvider = Provider<String>((ref) {
-  return ref.watch(_timeLeftProvider);
-});
-
-final timeLeft = useProvider(timeLeftProvider);
-
 class ToRunPage extends StatefulWidget {
   const ToRunPage({Key key}) : super(key: key);
 
@@ -80,7 +56,8 @@ class _ToRunPage extends State<ToRunPage> {
           )),
           _showEvent(),
           // StatusIndicator(DateTime.now(), DateTime.parse('2021-04-30T08:00'))
-          Text('reloj')
+          //Text('reloj')
+          //timer()
         ],
       ),
     );
@@ -283,17 +260,11 @@ class _ToRunPage extends State<ToRunPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(Icons.lock_clock),
-              Text(
-                'Dias Restantes: ',
-                style: TextStyle(
-                    color: Colors.red[400], fontStyle: FontStyle.italic),
-              ),
-              Text(days(dateEvent).toString()),
+              days(dateEvent),
               SizedBox(
                 width: widthScreen * 0.3,
               ),
-              Text('reloj'),
+              timer(dateEvent)
             ],
           )
         ],
@@ -314,46 +285,96 @@ class _ToRunPage extends State<ToRunPage> {
     });
   }
 
-  days(String date) {
+  Widget days(String date) {
     DateTime dates = DateTime.parse(date);
     final dateNow = DateTime.now();
     final difference = dates.difference(dateNow).inDays;
-    return (difference + 1);
+    if (difference >= 1) {
+      return Row(
+        children: [
+          SizedBox(
+            width: widthScreen * 0.2,
+          ),
+          Icon(Icons.lock_clock),
+          Text(
+            'Dias Restantes: ',
+            style:
+                TextStyle(color: Colors.red[400], fontStyle: FontStyle.italic),
+          ),
+          Text(difference.toString()),
+        ],
+      );
+    } else {
+      return Text('');
+    }
+  }
+
+//prueba
+  Widget timer(String dateEvent) {
+    //dateEvent = '2021-04-11T03:55';
+    DateTime date = DateTime.parse(dateEvent);
+    final dateNow = DateTime.now();
+
+    final difference = date.difference(dateNow);
+    print(difference);
+
+    int second = difference.inSeconds;
+    int minute = difference.inMinutes;
+    int hour = difference.inHours - 1;
+    DateTime dates;
+    dates = DateTime.now()
+        .add(Duration(hours: hour, minutes: minute, seconds: second));
+    // }
+    print(difference.inDays);
+    if (difference.inDays <= 1) {
+      return Container(
+        width: 80,
+        child: TimerBuilder.scheduled([date], builder: (context) {
+          // This function will be called once the alert time is reached
+          //
+          var now = DateTime.now();
+          var reached = now.compareTo(dates) >= 0;
+          final textStyle = Theme.of(context).textTheme.title;
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  reached ? Icons.alarm_on : Icons.alarm,
+                  color: reached ? Colors.red : Colors.red,
+                  size: 43,
+                ),
+                !reached
+                    ? TimerBuilder.periodic(Duration(seconds: 1),
+                        alignment: Duration.zero, builder: (context) {
+                        // This function will be called every second until the alert time
+                        var now = DateTime.now();
+
+                        var remaining = date.difference(now);
+                        return Text(
+                          formatDuration(remaining),
+                          style: textStyle,
+                        );
+                      })
+                    : Text("Tiempo!", style: textStyle),
+              ],
+            ),
+          );
+        }),
+      );
+    } else {
+      return Text('');
+    }
+  }
+
+  String formatDuration(Duration d) {
+    String f(int n) {
+      return n.toString().padLeft(2, '0');
+    }
+
+    // We want to round up the remaining time to the nearest second
+    d += Duration(microseconds: 999999);
+    return "${f(d.inHours)}:${f(d.inMinutes % 60)}:${f(d.inSeconds % 60)}";
   }
 }
-
-class TimerTextWidget2 extends HookWidget {
-  const TimerTextWidget2({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final timeLeft = useProvider(timerProvider.state).timeLeft;
-    return Text(
-      timeLeft,
-      style: Theme.of(context).textTheme.headline2,
-    );
-  }
-}
-
-// class StatusIndicator extends StatelessWidget {
-//   final DateTime startTime;
-//   final DateTime endTime;
-
-//   StatusIndicator(this.startTime, this.endTime);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TimerBuilder.scheduled([startTime, endTime], builder: (context) {
-//       final now = DateTime.now();
-//       final started = now.compareTo(startTime) >= 0;
-//       final ended = now.compareTo(endTime) >= 0;
-//       return Text(started
-//           ? ended
-//               ? "Ended"
-//               : "Started"
-//           : "Not Started");
-//     });
-//   }
-// }
-//
-//
