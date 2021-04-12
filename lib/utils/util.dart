@@ -168,3 +168,81 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
         );
       });
 }
+
+showAbstractRun(Map<String, dynamic> data, BuildContext context) {
+  // ignore: close_sinks
+  final mapaBloc = BlocProvider.of<MapaBloc>(context);
+  final TrainingModel training = new TrainingModel();
+  training.km = data['km'];
+  training.speed = data['velocidad'];
+  training.time = data['time'];
+  final temp = [];
+  for (var item in mapaBloc.state.polylines.values.first.points) {
+    temp.add({"Lat": item.latitude, "Log": item.longitude});
+  }
+  training.polylines = temp;
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Resumen:',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent)),
+          content: Container(
+            height: 190,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('Km recorridos: ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text('${data['km']}',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                Divider(),
+                Text('Velocidad promedio: ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text('${data['velocidad']} km/h',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                Divider(),
+                Text('Tiempo total: mm:ss',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text('${data['time']}',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancelar', style: TextStyle(color: Colors.red[400])),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            FlatButton(
+              child: Text('Guardar', style: TextStyle(color: Colors.red[400])),
+              onPressed: () {
+                UserProvider().saveRouteUser(training);
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
+}

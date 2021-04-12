@@ -59,6 +59,20 @@ class UserProvider {
         .catchError((e) => print("error $e"));
   }
 
+  // saveRouteCompetence(TrainingModel data) async {
+  //   final user = jsonDecode(_pref.credential);
+  //   data.iduser = user['uid'];
+  //   DateTime now = new DateTime.now();
+  //   data.date = new DateTime(now.year, now.month, now.day, now.hour, now.minute)
+  //       .toString();
+  //   print(data.date);
+  //   return await firestoreInstance
+  //       .collection("userTraining")
+  //       .add(data.toJson())
+  //       .then((value) => print('agregado con éxito'))
+  //       .catchError((e) => print("error $e"));
+  // }
+
   Future<Map<String, dynamic>> updateUser(
       UserModel user, File img, Map password) async {
     Map<String, dynamic> resultfinal;

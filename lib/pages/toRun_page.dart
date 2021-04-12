@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/models/events_model.dart';
+import 'package:runxatruch_app/pages/competition_page.dart';
 import 'package:runxatruch_app/provider/events_provider.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -209,7 +210,7 @@ class _ToRunPage extends State<ToRunPage> {
                   ),
                 ],
               ),
-              _dataCategory(data.categories, data.startTime),
+              _dataCategory(data.categories, data.startTime, data),
             ],
           ),
         ),
@@ -217,7 +218,8 @@ class _ToRunPage extends State<ToRunPage> {
     );
   }
 
-  Widget _dataCategory(List<dynamic> categories, String dateEvent) {
+  Widget _dataCategory(
+      List<dynamic> categories, String dateEvent, EventModelUser dataEvent) {
     print(dateEvent);
     var catIncrita;
 
@@ -262,9 +264,9 @@ class _ToRunPage extends State<ToRunPage> {
             children: [
               days(dateEvent),
               SizedBox(
-                width: widthScreen * 0.25,
+                width: widthScreen * 0.22,
               ),
-              timer(dateEvent)
+              timer(dateEvent, dataEvent, categories[catIncrita]),
             ],
           )
         ],
@@ -310,7 +312,7 @@ class _ToRunPage extends State<ToRunPage> {
   }
 
 //prueba
-  Widget timer(String dateEvent) {
+  Widget timer(String dateEvent, EventModelUser event, dynamic category) {
     //dateEvent = '2021-04-11T03:55';
     DateTime date = DateTime.parse(dateEvent);
     final dateNow = DateTime.now();
@@ -326,9 +328,9 @@ class _ToRunPage extends State<ToRunPage> {
         .add(Duration(hours: hour, minutes: minute, seconds: second));
     // }
     print(difference.inDays);
-    if (difference.inDays <= 1) {
+    if (difference.inDays < 1) {
       return Container(
-        width: 120,
+        width: 220,
         child: TimerBuilder.scheduled([date], builder: (context) {
           // This function will be called once the alert time is reached
           //
@@ -337,7 +339,7 @@ class _ToRunPage extends State<ToRunPage> {
           final textStyle = Theme.of(context).textTheme.title;
           return Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Icon(
@@ -358,6 +360,7 @@ class _ToRunPage extends State<ToRunPage> {
                         );
                       })
                     : Text("Tiempo!", style: textStyle),
+                start(event, category),
               ],
             ),
           );
@@ -366,6 +369,26 @@ class _ToRunPage extends State<ToRunPage> {
     } else {
       return Text('');
     }
+  }
+
+  Widget start(EventModelUser event, dynamic category) {
+    event.categories = [];
+    event.categories.add(category);
+    return RaisedButton(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
+        elevation: 5.0,
+        color: Colors.red[400],
+        textColor: Colors.white,
+        child: Text('Competir'),
+        onPressed: () => {
+              setState(() {
+                //runApp(ProviderScope(child: CompetityPage()))
+
+                Navigator.pushNamed(context, 'startRun', arguments: event);
+              })
+              //runApp(ProviderScope(child: CompetityPage())),
+            });
   }
 
   String formatDuration(Duration d) {
