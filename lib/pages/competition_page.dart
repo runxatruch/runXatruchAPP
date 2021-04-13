@@ -6,6 +6,7 @@ import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
+import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/utils/util.dart';
 import 'timer.dart';
 
@@ -36,26 +37,8 @@ final timeLeftProvider = Provider<String>((ref) {
 
 final timeLeft = useProvider(timeLeftProvider);
 
-// class CompetityPage extends StatelessWidget {
-//   const CompetityPage({Key key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         debugShowCheckedModeBanner: false,
-//         home: MyHomePageRun(),
-//         //routes: {'historial': (BuildContext context) => HistorialTraining()},
-//         theme: ThemeData(
-//           // Define the default brightness and colors.
-//           brightness: Brightness.light,
-//           primaryColor: Colors.red[400], //red[400],
-//           accentColor: Colors.red[400], //red[400],
-
-//           // Define the default TextTheme. Use this to specify the default
-//           // text styling for headlines, titles, bodies of text, and more.
-//         ));
-//   }
-// }
+DateTime timeStart;
+DateTime timeEnd;
 
 class CompetityPage extends StatefulWidget {
   //const CompetityPage({Key key}) : super(key: key);
@@ -140,7 +123,7 @@ class _CompetityPage extends State<CompetityPage> {
                 child: Icon(Icons.layers_outlined, color: Colors.red[400]),
               ),
               _btnStart(context),
-              _btnRemove(context),
+              _btnRemove(context, data),
               // CircleAvatar(
               //   backgroundColor: Colors.white,
               //   maxRadius: 25,
@@ -178,7 +161,7 @@ class _CompetityPage extends State<CompetityPage> {
     );
   }
 
-  Widget _btnRemove(BuildContext context) {
+  Widget _btnRemove(BuildContext context, EventModelUser data) {
     return RaisedButton(
       child: Container(
           width: 85.0,
@@ -193,11 +176,18 @@ class _CompetityPage extends State<CompetityPage> {
       elevation: 5.0,
       color: Colors.red[400],
       textColor: Colors.white,
-      onPressed: () => {_stateRun = 'Retirado', _end(context)},
+      onPressed: () => {_stateRun = 'Retirado', _end(context, data)},
     );
   }
 
-  _end(BuildContext context) {
+  _end(BuildContext context, EventModelUser data) {
+    var dataRun = {
+      "kmTours": startDist(context, context.read(timeLeftProvider))[0],
+      "timeTotal": context.read(timeLeftProvider),
+      "timeStart": timeStart,
+      "timeEnd": timeEnd,
+      "state": _stateRun
+    };
     if (_stateRun == 'Retirado') {
       showDialog(
           context: context,
@@ -213,7 +203,7 @@ class _CompetityPage extends State<CompetityPage> {
                   child: Text('Sí', style: TextStyle(color: Colors.red[400])),
                   onPressed: () {
                     _check = false;
-                    //UserProvider().saveRouteUser(training);
+                    UserProvider().saveRouteCompetence(data, dataRun, context);
                     Navigator.pushNamed(context, 'home');
                   },
                 )
@@ -225,6 +215,7 @@ class _CompetityPage extends State<CompetityPage> {
 
   playStop(BuildContext context) {
     if (_check == true) {
+      timeStart = DateTime.now();
       _stateRun = 'Corriendo';
       final bool value = stopResumen(true, context);
       if (value) {
@@ -240,6 +231,7 @@ class _CompetityPage extends State<CompetityPage> {
         });
       }
     } else if (_check == false) {
+      timeEnd = DateTime.now();
       final bool value = startResumen(context);
       if (!value) {
         context.read(timerProvider).startTimer();

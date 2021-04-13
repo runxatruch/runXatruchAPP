@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
+import 'package:runxatruch_app/models/events_inscription_model.dart';
+import 'package:runxatruch_app/models/runningCompetence_model.dart';
 import 'package:runxatruch_app/models/trainingUser_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
@@ -59,19 +64,40 @@ class UserProvider {
         .catchError((e) => print("error $e"));
   }
 
-  // saveRouteCompetence(TrainingModel data) async {
-  //   final user = jsonDecode(_pref.credential);
-  //   data.iduser = user['uid'];
-  //   DateTime now = new DateTime.now();
-  //   data.date = new DateTime(now.year, now.month, now.day, now.hour, now.minute)
-  //       .toString();
-  //   print(data.date);
-  //   return await firestoreInstance
-  //       .collection("userTraining")
-  //       .add(data.toJson())
-  //       .then((value) => print('agregado con éxito'))
-  //       .catchError((e) => print("error $e"));
-  // }
+  saveRouteCompetence(EventModelUser data, Map<String, dynamic> dataRun,
+      BuildContext context) async {
+    final mapaBloc = BlocProvider.of<MapaBloc>(context);
+    final RunningModel running = new RunningModel();
+    running.idInscription = data.idInscription;
+    print('************************');
+    print(dataRun['kmTours']);
+    running.kmTours = dataRun['kmTours'];
+    running.state = dataRun['state'];
+    running.timeStart = dataRun['timeStart'];
+    running.timeEnd = dataRun['timeEnd'];
+    running.timeTotal = dataRun['timeTotal'];
+    final temp = [];
+
+    if (running.kmTours == 0.0) {
+      running.route = [];
+    } else {
+      for (var item in mapaBloc.state.polylines.values.first.points) {
+        temp.add({"Lat": item.latitude, "Log": item.longitude});
+      }
+      running.route = temp;
+    }
+    //final user = jsonDecode(_pref.credential);
+    //data.iduser = user['uid'];
+    // DateTime now = new DateTime.now();
+    // data.date = new DateTime(now.year, now.month, now.day, now.hour, now.minute)
+    //     .toString();
+    // print(data.date);
+    return await firestoreInstance
+        .collection("competenceRunning")
+        .add(running.toJson())
+        .then((value) => print('agregado con éxito'))
+        .catchError((e) => print("error $e"));
+  }
 
   Future<Map<String, dynamic>> updateUser(
       UserModel user, File img, Map password) async {

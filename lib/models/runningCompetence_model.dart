@@ -1,15 +1,13 @@
 import 'dart:convert';
 
-RunningModel trainingModelFromJson(String str) =>
+RunningModel runningModelFromJson(String str) =>
     RunningModel.fromJson(json.decode(str));
 
 String trainingModelToJson(RunningModel data) => json.encode(data.toJson());
 
 class RunningModel {
   RunningModel(
-      {this.idCategory,
-      this.idEvent,
-      this.idUser,
+      {this.idInscription,
       this.kmTours,
       this.route,
       this.state,
@@ -17,20 +15,16 @@ class RunningModel {
       this.timeStart,
       this.timeTotal});
 
-  String idCategory;
-  String idEvent;
-  String idUser;
+  String idInscription;
   double kmTours;
   List route;
   String state;
-  String timeEnd;
-  String timeStart;
+  DateTime timeEnd;
+  DateTime timeStart;
   String timeTotal;
 
   factory RunningModel.fromJson(Map<String, dynamic> json) => RunningModel(
-        idCategory: json["idCategory"],
-        idEvent: json["idEvent"],
-        idUser: json["idUser"],
+        idInscription: json["idInscription"],
         kmTours: json["kmTours"].toDouble(),
         route: json["route"],
         state: json["state"],
@@ -40,9 +34,7 @@ class RunningModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "idCategory": idCategory,
-        "idEvent": idEvent,
-        "idUser": idUser,
+        "idInscription": idInscription,
         "kmTours": kmTours,
         "route": route,
         "state": state,
