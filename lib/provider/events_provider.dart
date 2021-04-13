@@ -1,17 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/models/route_model.dart';
-import 'package:runxatruch_app/pages/porfile_page.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
-import 'package:runxatruch_app/provider/user_provider.dart';
 
 class EventProvider {
   final _pref = PreferenciasUsuario();
@@ -166,17 +160,22 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
+    print('*********************');
+    String dateNow = (DateTime.now().toString().substring(0, 10) +
+        'T' +
+        DateTime.now().toString().substring(11, 16));
     //obteniendo las categorias existentes
     for (var i = 0; i < events.length; i++) {
       await firestoreInstance
           .where("id", isEqualTo: events[i]['idEvent'])
+          //.where("endTime", isLessThanOrEqualTo: '2021-05-01T12:00')
           .get()
           .then((value) {
         value.docs.forEach((result) {
           final value = EventModelUser.fromJson(result.data());
 
           value.idInscription = listid[i];
-          print("value id ${value.idInscription}");
+          //print("value id ${value.idInscription}");
           value.categories.forEach((element) {
             if (element['id'] == events[i]['idCat']) {
               element['inscrito'] = true;
@@ -184,11 +183,13 @@ class EventProvider {
               element['inscrito'] = false;
             }
           });
-
-          eventsUser.add(value);
+          if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
+            eventsUser.add(value);
+          }
         });
       });
     }
+
     return eventsUser;
   }
 
