@@ -374,21 +374,26 @@ class _ToRunPage extends State<ToRunPage> {
   Widget start(EventModelUser event, dynamic category) {
     event.categories = [];
     event.categories.add(category);
-    return RaisedButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
-        elevation: 5.0,
-        color: Colors.red[400],
-        textColor: Colors.white,
-        child: Text('Competir'),
-        onPressed: () => {
-              setState(() {
-                //runApp(ProviderScope(child: CompetityPage()))
+    if (DateTime.now().isAfter(DateTime.parse(event.startTime)) &&
+        DateTime.now().isBefore(DateTime.parse(event.endTime))) {
+      return RaisedButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
+          elevation: 5.0,
+          color: Colors.red[400],
+          textColor: Colors.white,
+          child: Text('Competir'),
+          onPressed: () => {
+                setState(() {
+                  //runApp(ProviderScope(child: CompetityPage()))
 
-                Navigator.pushNamed(context, 'startRun', arguments: event);
-              })
-              //runApp(ProviderScope(child: CompetityPage())),
-            });
+                  Navigator.pushNamed(context, 'startRun', arguments: event);
+                })
+                //runApp(ProviderScope(child: CompetityPage())),
+              });
+    } else {
+      return Text('');
+    }
   }
 
   String formatDuration(Duration d) {
