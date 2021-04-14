@@ -12,6 +12,7 @@ class EventModel {
     this.descripEvent,
     this.endTime,
     this.id,
+    this.inscriptionTime,
     this.nameEvent,
     this.patrocinator,
     this.startTime,
@@ -22,6 +23,7 @@ class EventModel {
   String descripEvent;
   String endTime;
   String id;
+  String inscriptionTime;
   String nameEvent;
   List patrocinator;
   String startTime;
@@ -32,6 +34,7 @@ class EventModel {
       descripEvent: json["descripEvent"],
       endTime: json["endTime"],
       id: json["id"],
+      inscriptionTime: json["inscriptionTime"],
       nameEvent: json["nameEvent"],
       patrocinator: json["patrocinator"],
       startTime: json["startTime"]);
@@ -42,6 +45,7 @@ class EventModel {
         "descripEvent": descripEvent,
         "endTime": endTime,
         "id": id,
+        "inscriptionTime": inscriptionTime,
         "nameEvent": nameEvent,
         "patrocinator": patrocinator,
         "startTime": startTime,

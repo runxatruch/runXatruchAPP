@@ -83,7 +83,8 @@ class EventProvider {
           });
         }
 
-        if (validate == true) {
+        if (validate == true &&
+            DateTime.now().isBefore(DateTime.parse(value.inscriptionTime))) {
           events.add(value);
         }
       });
