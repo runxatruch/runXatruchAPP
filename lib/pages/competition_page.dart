@@ -124,16 +124,6 @@ class _CompetityPage extends State<CompetityPage> {
               ),
               _btnStart(context),
               _btnRemove(context, data),
-              // CircleAvatar(
-              //   backgroundColor: Colors.white,
-              //   maxRadius: 25,
-              //   // child: IconButton(
-              //   //   icon: Icon(Icons.subject, color: Colors.red[400]),
-              //   //   onPressed: () {
-              //   //     Navigator.pushNamed(context, 'historial');
-              //   //   },
-              //   // ),
-              // ),
             ],
           ),
         ),
@@ -219,7 +209,7 @@ class _CompetityPage extends State<CompetityPage> {
       _stateRun = 'Corriendo';
       final bool value = stopResumen(true, context);
       if (value) {
-        showAbstract({
+        showAbstractRun({
           "km": startDist(context, context.read(timeLeftProvider))[0],
           "time": context.read(timeLeftProvider),
           "velocidad": startDist(context, context.read(timeLeftProvider))[1]

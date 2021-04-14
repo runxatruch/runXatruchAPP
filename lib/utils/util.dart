@@ -183,66 +183,91 @@ showAbstractRun(Map<String, dynamic> data, BuildContext context) {
   training.polylines = temp;
   showDialog(
       context: context,
+      barrierColor: Colors.redAccent,
+      barrierDismissible: true,
       builder: (context) {
-        return AlertDialog(
-          title: Text('Resumen:',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.redAccent)),
-          content: Container(
-            height: 190,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text('Km recorridos: ',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey)),
-                Text('${data['km']}',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                Divider(),
-                Text('Velocidad promedio: ',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey)),
-                Text('${data['velocidad']} km/h',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                Divider(),
-                Text('Tiempo total: mm:ss',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey)),
-                Text('${data['time']}',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-              ],
+        return new WillPopScope(
+          child: AlertDialog(
+            elevation: 50.0,
+            title: Text('Mis Resultados:',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.redAccent)),
+            content: Container(
+              height: 220,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(children: [
+                    Icon(
+                      Icons.run_circle_sharp,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Km recorridos: ',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey)),
+                  ]),
+                  Text('${data['km']}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  Divider(),
+                  Row(
+                    children: [
+                      Icon(Icons.speed),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('Velocidad promedio: ',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey)),
+                    ],
+                  ),
+                  Text('${data['velocidad']} km/h',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  Divider(),
+                  Row(children: [
+                    Icon(Icons.timelapse_sharp),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Tiempo total: mm:ss',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey))
+                  ]),
+                  Text('${data['time']}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                ],
+              ),
             ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Salir del evento',
+                    style: TextStyle(color: Colors.red[400])),
+                onPressed: () {
+                  //UserProvider().saveRouteUser(training);
+                  Navigator.pushNamed(context, 'home');
+                },
+              )
+            ],
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancelar', style: TextStyle(color: Colors.red[400])),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            FlatButton(
-              child: Text('Guardar', style: TextStyle(color: Colors.red[400])),
-              onPressed: () {
-                UserProvider().saveRouteUser(training);
-                Navigator.of(context).pop();
-              },
-            )
-          ],
+          onWillPop: () async => false,
         );
       });
 }

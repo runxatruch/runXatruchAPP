@@ -12,18 +12,12 @@ startDist(BuildContext context, String timer) {
   final list = List();
   for (var item in mapaBloc.state.polylines.values) {
     print('--------');
-    //int position = 0;
-    print(item.points);
-    //print(position);
+    //print(item.points);
     final double latInitial = item.points[0].latitude;
     final double lonInitial = item.points[0].longitude;
     final double latFinal = item.points[item.points.length - 1].latitude;
     final double lonFinal = item.points[item.points.length - 1].longitude;
-    //var timeLeftProvider;
-    //final seconds = context.read(timeLeftProvider);
 
-    // print(latInitial);
-    // print(latFinal);
     double distanceKM = distance(latInitial, lonInitial, latFinal, lonFinal);
 
     //final timeLeft = useProvider(timerProvider.state).timeLeft;
