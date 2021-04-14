@@ -60,13 +60,6 @@ class _CompetityPage extends State<CompetityPage> {
     print(data.categories.length);
 //acceder a la categoria data.categories[0]['km']
     return _bodyCreate(data, context);
-    //Scaffold(
-    //     appBar: AppBar(
-    //       title: Text(data.nameEvent),
-    //     ),
-    // body: SingleChildScrollView(
-    //   child: _bodyCreate(data,context),
-    // ));
   }
 
   Widget _bodyCreate(EventModelUser data, BuildContext context) {
