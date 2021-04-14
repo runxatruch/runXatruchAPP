@@ -322,7 +322,7 @@ class _ToRunPage extends State<ToRunPage> {
 
     int second = difference.inSeconds;
     int minute = difference.inMinutes;
-    int hour = difference.inHours - 1;
+    int hour = difference.inHours;
     DateTime dates;
     dates = DateTime.now()
         .add(Duration(hours: hour, minutes: minute, seconds: second));
