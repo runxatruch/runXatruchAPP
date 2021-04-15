@@ -169,7 +169,7 @@ class _LoginPagesState extends State<LoginPages> {
               Icons.alternate_email,
             ),
             hintText: 'example@example.com',
-            labelText: 'Correo Electornico',
+            labelText: 'Correo Electrónico',
           ),
           onSaved: (value) => login.correo = value,
           validator: (value) {
