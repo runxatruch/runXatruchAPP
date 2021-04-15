@@ -19,8 +19,8 @@ class RunningModel {
   double kmTours;
   List route;
   String state;
-  DateTime timeEnd;
-  DateTime timeStart;
+  String timeEnd;
+  String timeStart;
   String timeTotal;
 
   factory RunningModel.fromJson(Map<String, dynamic> json) => RunningModel(

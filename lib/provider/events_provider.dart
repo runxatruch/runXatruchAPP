@@ -65,14 +65,6 @@ class EventProvider {
 
             int ageMin = int.parse(element['ageMin']);
             int ageMax = int.parse(element['ageMax']);
-            //print(element);
-
-            // categories.forEach((elementCat) {
-            //   final dataC = jsonDecode(elementCat);
-            //   if (dataC['id'] == idCat) {
-            //     element['ruteArray'] = dataC['rute'];
-            //   }
-            // });
             if (ageUser >= ageMin && ageUser <= ageMax) {
               //return cuando ya se encuentre una categoria con esa edad
               validate = true;
@@ -89,9 +81,7 @@ class EventProvider {
         }
       });
     });
-    //print(events.length);
-    // Future<List> cat = category("0bvPah3DhO6LDTTLh1DY");
-    // print(cat.then((value) => print(value)));\
+
     return events;
   }
 
