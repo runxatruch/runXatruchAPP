@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:runxatruch_app/Widget/calculateDistance.dart';
 import 'package:runxatruch_app/models/events_inscription_model.dart';
-import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
@@ -64,7 +63,6 @@ class _CompetityPage extends State<CompetityPage> {
 
   Widget _bodyCreate(EventModelUser data, BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return new WillPopScope(
       child: Scaffold(
         body: Column(
