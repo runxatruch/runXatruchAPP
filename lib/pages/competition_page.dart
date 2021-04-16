@@ -90,7 +90,7 @@ class _CompetityPage extends State<CompetityPage> {
             ),
             Container(
                 width: size.width * 1,
-                height: size.height * 0.74,
+                height: size.height * 0.81,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
                     color: Colors.white,
