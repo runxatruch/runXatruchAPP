@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:runxatruch_app/Widget/calculateDistance.dart';
 import 'package:runxatruch_app/models/events_inscription_model.dart';
+import 'package:runxatruch_app/pages/cronometer_page.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
@@ -12,30 +13,6 @@ import 'timer.dart';
 
 bool _check = false;
 String _stateRun; //almacena si esta retirado, o finaliza
-
-final timerProvider = StateNotifierProvider<TimerNotifier>(
-  (ref) => TimerNotifier(),
-);
-
-final _buttonState = Provider<ButtonState>((ref) {
-  return ref.watch(timerProvider.state).buttonState;
-});
-
-final buttonProvider = Provider<ButtonState>((ref) {
-  return ref.watch(_buttonState);
-});
-
-final state = useProvider(buttonProvider);
-
-final _timeLeftProvider = Provider<String>((ref) {
-  return ref.watch(timerProvider.state).timeLeft;
-});
-
-final timeLeftProvider = Provider<String>((ref) {
-  return ref.watch(_timeLeftProvider);
-});
-
-final timeLeft = useProvider(timeLeftProvider);
 
 DateTime timeStart;
 DateTime timeEnd;
@@ -164,9 +141,10 @@ class _CompetityPage extends State<CompetityPage> {
   }
 
   _end(BuildContext context, EventModelUser data) {
+    //var timeTotal = ......................
     var dataRun = {
-      "kmTours": startDist(context, context.read(timeLeftProvider))[0],
-      "timeTotal": context.read(timeLeftProvider),
+      "kmTours": TimerTextWidget().distance(context),
+      "timeTotal": TimerTextWidget().time(context),
       "timeStart": timeStart,
       "timeEnd": timeEnd,
       "state": _stateRun
@@ -203,11 +181,11 @@ class _CompetityPage extends State<CompetityPage> {
       final bool value = stopResumen(true, context);
       if (value) {
         showAbstractRun({
-          "km": startDist(context, context.read(timeLeftProvider))[0],
-          "time": context.read(timeLeftProvider),
-          "velocidad": startDist(context, context.read(timeLeftProvider))[1]
+          "km": TimerTextWidget().distance(context),
+          "time": TimerTextWidget().time(context),
+          "velocidad": TimerTextWidget().velocity(context)
         }, context);
-        context.read(timerProvider).reset();
+        TimerTextWidget().reset(context);
 
         setState(() {
           _check = !_check;
@@ -217,24 +195,11 @@ class _CompetityPage extends State<CompetityPage> {
       timeEnd = DateTime.now();
       final bool value = startResumen(context);
       if (!value) {
-        context.read(timerProvider).startTimer();
+        TimerTextWidget().startTime(context);
         setState(() {
           _check = !_check;
         });
       }
     }
-  }
-}
-
-class TimerTextWidget extends HookWidget {
-  const TimerTextWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final timeLeft = useProvider(timerProvider.state).timeLeft;
-    return Text(
-      timeLeft,
-      style: Theme.of(context).textTheme.headline2,
-    );
   }
 }
