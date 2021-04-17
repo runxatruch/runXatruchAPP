@@ -76,38 +76,41 @@ class _ToRunPage extends State<ToRunPage> {
           final data = snapshot.data;
           if (data.length > 0) {
             return Expanded(
-              child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, i) {
-                    final item = data[i].idInscription;
-                    final name = data[i].nameEvent;
-                    //return _createListEvent(data[i], context);
-                    return Dismissible(
-                      key: UniqueKey(),
-                      onDismissed: (direction) {
-                        _deleteInscription(data[i].idInscription);
-                        setState(() {
-                          data.removeAt(i);
-                        });
+              child: RefreshIndicator(
+                onRefresh: obtenerData,
+                child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, i) {
+                      final item = data[i].idInscription;
+                      final name = data[i].nameEvent;
+                      //return _createListEvent(data[i], context);
+                      return Dismissible(
+                        key: UniqueKey(),
+                        onDismissed: (direction) {
+                          _deleteInscription(data[i].idInscription);
+                          setState(() {
+                            data.removeAt(i);
+                          });
 
-                        // Then show a snackbar.
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.white,
-                            content: Text(
-                              "Ya no está inscrito en el evento: $name",
-                              style: TextStyle(color: Colors.white),
-                            )));
-                      },
-                      // Show a red background as the item is swiped away.
-                      background: Container(
-                          child: Icon(
-                        Icons.delete_sweep_outlined,
-                        color: Colors.red,
-                      )),
-                      //child: ListTile(title: Text('$item')),
-                      child: _createListEvent(data[i], context),
-                    );
-                  }),
+                          // Then show a snackbar.
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.white,
+                              content: Text(
+                                "Ya no está inscrito en el evento: $name",
+                                style: TextStyle(color: Colors.white),
+                              )));
+                        },
+                        // Show a red background as the item is swiped away.
+                        background: Container(
+                            child: Icon(
+                          Icons.delete_sweep_outlined,
+                          color: Colors.red,
+                        )),
+                        //child: ListTile(title: Text('$item')),
+                        child: _createListEvent(data[i], context),
+                      );
+                    }),
+              ),
             );
           } else {
             return Container(

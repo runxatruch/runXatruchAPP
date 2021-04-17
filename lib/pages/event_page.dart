@@ -53,10 +53,6 @@ class _EventPageState extends State<EventPages> {
           _dataEvent(data),
           SizedBox(height: 10),
           _category(data.categories),
-          // Divider(
-          //   color: Colors.black,
-          //   thickness: 3.0,
-          // ),
           SizedBox(height: 10),
           _showCategory(data.categories)
         ],
@@ -127,11 +123,6 @@ class _EventPageState extends State<EventPages> {
       child: AnimatedContainer(
         duration: Duration(seconds: 1),
         color: Colors.white,
-        // decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //         colors: [Colors.blueGrey[50], Colors.blue, Colors.red[100]],
-        //         stops: [0.5, 0.5, 0.3],
-        //         end: FractionalOffset.bottomCenter)),
         width: width.toDouble(),
         curve: Curves.elasticOut,
         child: Column(
@@ -354,19 +345,6 @@ class _EventPageState extends State<EventPages> {
     });
   }
 
-  // _inscriptionRegister(BuildContext context) async {
-  //   //Pendiente de completacion
-
-  //   dynamic result = await _inscriptionProvider.addInscription();
-
-  //   if (result['ok']) {
-  //     //Navigator.pushReplacementNamed(context, 'home');
-  //     AlertDialog(semanticLabel: 'agregado');
-  //   } else {
-  //     AlertDialog(semanticLabel: 'Error');
-  //   }
-  // }
-
   Widget _dataEvent(EventModel data) {
     return Container(
       padding: EdgeInsets.only(top: heightScreen * 0.04, bottom: 10),
@@ -445,22 +423,6 @@ class _EventPageState extends State<EventPages> {
                 SizedBox(
                   height: 5,
                 ),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        // Text(
-                        //   "Descripción: ",
-                        //   style: TextStyle(
-                        //       fontWeight: FontWeight.bold,
-                        //       color: Colors.red[400]),
-                        // ),
-                        // Text(
-                        //   data.descripEvent,
-                        //   textAlign: TextAlign.end,
-                        // ),
-                      ],
-                    )),
               ],
             ),
           ),

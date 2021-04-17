@@ -73,8 +73,8 @@ class UserProvider {
     print(dataRun['kmTours']);
     running.kmTours = dataRun['kmTours'];
     running.state = dataRun['state'];
-    running.timeStart = dataRun['timeStart'];
-    running.timeEnd = dataRun['timeEnd'];
+    running.timeStart = dataRun['timeStart'].toString().substring(0, 19);
+    running.timeEnd = dataRun['timeEnd'].toString().substring(0, 19);
     running.timeTotal = dataRun['timeTotal'];
     final temp = [];
 
@@ -86,12 +86,6 @@ class UserProvider {
       }
       running.route = temp;
     }
-    //final user = jsonDecode(_pref.credential);
-    //data.iduser = user['uid'];
-    // DateTime now = new DateTime.now();
-    // data.date = new DateTime(now.year, now.month, now.day, now.hour, now.minute)
-    //     .toString();
-    // print(data.date);
     return await firestoreInstance
         .collection("competenceRunning")
         .add(running.toJson())
