@@ -151,7 +151,6 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
-    print('*********************');
     String dateNow = (DateTime.now().toString().substring(0, 10) +
         'T' +
         DateTime.now().toString().substring(11, 16));

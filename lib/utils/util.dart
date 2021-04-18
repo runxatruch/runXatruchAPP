@@ -170,6 +170,7 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
 }
 
 showAbstractRun(Map<String, dynamic> data, BuildContext context) {
+  int count = 0;
   // ignore: close_sinks
   final mapaBloc = BlocProvider.of<MapaBloc>(context);
   final TrainingModel training = new TrainingModel();
@@ -262,7 +263,9 @@ showAbstractRun(Map<String, dynamic> data, BuildContext context) {
                     style: TextStyle(color: Colors.red[400])),
                 onPressed: () {
                   //UserProvider().saveRouteUser(training);
-                  Navigator.pushNamed(context, 'home');
+                  Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                  });
                 },
               )
             ],

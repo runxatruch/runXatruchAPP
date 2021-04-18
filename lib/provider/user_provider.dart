@@ -66,15 +66,18 @@ class UserProvider {
 
   saveRouteCompetence(EventModelUser data, Map<String, dynamic> dataRun,
       BuildContext context) async {
+    print(dataRun);
     final mapaBloc = BlocProvider.of<MapaBloc>(context);
     final RunningModel running = new RunningModel();
     running.idInscription = data.idInscription;
-    print('************************');
-    print(dataRun['kmTours']);
     running.kmTours = dataRun['kmTours'];
     running.state = dataRun['state'];
-    running.timeStart = dataRun['timeStart'].toString().substring(0, 19);
-    running.timeEnd = dataRun['timeEnd'].toString().substring(0, 19);
+    running.timeStart = dataRun['timeStart'] == null
+        ? null
+        : dataRun['timeStart'].toString().substring(0, 19);
+    running.timeEnd = dataRun['timeEnd'] == null
+        ? null
+        : dataRun['timeEnd'].toString().substring(0, 19);
     running.timeTotal = dataRun['timeTotal'];
     final temp = [];
 

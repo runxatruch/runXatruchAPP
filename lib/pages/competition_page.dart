@@ -1,22 +1,35 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:runxatruch_app/Widget/calculateDistance.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
 import 'package:runxatruch_app/models/events_inscription_model.dart';
+import 'package:runxatruch_app/models/route_model.dart';
 import 'package:runxatruch_app/pages/cronometer_page.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
+import 'package:runxatruch_app/provider/events_provider.dart';
 import 'package:runxatruch_app/provider/incription_provider.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/utils/util.dart';
 
 bool _check = false;
+bool _start = false;
+bool _finish = false;
 String _stateRun; //almacena si esta retirado, o finaliza
 
 DateTime timeStart;
 DateTime timeEnd;
 
+Timer timer;
+Timer timerObjVar;
+int starter = 0;
+List<LatLng> _route;
+
 class CompetityPage extends StatefulWidget {
   //const CompetityPage({Key key}) : super(key: key);
-
   @override
   _CompetityPage createState() => _CompetityPage();
 }
@@ -24,22 +37,59 @@ class CompetityPage extends StatefulWidget {
 String categoriaSelect;
 EventModelUser data;
 dynamic category;
+MiUbicacionBloc mapaBloc;
 
 class _CompetityPage extends State<CompetityPage> {
-  final _inscriptionProvider = new InscriptionProvider();
+  temp(LatLng ubication, List<LatLng> route, context) {
+    if (!_start) {
+      _finish = false;
+      double distanceKM = distance(ubication.latitude, ubication.longitude,
+          route[0].latitude, route[0].longitude);
+      //distanceKM = 0.01;
+      print(distanceKM);
+      if (distanceKM <= 0.01) {
+        _start = true;
+        playStop(context);
+      }
+    } else {
+      int end = route.length - 1;
+      double distanceKM = distance(ubication.latitude, ubication.longitude,
+          route[end].latitude, route[end].longitude);
+      if (distanceKM <= 0.01) {
+        print("here");
+        _start = false;
+        setState(() {
+          _finish = true;
+        });
+        playStop(context);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
+      timerObjVar = timer;
+      temp(mapaBloc.state.ubicacion, _route, context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    data = ModalRoute.of(context).settings.arguments;
     // ignore: close_sinks
-    final mapaBloc = BlocProvider.of<MiUbicacionBloc>(context);
-    print('tamanio ${mapaBloc.state.ubicacion}');
+    mapaBloc = BlocProvider.of<MiUbicacionBloc>(context);
+    data = ModalRoute.of(context).settings.arguments;
+
 //acceder a la categoria data.categories[0]['km']
     return _bodyCreate(data, context);
   }
 
   Widget _bodyCreate(EventModelUser data, BuildContext context) {
+    // ignore: close_sinks
+
     final size = MediaQuery.of(context).size;
-    print(data.categories);
+
     return new WillPopScope(
       child: Scaffold(
         body: Column(
@@ -76,7 +126,7 @@ class _CompetityPage extends State<CompetityPage> {
                         blurRadius: 2.0,
                       )
                     ]),
-                child: MapPage())
+                child: _createMap(data.categories, context))
           ],
         ),
         floatingActionButton: Container(
@@ -148,6 +198,7 @@ class _CompetityPage extends State<CompetityPage> {
       "state": _stateRun
     };
     if (_stateRun == 'Retirado') {
+      int count = 0;
       showDialog(
           context: context,
           builder: (context) {
@@ -156,14 +207,24 @@ class _CompetityPage extends State<CompetityPage> {
               actions: <Widget>[
                 FlatButton(
                   child: Text('No', style: TextStyle(color: Colors.red[400])),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
                 FlatButton(
                   child: Text('Sí', style: TextStyle(color: Colors.red[400])),
-                  onPressed: () {
-                    _check = false;
-                    UserProvider().saveRouteCompetence(data, dataRun, context);
-                    Navigator.pushNamed(context, 'home');
+                  onPressed: () async {
+                    setState(() {
+                      _check = false;
+                    });
+
+                    await UserProvider()
+                        .saveRouteCompetence(data, dataRun, context);
+                    cancelTimer();
+
+                    Navigator.popUntil(context, (route) {
+                      return count++ == 2;
+                    });
                   },
                 )
               ],
@@ -174,6 +235,7 @@ class _CompetityPage extends State<CompetityPage> {
 
   playStop(BuildContext context) {
     if (_check == true) {
+      cancelTimer();
       timeStart = DateTime.now();
       _stateRun = 'Corriendo';
       final bool value = stopResumen(true, context);
@@ -198,6 +260,50 @@ class _CompetityPage extends State<CompetityPage> {
           _check = !_check;
         });
       }
+    }
+  }
+
+  //Generar mapa con la ruta
+  Widget _createMap(id, context) {
+    List<LatLng> route = [];
+    return FutureBuilder(
+      future: EventProvider().category(id[0]['id']),
+      builder: (BuildContext context, AsyncSnapshot<RuteModel> snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data;
+          route.clear();
+
+          for (var item in data.rute) {
+            if (item["log"] != null || item["lat"] != null) {
+              LatLng ite = new LatLng(double.parse(item["lat"].toString()),
+                  double.parse(item["log"].toString()));
+              route.add(ite);
+            }
+          }
+          _route = route;
+
+          return Container(
+            child: MapPage(
+              route: route,
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  cancelTimer() {
+    if (timer != null) {
+      print(timer);
+      timer.cancel();
+      timer = null;
+    }
+    if (timerObjVar != null) {
+      print(timerObjVar);
+      timerObjVar.cancel();
+      timerObjVar = null;
     }
   }
 }

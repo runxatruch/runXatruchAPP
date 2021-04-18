@@ -13,7 +13,6 @@ class InscriptionProvider {
   addInscription(Map data) async {
     bool _exist;
     final preferences = jsonDecode(_pref.credential);
-    print(preferences);
     data['idUser'] = preferences['uid'];
     final firestoreInstance = FirebaseFirestore.instance;
     //aca tengo que  verificar si ya hay un registro de evento y usuario en el que la fecha de evento sea igual
@@ -31,7 +30,6 @@ class InscriptionProvider {
         }
       });
       //probar en poner en if el exist...
-      print("***** $_exist");
       //agregar condicion de si ya esta inscrito
       if (_exist == false) {
         firestoreInstance.collection("userInscription").add(data).then((value) {
@@ -87,7 +85,6 @@ class InscriptionProvider {
   }
 
   Future<bool> deleteUser(String id) async {
-    print("eliminando $id");
     try {
       await _inscription.doc(id).delete();
       return true;
