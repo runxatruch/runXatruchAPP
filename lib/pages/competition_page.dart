@@ -18,6 +18,7 @@ import 'package:runxatruch_app/utils/util.dart';
 bool _check = false;
 bool _start = false;
 bool _finish = false;
+double velocity;
 double distanceMeta = 0;
 String _stateRun; //almacena si esta retirado, o finaliza
 
@@ -42,7 +43,7 @@ MiUbicacionBloc mapaBloc;
 
 class _CompetityPage extends State<CompetityPage> {
   temp(LatLng ubication, List<LatLng> route, context) {
-    if (!_start) {
+    if (!_check) {
       double distanceKM = distance(ubication.latitude, ubication.longitude,
           route[0].latitude, route[0].longitude);
 
@@ -56,6 +57,8 @@ class _CompetityPage extends State<CompetityPage> {
           route[end].latitude, route[end].longitude);
 
       distanceMeta = distanceKM;
+      double timediff = DateTime.now().difference(timeStart).inSeconds / 3600;
+      velocity = distanceMeta / timediff;
       if (distanceKM <= 0.03) {
         _start = false;
         playStop(context);
@@ -112,7 +115,7 @@ class _CompetityPage extends State<CompetityPage> {
               ),
             ),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 80),
                 height: size.height * 0.04,
                 child: _information()),
             Container(
@@ -241,12 +244,12 @@ class _CompetityPage extends State<CompetityPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(children: [
-            Text(
-              "KM restantes: ",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red[400],
-                  fontSize: 20),
+            Image(
+              image: AssetImage("assets/ubicacion.png"),
+              height: 30,
+            ),
+            SizedBox(
+              width: 5,
             ),
             Text(
               distanceMeta == 0
@@ -255,12 +258,17 @@ class _CompetityPage extends State<CompetityPage> {
               style: TextStyle(fontSize: 20),
             ),
           ]),
-          Text(
-            "KM/H",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.red[400],
-                fontSize: 20),
+          Row(
+            children: [
+              Image(
+                image: AssetImage("assets/velocimetro.png"),
+                height: 25,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text("${velocity.toInt()} km/h")
+            ],
           )
         ],
       );
