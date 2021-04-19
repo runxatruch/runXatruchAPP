@@ -18,6 +18,7 @@ import 'package:runxatruch_app/utils/util.dart';
 bool _check = false;
 bool _start = false;
 bool _finish = false;
+double distanceMeta = 0;
 String _stateRun; //almacena si esta retirado, o finaliza
 
 DateTime timeStart;
@@ -42,12 +43,10 @@ MiUbicacionBloc mapaBloc;
 class _CompetityPage extends State<CompetityPage> {
   temp(LatLng ubication, List<LatLng> route, context) {
     if (!_start) {
-      _finish = false;
       double distanceKM = distance(ubication.latitude, ubication.longitude,
           route[0].latitude, route[0].longitude);
-      //distanceKM = 0.01;
-      print(distanceKM);
-      if (distanceKM <= 0.01) {
+
+      if (distanceKM <= 0.03) {
         _start = true;
         playStop(context);
       }
@@ -55,14 +54,13 @@ class _CompetityPage extends State<CompetityPage> {
       int end = route.length - 1;
       double distanceKM = distance(ubication.latitude, ubication.longitude,
           route[end].latitude, route[end].longitude);
-      if (distanceKM <= 0.01) {
-        print("here");
+
+      distanceMeta = distanceKM;
+      if (distanceKM <= 0.03) {
         _start = false;
-        setState(() {
-          _finish = true;
-        });
         playStop(context);
       }
+      setState(() {});
     }
   }
 
@@ -114,8 +112,12 @@ class _CompetityPage extends State<CompetityPage> {
               ),
             ),
             Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                height: size.height * 0.04,
+                child: _information()),
+            Container(
                 width: size.width * 1,
-                height: size.height * 0.81,
+                height: size.height * 0.77,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
                     color: Colors.white,
@@ -233,26 +235,63 @@ class _CompetityPage extends State<CompetityPage> {
     }
   }
 
-  playStop(BuildContext context) {
-    if (_check == true) {
-      cancelTimer();
-      timeStart = DateTime.now();
-      _stateRun = 'Corriendo';
-      final bool value = stopResumen(true, context);
-      if (value) {
-        showAbstractRun({
-          "km": TimerTextWidget().distance(context),
-          "time": TimerTextWidget().time(context),
-          "velocidad": TimerTextWidget().velocity(context)
-        }, context);
-        TimerTextWidget().reset(context);
+  Widget _information() {
+    if (_check) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(children: [
+            Text(
+              "KM restantes: ",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[400],
+                  fontSize: 20),
+            ),
+            Text(
+              distanceMeta == 0
+                  ? "  -- "
+                  : "${distanceMeta.toStringAsPrecision(2)}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ]),
+          Text(
+            "KM/H",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red[400],
+                fontSize: 20),
+          )
+        ],
+      );
+    } else {
+      return Text("Para iniciar cruce la linea de salida",
+          style: TextStyle(
+            color: Colors.red[400],
+          ));
+    }
+  }
 
-        setState(() {
-          _check = !_check;
-        });
-      }
-    } else if (_check == false) {
+  playStop(BuildContext context) {
+    print(_check);
+    if (_check == true) {
+      print("finalizao");
+      cancelTimer();
       timeEnd = DateTime.now();
+      final bool value = stopResumen(true, context);
+
+      showAbstractRun({
+        "km": TimerTextWidget().distance(context),
+        "time": TimerTextWidget().time(context),
+        "velocidad": TimerTextWidget().velocity(context)
+      }, context);
+      TimerTextWidget().reset(context);
+
+      setState(() {
+        _check = !_check;
+      });
+    } else if (_check == false) {
+      timeStart = DateTime.now();
       final bool value = startResumen(context);
       if (!value) {
         TimerTextWidget().startTime(context);
