@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:runxatruch_app/pages/careers_page.dart';
+import 'package:runxatruch_app/provider/incription_provider.dart';
 
 class ParticipationsPage extends StatelessWidget {
   const ParticipationsPage({Key key}) : super(key: key);
@@ -17,25 +17,36 @@ class ParticipationsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Participaciones'),
       ),
-      body: SingleChildScrollView(
-        child: _bodyCreate(),
+      body: Container(
+        child: FutureBuilder(
+          future: InscriptionProvider().showPartipation(),
+          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+            if (snapshot.hasData) {
+              final data = snapshot.data;
+              print("********** $data");
+              return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, i) => _bodyCreate(data[i], context));
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }
 
-  Widget _bodyCreate() {
+  Widget _bodyCreate(Map<dynamic, dynamic> data, BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 5, left: 6),
+      padding: EdgeInsets.only(top: 15, left: 6, bottom: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              blurRadius: 10, color: Colors.redAccent, offset: Offset(8, 8))
-        ],
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.red[400])),
       alignment: Alignment.center,
-      margin: EdgeInsets.all(25),
+      margin: EdgeInsets.all(15),
       width: 400,
       child: Column(
         children: [
@@ -50,45 +61,82 @@ class ParticipationsPage extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Icon(Icons.event),
-              Text('Evento: '),
-              Text('Nombre Evento')
+              Container(
+                width: 250,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.event_available_outlined,
+                            color: Colors.red[200]),
+                        Text('Evento: ',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent)),
+                        Text('${data["nameEvent"]}')
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.date_range_sharp, color: Colors.red[200]),
+                        Text(' Fecha: ',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent)),
+                        Text('${data["date"].split("T")[0]}')
+                      ],
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.arrow_right_alt_outlined,
+                            color: Colors.red[200]),
+                        Text(
+                          ' Km: ',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent),
+                        ),
+                        Text('${data["kmTours"]}'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.adjust_outlined, color: Colors.red[200]),
+                        Text(
+                          ' Estado: ',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent),
+                        ),
+                        Text('${data["state"]}'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.timelapse_sharp, color: Colors.red[200]),
+                        Text('Tiempo: ',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent)),
+                        Text('${data["timeTotal"]}')
+                      ],
+                    )
+                  ],
+                ),
+              )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(Icons.date_range_sharp),
-              Text('Fecha: '),
-              Text('14/04/2021')
-            ],
-          ),
-          SizedBox(
-            height: 2,
-          ),
-          Row(
-            children: [
-              Icon(Icons.star_rate_outlined),
-              Text('Premio: '),
-              Text('Segundo Lugar'),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(Icons.timelapse_sharp),
-              Text('Tiempo: '),
-              Text('1:10:07')
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.timelapse_sharp),
-              Text('Categoría: '),
-              Text('Nombre Categoria')
-            ],
-          )
         ],
       ),
     );
