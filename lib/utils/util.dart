@@ -172,16 +172,9 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
 showAbstractRun(Map<String, dynamic> data, BuildContext context) {
   int count = 0;
   // ignore: close_sinks
-  final mapaBloc = BlocProvider.of<MapaBloc>(context);
   final TrainingModel training = new TrainingModel();
-  training.km = data['km'];
-  training.speed = data['velocidad'];
   training.time = data['time'];
-  final temp = [];
-  for (var item in mapaBloc.state.polylines.values.first.points) {
-    temp.add({"Lat": item.latitude, "Log": item.longitude});
-  }
-  training.polylines = temp;
+
   showDialog(
       context: context,
       barrierColor: Colors.redAccent,
@@ -190,13 +183,13 @@ showAbstractRun(Map<String, dynamic> data, BuildContext context) {
         return new WillPopScope(
           child: AlertDialog(
             elevation: 50.0,
-            title: Text('Mis Resultados:',
+            title: Text('Tiempo Empleado:',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.redAccent)),
             content: Container(
-              height: 220,
+              height: 180,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -219,27 +212,10 @@ showAbstractRun(Map<String, dynamic> data, BuildContext context) {
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
                   Divider(),
-                  Row(
-                    children: [
-                      Icon(Icons.speed),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('Velocidad promedio: ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey)),
-                    ],
-                  ),
-                  Text('${data['velocidad']} km/h',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
-                  Divider(),
                   Row(children: [
-                    Icon(Icons.timelapse_sharp),
+                    Icon(
+                      Icons.run_circle_sharp,
+                    ),
                     SizedBox(
                       width: 5,
                     ),

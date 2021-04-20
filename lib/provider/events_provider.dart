@@ -151,21 +151,16 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
-    String dateNow = (DateTime.now().toString().substring(0, 10) +
-        'T' +
-        DateTime.now().toString().substring(11, 16));
     //obteniendo las categorias existentes
     for (var i = 0; i < events.length; i++) {
       await firestoreInstance
           .where("id", isEqualTo: events[i]['idEvent'])
-          //.where("endTime", isLessThanOrEqualTo: '2021-05-01T12:00')
           .get()
           .then((value) {
         value.docs.forEach((result) {
           final value = EventModelUser.fromJson(result.data());
 
           value.idInscription = listid[i];
-          //print("value id ${value.idInscription}");
           value.categories.forEach((element) {
             if (element['id'] == events[i]['idCat']) {
               element['inscrito'] = true;

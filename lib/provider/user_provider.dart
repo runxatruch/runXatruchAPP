@@ -64,13 +64,12 @@ class UserProvider {
         .catchError((e) => print("error $e"));
   }
 
-  saveRouteCompetence(EventModelUser data, Map<String, dynamic> dataRun,
+  saveRouteCompetence(String idInscription, Map<String, dynamic> dataRun,
       BuildContext context) async {
     print(dataRun);
-    final mapaBloc = BlocProvider.of<MapaBloc>(context);
     final RunningModel running = new RunningModel();
-    running.idInscription = data.idInscription;
-    running.kmTours = dataRun['kmTours'];
+    running.kmTotal = dataRun['kmTotal'];
+    running.idInscription = idInscription;
     running.state = dataRun['state'];
     running.timeStart = dataRun['timeStart'] == null
         ? null
@@ -79,16 +78,7 @@ class UserProvider {
         ? null
         : dataRun['timeEnd'].toString().substring(0, 19);
     running.timeTotal = dataRun['timeTotal'];
-    final temp = [];
 
-    if (running.kmTours == 0.0) {
-      running.route = [];
-    } else {
-      for (var item in mapaBloc.state.polylines.values.first.points) {
-        temp.add({"Lat": item.latitude, "Log": item.longitude});
-      }
-      running.route = temp;
-    }
     return await firestoreInstance
         .collection("competenceRunning")
         .add(running.toJson())

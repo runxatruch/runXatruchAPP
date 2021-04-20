@@ -101,12 +101,6 @@ class _CompetityPage extends State<CompetityPage> {
               child: Column(
                 children: <Widget>[
                   TimerTextWidget(),
-                  Text('Duración',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.redAccent)),
-
                   SizedBox(
                     height: 5,
                   ),
@@ -223,8 +217,8 @@ class _CompetityPage extends State<CompetityPage> {
                       _check = false;
                     });
 
-                    await UserProvider()
-                        .saveRouteCompetence(data, dataRun, context);
+                    await UserProvider().saveRouteCompetence(
+                        data.idInscription, dataRun, context);
                     cancelTimer();
 
                     Navigator.popUntil(context, (route) {
@@ -280,24 +274,34 @@ class _CompetityPage extends State<CompetityPage> {
     }
   }
 
-  playStop(BuildContext context) {
+  playStop(BuildContext context) async {
+    _stateRun = 'activo';
+    timeEnd = DateTime.now();
+    var dataRun = {
+      "kmTotal": 0.0,
+      "timeTotal": TimerTextWidget().time(context),
+      "timeStart": timeStart,
+      "timeEnd": timeEnd,
+      "state": _stateRun
+    };
     print(_check);
     if (_check == true) {
-      print("finalizao");
       cancelTimer();
       timeEnd = DateTime.now();
       final bool value = stopResumen(true, context);
 
       showAbstractRun({
-        "km": TimerTextWidget().distance(context),
+        "km": 0.0,
         "time": TimerTextWidget().time(context),
-        "velocidad": TimerTextWidget().velocity(context)
       }, context);
       TimerTextWidget().reset(context);
 
       setState(() {
         _check = !_check;
       });
+      await UserProvider()
+          .saveRouteCompetence(data.idInscription, dataRun, context);
+      cancelTimer();
     } else if (_check == false) {
       timeStart = DateTime.now();
       final bool value = startResumen(context);

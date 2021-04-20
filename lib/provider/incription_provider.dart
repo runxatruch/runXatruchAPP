@@ -32,51 +32,12 @@ class InscriptionProvider {
       //probar en poner en if el exist...
       //agregar condicion de si ya esta inscrito
       if (_exist == false) {
-        firestoreInstance.collection("userInscription").add(data).then((value) {
-          // print(value.id);
-          // showDialog(
-          //     context: context,
-          //     builder: (buildcontext) {
-          //       return AlertDialog(
-          //         title: Text("FELICIDADES"),
-          //         content: Text("Inscrito correctamente"),
-          //         actions: <Widget>[
-          //           GestureDetector(
-          //             child: Text(
-          //               "CERRAR",
-          //               style: TextStyle(color: Colors.red),
-          //             ),
-          //             onTap: () {
-          //               // Navigator.of(context).pop();
-          //               Navigator.pushReplacementNamed(context, 'home');
-          //             },
-          //           )
-          //         ],
-          //       );
-          //     });
-        });
+        firestoreInstance
+            .collection("userInscription")
+            .add(data)
+            .then((value) {});
         return {"ok": true};
       } else {
-        // showDialog(
-        //     context: context,
-        //     builder: (buildcontext) {
-        //       return AlertDialog(
-        //         title: Text("Error"),
-        //         content: Text("Ya se encuentra inscrito en este evento"),
-        //         actions: <Widget>[
-        //           GestureDetector(
-        //             child: Text(
-        //               "CERRAR",
-        //               style: TextStyle(color: Colors.red),
-        //             ),
-        //             onTap: () {
-        //               Navigator.of(context).pop();
-        //               //Navigator.pushReplacementNamed(context, 'home');
-        //             },
-        //           )
-        //         ],
-        //       );
-        //     });
         return {"ok": false, "msj": "Ya estas incrito a este evento"};
       }
     } catch (e) {
