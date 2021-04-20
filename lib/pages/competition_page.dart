@@ -58,9 +58,9 @@ class _CompetityPage extends State<CompetityPage> {
           route[end].latitude, route[end].longitude);
       double distanceStart = distance(ubication.latitude, ubication.longitude,
           route[0].latitude, route[0].longitude);
-      distanceMeta = distanceStart;
+      distanceMeta = distanceKM;
       double timediff = DateTime.now().difference(timeStart).inSeconds / 3600;
-      velocity = distanceMeta / timediff;
+      velocity = distanceStart / timediff;
       _distance = distanceStart;
       if (distanceKM <= 0.03) {
         _start = false;
@@ -192,8 +192,16 @@ class _CompetityPage extends State<CompetityPage> {
 
   _end(BuildContext context, EventModelUser data) {
     //var timeTotal = ......................
+    String distance;
+
+    if (_check) {
+      distance = _distance.toStringAsPrecision(2);
+    } else {
+      distance = "0.0";
+    }
+
     var dataRun = {
-      "kmTotal": "${_distance.toStringAsPrecision(2)}",
+      "kmTotal": distance,
       "timeTotal": TimerTextWidget().time(context),
       "timeStart": timeStart,
       "timeEnd": timeEnd,
