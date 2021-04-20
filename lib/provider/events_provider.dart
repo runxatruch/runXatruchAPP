@@ -48,7 +48,7 @@ class EventProvider {
     await firestoreInstance
         .where("startTime", isLessThanOrEqualTo: monthNext())
         .where("startTime", isGreaterThanOrEqualTo: DateTime.now().toString())
-        .orderBy("startTime")
+        .orderBy("startTime", descending: false)
         .get()
         .then((value) {
       value.docs.forEach((result) {
@@ -151,6 +151,7 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
+    firestoreInstance.orderBy("startTime", descending: false);
     //obteniendo las categorias existentes
     for (var i = 0; i < events.length; i++) {
       await firestoreInstance
@@ -170,6 +171,24 @@ class EventProvider {
           });
           if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
             eventsUser.add(value);
+          }
+        });
+      });
+    }
+
+//Intancia coleccion competenceRunning
+    Query firestoreInstanceCo =
+        FirebaseFirestore.instance.collection("competenceRunning");
+    //obteniendo las categorias existentes
+    for (var i = 0; i < eventsUser.length; i++) {
+      await firestoreInstanceCo
+          .where("idInscription", whereIn: listid)
+          .get()
+          .then((value) {
+        print(value.size);
+        value.docs.forEach((result) {
+          if (result['idInscription'] == eventsUser[i].idInscription) {
+            eventsUser.remove(eventsUser[i]);
           }
         });
       });

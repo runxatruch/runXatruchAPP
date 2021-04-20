@@ -139,7 +139,6 @@ class _CompetityPage extends State<CompetityPage> {
                 onPressed: () => newTheme(context),
                 child: Icon(Icons.layers_outlined, color: Colors.red[400]),
               ),
-              _btnStart(context),
               _btnRemove(context, data),
             ],
           ),
