@@ -16,7 +16,7 @@ class RunningModel {
 
   String idInscription;
   String state;
-  double kmTotal;
+  String kmTotal;
   String timeEnd;
   String timeStart;
   String timeTotal;

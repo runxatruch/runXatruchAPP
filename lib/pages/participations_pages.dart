@@ -104,7 +104,7 @@ class ParticipationsPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Colors.redAccent),
                         ),
-                        Text('${data["kmTours"]}'),
+                        Text('${data["kmTotal"]}'),
                       ],
                     ),
                     Row(

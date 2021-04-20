@@ -16,8 +16,8 @@ import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/utils/util.dart';
 
 bool _check = false;
+double _distance = 0.0;
 bool _start = false;
-bool _finish = false;
 double velocity;
 double distanceMeta = 0;
 String _stateRun; //almacena si esta retirado, o finaliza
@@ -43,6 +43,7 @@ MiUbicacionBloc mapaBloc;
 
 class _CompetityPage extends State<CompetityPage> {
   temp(LatLng ubication, List<LatLng> route, context) {
+    _distance = 0.0;
     if (!_check) {
       double distanceKM = distance(ubication.latitude, ubication.longitude,
           route[0].latitude, route[0].longitude);
@@ -60,8 +61,10 @@ class _CompetityPage extends State<CompetityPage> {
       distanceMeta = distanceStart;
       double timediff = DateTime.now().difference(timeStart).inSeconds / 3600;
       velocity = distanceMeta / timediff;
+      _distance = distanceStart;
       if (distanceKM <= 0.03) {
         _start = false;
+
         playStop(context);
       }
       setState(() {});
@@ -190,7 +193,7 @@ class _CompetityPage extends State<CompetityPage> {
   _end(BuildContext context, EventModelUser data) {
     //var timeTotal = ......................
     var dataRun = {
-      "kmTours": TimerTextWidget().distance(context),
+      "kmTotal": "${_distance.toStringAsPrecision(2)}",
       "timeTotal": TimerTextWidget().time(context),
       "timeStart": timeStart,
       "timeEnd": timeEnd,
@@ -277,21 +280,22 @@ class _CompetityPage extends State<CompetityPage> {
   playStop(BuildContext context) async {
     _stateRun = 'activo';
     timeEnd = DateTime.now();
-    var dataRun = {
-      "kmTotal": 0.0,
-      "timeTotal": TimerTextWidget().time(context),
-      "timeStart": timeStart,
-      "timeEnd": timeEnd,
-      "state": _stateRun
-    };
-    print(_check);
+
     if (_check == true) {
+      var dataRun = {
+        "kmTotal": "${_distance.toStringAsPrecision(2)}",
+        "timeTotal": TimerTextWidget().time(context),
+        "timeStart": timeStart,
+        "timeEnd": timeEnd,
+        "state": _stateRun
+      };
+      print(dataRun);
       cancelTimer();
       timeEnd = DateTime.now();
       final bool value = stopResumen(true, context);
 
       showAbstractRun({
-        "km": 0.0,
+        "km": _distance.toStringAsPrecision(2),
         "time": TimerTextWidget().time(context),
       }, context);
       TimerTextWidget().reset(context);
@@ -347,12 +351,10 @@ class _CompetityPage extends State<CompetityPage> {
 
   cancelTimer() {
     if (timer != null) {
-      print(timer);
       timer.cancel();
       timer = null;
     }
     if (timerObjVar != null) {
-      print(timerObjVar);
       timerObjVar.cancel();
       timerObjVar = null;
     }
