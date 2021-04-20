@@ -55,8 +55,9 @@ class _CompetityPage extends State<CompetityPage> {
       int end = route.length - 1;
       double distanceKM = distance(ubication.latitude, ubication.longitude,
           route[end].latitude, route[end].longitude);
-
-      distanceMeta = distanceKM;
+      double distanceStart = distance(ubication.latitude, ubication.longitude,
+          route[0].latitude, route[0].longitude);
+      distanceMeta = distanceStart;
       double timediff = DateTime.now().difference(timeStart).inSeconds / 3600;
       velocity = distanceMeta / timediff;
       if (distanceKM <= 0.03) {
@@ -227,8 +228,8 @@ class _CompetityPage extends State<CompetityPage> {
                         .saveRouteCompetence(data, dataRun, context);
                     cancelTimer();
 
-                    Navigator.popUntil(context, (route) {
-                      return count++ == 2;
+                    Navigator.pushNamedAndRemoveUntil(context, "home", (route) {
+                      return count++ == 3;
                     });
                   },
                 )

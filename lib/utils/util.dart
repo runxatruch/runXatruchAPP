@@ -263,8 +263,8 @@ showAbstractRun(Map<String, dynamic> data, BuildContext context) {
                     style: TextStyle(color: Colors.red[400])),
                 onPressed: () {
                   //UserProvider().saveRouteUser(training);
-                  Navigator.popUntil(context, (route) {
-                    return count++ == 2;
+                  Navigator.pushNamedAndRemoveUntil(context, "home", (route) {
+                    return count++ == 3;
                   });
                 },
               )

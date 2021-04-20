@@ -1,20 +1,19 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 
 CollectionReference _inscription =
     FirebaseFirestore.instance.collection('userInscription');
+final _pref = PreferenciasUsuario();
+final firestoreInstance = FirebaseFirestore.instance;
 
 class InscriptionProvider {
-  final _pref = PreferenciasUsuario();
-
   addInscription(Map data) async {
     bool _exist;
     final preferences = jsonDecode(_pref.credential);
     data['idUser'] = preferences['uid'];
-    final firestoreInstance = FirebaseFirestore.instance;
     //aca tengo que  verificar si ya hay un registro de evento y usuario en el que la fecha de evento sea igual
     try {
       await firestoreInstance
@@ -91,5 +90,69 @@ class InscriptionProvider {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<List<Map<dynamic, dynamic>>> showPartipation() async {
+    List<Map<dynamic, dynamic>> listRunning = [];
+    final preferences = jsonDecode(_pref.credential);
+    final uid = preferences['uid'];
+    final listInscription = await showInscription(uid);
+    for (var item in listInscription) {
+      final resp = await showRunningUser(item["id"]);
+      if (resp != null) {
+        final event = await setEvent(item["idEvent"]);
+        final running = resp;
+        listRunning.add({
+          ...running,
+          "nameEvent": event.nameEvent,
+          "date": event.startTime
+        });
+      }
+    }
+    return listRunning;
+  }
+
+  Future<List> showInscription(uid) async {
+    List inscripciones = [];
+    await firestoreInstance
+        .collection("userInscription")
+        .where("idUser", isEqualTo: uid)
+        .orderBy("date", descending: false)
+        .get()
+        .then((inscription) => {
+              for (var item in inscription.docs)
+                {
+                  inscripciones.add({...item.data(), "id": item.id})
+                }
+            });
+    return inscripciones;
+  }
+
+  Future<EventModel> setEvent(id) async {
+    EventModel event;
+    await firestoreInstance
+        .collection("event")
+        .where("id", isEqualTo: id)
+        .get()
+        .then((inscription) => {
+              for (var item in inscription.docs)
+                {event = EventModel.fromJson(item.data())}
+            });
+    return event;
+  }
+
+  Future<Map<dynamic, dynamic>> showRunningUser(id) async {
+    Map<dynamic, dynamic> runing;
+    await firestoreInstance
+        .collection("competenceRunning")
+        .where("idInscription", isEqualTo: id)
+        .get()
+        .then((inscription) => {
+              if (inscription.docs.length > 0)
+                {runing = inscription.docs[0].data()}
+              else if (inscription.docs.length == 0)
+                {runing = null}
+            });
+    return runing;
   }
 }
