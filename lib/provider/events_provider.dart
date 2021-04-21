@@ -151,11 +151,11 @@ class EventProvider {
 
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
-    firestoreInstance.orderBy("startTime", descending: false);
     //obteniendo las categorias existentes
     for (var i = 0; i < events.length; i++) {
       await firestoreInstance
           .where("id", isEqualTo: events[i]['idEvent'])
+          .orderBy("startTime", descending: false)
           .get()
           .then((value) {
         value.docs.forEach((result) {
@@ -180,21 +180,24 @@ class EventProvider {
     Query firestoreInstanceCo =
         FirebaseFirestore.instance.collection("competenceRunning");
     //obteniendo las categorias existentes
+    final List<EventModelUser> eventsFinal = new List();
     for (var i = 0; i < eventsUser.length; i++) {
       await firestoreInstanceCo
           .where("idInscription", whereIn: listid)
           .get()
           .then((value) {
-        print(value.size);
+        bool val = false;
         value.docs.forEach((result) {
           if (result['idInscription'] == eventsUser[i].idInscription) {
-            eventsUser.remove(eventsUser[i]);
+            val = true;
           }
         });
+        if (!val) {
+          eventsFinal.add(eventsUser[i]);
+        }
       });
     }
-
-    return eventsUser;
+    return eventsFinal;
   }
 
   Future getInscription(String uid) async {

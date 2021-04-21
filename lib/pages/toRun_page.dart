@@ -223,7 +223,6 @@ class _ToRunPage extends State<ToRunPage> {
 
   Widget _dataCategory(
       List<dynamic> categories, String dateEvent, EventModelUser dataEvent) {
-    print(dateEvent);
     var catIncrita;
 
     for (var i = 0; i < categories.length; i++) {
@@ -279,11 +278,10 @@ class _ToRunPage extends State<ToRunPage> {
 
   _deleteInscription(String id) {
     final result = InscriptionProvider().deleteUser(id);
-    result.then((resp) => {print(result)});
+    result.then((resp) => {});
   }
 
   Future<void> obtenerData() async {
-    print("refescar");
     final duration = new Duration(microseconds: 200);
     new Timer(duration, () {
       setState(() {});
@@ -321,7 +319,6 @@ class _ToRunPage extends State<ToRunPage> {
     final dateNow = DateTime.now();
 
     final difference = date.difference(dateNow);
-    print(difference);
 
     int second = difference.inSeconds;
     int minute = difference.inMinutes;
@@ -330,7 +327,6 @@ class _ToRunPage extends State<ToRunPage> {
     dates = DateTime.now()
         .add(Duration(hours: hour, minutes: minute, seconds: second));
     // }
-    print(difference.inDays);
     if (difference.inDays < 1) {
       return Container(
         width: 220,
