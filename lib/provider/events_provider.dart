@@ -76,7 +76,8 @@ class EventProvider {
         }
 
         if (validate == true &&
-            DateTime.now().isBefore(DateTime.parse(value.inscriptionTime))) {
+            DateTime.now().isBefore(DateTime.parse(value.inscriptionTime)) &&
+            result['finalized'] != "true") {
           events.add(value);
         }
       });
@@ -160,18 +161,20 @@ class EventProvider {
           .get()
           .then((value) {
         value.docs.forEach((result) {
-          final value = EventModelUser.fromJson(result.data());
+          if (result['finalized'] != "true") {
+            final value = EventModelUser.fromJson(result.data());
 
-          value.idInscription = listid[i];
-          value.categories.forEach((element) {
-            if (element['id'] == events[i]['idCat']) {
-              element['inscrito'] = true;
-            } else {
-              element['inscrito'] = false;
+            value.idInscription = listid[i];
+            value.categories.forEach((element) {
+              if (element['id'] == events[i]['idCat']) {
+                element['inscrito'] = true;
+              } else {
+                element['inscrito'] = false;
+              }
+            });
+            if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
+              eventsUser.add(value);
             }
-          });
-          if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
-            eventsUser.add(value);
           }
         });
       });
