@@ -154,31 +154,33 @@ class EventProvider {
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
     //obteniendo las categorias existentes
-    for (var i = 0; i < events.length; i++) {
-      await firestoreInstance
-          .where("id", isEqualTo: events[i]['idEvent'])
-          // .orderBy("id", descending: false)
-          .get()
-          .then((value) {
-        value.docs.forEach((result) {
-          if (result['finalized'] != "true") {
-            final value = EventModelUser.fromJson(result.data());
+    await firestoreInstance
+        .where("id", whereIn: lisdtidEvent)
+        .orderBy("startTime", descending: false)
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        if (result['finalized'] != "true") {
+          for (var i = 0; i < events.length; i++) {
+            if (result["id"] == events[i]['idEvent']) {
+              final value = EventModelUser.fromJson(result.data());
 
-            value.idInscription = listid[i];
-            value.categories.forEach((element) {
-              if (element['id'] == events[i]['idCat']) {
-                element['inscrito'] = true;
-              } else {
-                element['inscrito'] = false;
+              value.idInscription = listid[i];
+              value.categories.forEach((element) {
+                if (element['id'] == events[i]['idCat']) {
+                  element['inscrito'] = true;
+                } else {
+                  element['inscrito'] = false;
+                }
+              });
+              if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
+                eventsUser.add(value);
               }
-            });
-            if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
-              eventsUser.add(value);
             }
           }
-        });
+        }
       });
-    }
+    });
 
 //Intancia coleccion competenceRunning
     Query firestoreInstanceCo =
