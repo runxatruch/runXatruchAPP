@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/provider/events_provider.dart';

@@ -105,9 +105,12 @@ class _CompetityPage extends State<CompetityPage> {
               child: Column(
                 children: <Widget>[
                   TimerTextWidget(),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  Text('Duración',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.redAccent)),
+
                   //_createInformation()
                 ],
               ),

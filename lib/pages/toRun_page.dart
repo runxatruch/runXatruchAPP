@@ -358,7 +358,7 @@ class _ToRunPage extends State<ToRunPage> {
                           style: textStyle,
                         );
                       })
-                    : Text("Tiempo!", style: textStyle),
+                    : Text(""),
                 start(event, category),
               ],
             ),
@@ -381,7 +381,18 @@ class _ToRunPage extends State<ToRunPage> {
           elevation: 5.0,
           color: Colors.red[400],
           textColor: Colors.white,
-          child: Text('Competir'),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 5,
+              ),
+              Text('Competir'),
+              SizedBox(
+                width: 2,
+              ),
+              Icon(Icons.arrow_forward_ios_outlined),
+            ],
+          ),
           onPressed: () => {
                 setState(() {
                   //runApp(ProviderScope(child: CompetityPage()))

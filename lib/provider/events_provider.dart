@@ -132,6 +132,7 @@ class EventProvider {
 //Instancia coleccion userInscription para saber los eventos a los que esta inscrito
     List events = [];
     List listid = [];
+    List lisdtidEvent = [];
     String idInscriptionUser;
     Query firestoreInstanceUI =
         FirebaseFirestore.instance.collection("userInscription");
@@ -144,7 +145,7 @@ class EventProvider {
         events
             .add({'idEvent': result['idEvent'], 'idCat': result['idCategory']});
         listid.add(result.id);
-
+        lisdtidEvent.add(result['idEvent']);
         idInscriptionUser = result.id;
       });
     });
@@ -155,7 +156,7 @@ class EventProvider {
     for (var i = 0; i < events.length; i++) {
       await firestoreInstance
           .where("id", isEqualTo: events[i]['idEvent'])
-          .orderBy("startTime", descending: false)
+          // .orderBy("id", descending: false)
           .get()
           .then((value) {
         value.docs.forEach((result) {
@@ -180,6 +181,7 @@ class EventProvider {
     Query firestoreInstanceCo =
         FirebaseFirestore.instance.collection("competenceRunning");
     //obteniendo las categorias existentes
+
     final List<EventModelUser> eventsFinal = new List();
     for (var i = 0; i < eventsUser.length; i++) {
       await firestoreInstanceCo
