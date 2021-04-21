@@ -53,6 +53,19 @@ class InscriptionProvider {
     }
   }
 
+  Future<bool> terminated(idInscription) async {
+    bool resp = false;
+    final inscriptionData = await _inscription.doc(idInscription).get();
+    final data = inscriptionData.data();
+    final event = await setEvent(data["idEvent"]);
+    if (event.finalized == "true") {
+      resp = true;
+    } else {
+      resp = false;
+    }
+    return resp;
+  }
+
   Future<List<Map<dynamic, dynamic>>> showPartipation() async {
     List<Map<dynamic, dynamic>> listRunning = [];
     final preferences = jsonDecode(_pref.credential);

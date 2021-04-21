@@ -42,32 +42,71 @@ dynamic category;
 MiUbicacionBloc mapaBloc;
 
 class _CompetityPage extends State<CompetityPage> {
-  temp(LatLng ubication, List<LatLng> route, context) {
-    _distance = 0.0;
-    if (!_check) {
-      double distanceKM = distance(ubication.latitude, ubication.longitude,
-          route[0].latitude, route[0].longitude);
+  temp(LatLng ubication, List<LatLng> route, context) async {
+    final resp = await InscriptionProvider().terminated(data.idInscription);
+    print("****** $resp");
+    if (!resp) {
+      _distance = 0.0;
+      if (!_check) {
+        double distanceKM = distance(ubication.latitude, ubication.longitude,
+            route[0].latitude, route[0].longitude);
 
-      if (distanceKM <= 0.03) {
-        _start = true;
-        playStop(context);
+        if (distanceKM <= 0.03) {
+          _start = true;
+          playStop(context);
+        }
+      } else {
+        int end = route.length - 1;
+        double distanceKM = distance(ubication.latitude, ubication.longitude,
+            route[end].latitude, route[end].longitude);
+        double distanceStart = distance(ubication.latitude, ubication.longitude,
+            route[0].latitude, route[0].longitude);
+        distanceMeta = distanceKM;
+        double timediff = DateTime.now().difference(timeStart).inSeconds / 3600;
+        velocity = distanceStart / timediff;
+        _distance = distanceStart;
+        if (distanceKM <= 0.03) {
+          _start = false;
+
+          playStop(context);
+        }
+        setState(() {});
       }
     } else {
-      int end = route.length - 1;
-      double distanceKM = distance(ubication.latitude, ubication.longitude,
-          route[end].latitude, route[end].longitude);
-      double distanceStart = distance(ubication.latitude, ubication.longitude,
-          route[0].latitude, route[0].longitude);
-      distanceMeta = distanceKM;
-      double timediff = DateTime.now().difference(timeStart).inSeconds / 3600;
-      velocity = distanceStart / timediff;
-      _distance = distanceStart;
-      if (distanceKM <= 0.03) {
-        _start = false;
+      cancelTimer();
+      int count = 0;
+      var dataRun = {
+        "kmTotal": "0.0",
+        "timeTotal": null,
+        "timeStart": null,
+        "timeEnd": null,
+        "state": "Retirado"
+      };
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('El evento se ha finalizado'),
+              actions: <Widget>[
+                FlatButton(
+                  child:
+                      Text('Salir', style: TextStyle(color: Colors.red[400])),
+                  onPressed: () async {
+                    setState(() {
+                      _check = false;
+                    });
 
-        playStop(context);
-      }
-      setState(() {});
+                    await UserProvider().saveRouteCompetence(
+                        data.idInscription, dataRun, context);
+
+                    Navigator.pushNamedAndRemoveUntil(context, "home", (route) {
+                      return count++ == 3;
+                    });
+                  },
+                )
+              ],
+            );
+          });
     }
   }
 
