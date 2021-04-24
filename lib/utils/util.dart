@@ -178,12 +178,12 @@ showAbstractRun(Map<String, dynamic> data, BuildContext context) {
   showDialog(
       context: context,
       barrierColor: Colors.redAccent,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (context) {
         return new WillPopScope(
           child: AlertDialog(
             elevation: 50.0,
-            title: Text('Tiempo Empleado:',
+            title: Text('LLego a la Meta:',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

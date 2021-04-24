@@ -70,9 +70,7 @@ class _HistorialTrainingState extends State<HistorialTraining> {
             color: Colors.red[400],
           ),
         ),
-        onDismissed: (DismissDirection direction) {
-          print('eliminar');
-        },
+        onDismissed: (DismissDirection direction) {},
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 10),
           child: Card(

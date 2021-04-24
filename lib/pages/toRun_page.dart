@@ -140,10 +140,10 @@ class _ToRunPage extends State<ToRunPage> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.grey[100],
+            color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.7),
+                color: Colors.grey.withOpacity(0.9),
                 spreadRadius: 3,
               ),
             ],

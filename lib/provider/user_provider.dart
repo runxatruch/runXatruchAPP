@@ -33,7 +33,6 @@ class UserProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        print(user);
         final id = result.id;
         user.id = id;
         final data = {
@@ -45,7 +44,6 @@ class UserProvider {
         dataUser.add(user);
       });
     });
-    print(dataUser);
 
     return dataUser;
   }
@@ -56,17 +54,15 @@ class UserProvider {
     DateTime now = new DateTime.now();
     data.date = new DateTime(now.year, now.month, now.day, now.hour, now.minute)
         .toString();
-    print(data.date);
     return await firestoreInstance
         .collection("userTraining")
         .add(data.toJson())
-        .then((value) => print('agregado con éxito'))
-        .catchError((e) => print("error $e"));
+        .then((value) => {})
+        .catchError((e) => {});
   }
 
   saveRouteCompetence(String idInscription, Map<String, dynamic> dataRun,
       BuildContext context) async {
-    print(dataRun);
     final RunningModel running = new RunningModel();
     running.kmTotal = dataRun['kmTotal'];
     running.idInscription = idInscription;
@@ -82,8 +78,8 @@ class UserProvider {
     return await firestoreInstance
         .collection("competenceRunning")
         .add(running.toJson())
-        .then((value) => print('agregado con éxito'))
-        .catchError((e) => print("error $e"));
+        .then((value) => {})
+        .catchError((e) => {});
   }
 
   Future<Map<String, dynamic>> updateUser(
@@ -91,7 +87,6 @@ class UserProvider {
     Map<String, dynamic> resultfinal;
     if (password["nueva"] != "") {
       dynamic result = await _auth.updateuser(user.email, password);
-      print(result);
       if (result['ok']) {
         dynamic resultupdate = await updateUsertemp(user, img);
         if (resultupdate["ok"]) {
@@ -160,8 +155,6 @@ class UserProvider {
   }
 
   uploadImg(File img, String name) async {
-    print("*****${img.existsSync()}");
-
     final data = jsonDecode(_pref.credential);
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("PostImg");

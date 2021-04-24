@@ -19,28 +19,27 @@ class AuthProvider {
     try {
       userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      //print(userCredential.credential.token);
+      if (temp) {
+        final data = {
+          "email": userCredential.user.email,
+          "uid": userCredential.user.uid,
+          "mantener": true
+        };
+        _pref.credential = jsonEncode(data);
+      } else {
+        final data = {
+          "email": userCredential.user.email,
+          "uid": userCredential.user.uid,
+          "mantener": false
+        };
+        _pref.credential = jsonEncode(data);
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return {'ok': false, 'error': 'No existe correo electronico'};
       } else if (e.code == 'wrong-password') {
         return {'ok': false, 'error': 'Contraseña incorrecta'};
       }
-    }
-    if (temp) {
-      final data = {
-        "email": userCredential.user.email,
-        "uid": userCredential.user.uid,
-        "mantener": true
-      };
-      _pref.credential = jsonEncode(data);
-    } else {
-      final data = {
-        "email": userCredential.user.email,
-        "uid": userCredential.user.uid,
-        "mantener": false
-      };
-      _pref.credential = jsonEncode(data);
     }
 
     return {'ok': true, 'credential': userCredential};
@@ -80,8 +79,8 @@ class AuthProvider {
   Future _addCompetitor(UserModel userData) async {
     return await _competitor
         .add(userData.toJson())
-        .then((value) => print('Competidor agregado con éxito'))
-        .catchError((e) => print("error $e"));
+        .then((value) => {})
+        .catchError((e) => {});
   }
 
   Future<Map<String, dynamic>> updateuser(String emaild, Map passwordd) async {
@@ -96,24 +95,21 @@ class AuthProvider {
           .reauthenticateWithCredential(credential);
       if (authresult.user != null) {
         User currentUser = _auth.currentUser;
-        currentUser.updatePassword(passwordd["nueva"]).then((value) {
-          print("****** nueva pasword");
-        }).catchError((err) {
-          print(err);
-        });
+        currentUser
+            .updatePassword(passwordd["nueva"])
+            .then((value) {})
+            .catchError((err) {});
       } else {
         return {"ok": false, "error": "Datos Incorrectos"};
       }
       return {"ok": true};
     } catch (e) {
-      print("**** $e");
       return {"ok": false, "error": "Datos Incorrectos"};
     }
   }
 
   //Reset password
   Future<Map<String, dynamic>> resetPassword(String email) async {
-    print(email);
     try {
       await _auth.sendPasswordResetEmail(email: email);
       return {"ok": true};

@@ -11,8 +11,6 @@ startDist(BuildContext context, String timer) {
   final mapaBloc = BlocProvider.of<MapaBloc>(context);
   final list = List();
   for (var item in mapaBloc.state.polylines.values) {
-    print('--------');
-    //print(item.points);
     final double latInitial = item.points[0].latitude;
     final double lonInitial = item.points[0].longitude;
     final double latFinal = item.points[item.points.length - 1].latitude;
@@ -20,19 +18,14 @@ startDist(BuildContext context, String timer) {
 
     double distanceKM = distance(latInitial, lonInitial, latFinal, lonFinal);
 
-    //final timeLeft = useProvider(timerProvider.state).timeLeft;
-    print('distancia en km es $distanceKM');
     String distancia = distanceKM.toStringAsPrecision(2);
     list.add(double.parse(distancia));
-    //distancia = 0;
-    //print('distancia KM: $distanceKM');
     final arrayTimer = timer.split(':');
     final minutes = arrayTimer[0];
     final seconds = arrayTimer[1];
     final timerFinal =
         double.parse(minutes) / 60 + double.parse(seconds) / 3600;
 
-    //print(timerFinal);
     double average = calculateProm(timerFinal, distanceKM);
     String promedio = average.toStringAsPrecision(2);
 
@@ -48,7 +41,6 @@ double distance(
   final double distance =
       Geolocator.distanceBetween(latInitial, lonInitial, latFinal, lonFinal);
   final double distanceKM = distance / 1000;
-  //print('km recorridos: $distanceKM');
   return distanceKM;
 }
 

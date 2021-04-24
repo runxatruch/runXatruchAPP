@@ -321,7 +321,6 @@ class _EventPageState extends State<EventPages> {
     DateTime date = DateTime.now();
     String dateStr = date.toString();
     String dateIns = dateStr.substring(0, dateStr.length - 7);
-    print(dateIns);
     setState(() {
       _check = true;
     });

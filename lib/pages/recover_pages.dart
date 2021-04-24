@@ -145,7 +145,6 @@ class _RecoverAccountState extends State<RecoverAccount> {
   }
 
   _send() {
-    print("***** $email");
     if (!_formKey.currentState.validate()) return;
     setState(() {
       _check = true;

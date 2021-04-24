@@ -54,10 +54,13 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget _createBackground(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fondoMorado = Container(
-      height: size.height * 0.45,
-      width: double.infinity,
-      color: Colors.teal[300],
-    );
+        height: size.height * 0.45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Colors.red[200], Colors.red[800]])));
 
     final circulo = Container(
       width: 100.0,
@@ -142,7 +145,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       style: TextStyle(
                           fontFamily: 'RobotoMono',
                           fontSize: 30.0,
-                          color: Colors.lightBlue[700]),
+                          color: Colors.red[400]),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -223,8 +226,8 @@ class _CreateAccountState extends State<CreateAccount> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Checkbox(
-            focusColor: Colors.lightBlue[700],
-            activeColor: Colors.lightBlue[700],
+            focusColor: Colors.red[400],
+            activeColor: Colors.red[400],
             value: _checkbox,
             onChanged: (value) {
               setState(() {
@@ -250,7 +253,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             icon: Icon(
               Icons.account_box_rounded,
-              color: Colors.lightBlue[700],
+              color: Colors.red[400],
             ),
             hintText: 'Ejem: Juan Antonio',
             labelText: 'Primer y Segundo Nombre',
@@ -276,7 +279,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.account_circle, color: Colors.lightBlue[700]),
+            icon: Icon(Icons.account_circle, color: Colors.red[400]),
             hintText: 'Ejem: Perez Ramos',
             labelText: 'Primer y Segundo apellido',
           ),
@@ -301,7 +304,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.tag, color: Colors.lightBlue[700]),
+            icon: Icon(Icons.tag, color: Colors.red[400]),
             hintText: 'Ejem: 080119992000',
             labelText: 'Numero de Identidad sin Espacios',
           ),
@@ -327,7 +330,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.email, color: Colors.lightBlue[700]),
+            icon: Icon(Icons.email, color: Colors.red[400]),
             hintText: 'example@example.com',
             labelText: 'Correo Electrónico',
           ),
@@ -352,7 +355,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.phone, color: Colors.lightBlue[700]),
+            icon: Icon(Icons.phone, color: Colors.red[400]),
             hintText: 'Ejem: 88905690',
             labelText: 'Numero de telefono con código de área y sin espacios',
           ),
@@ -387,7 +390,7 @@ class _CreateAccountState extends State<CreateAccount> {
       child: Row(
         children: <Widget>[
           SizedBox(width: 10.0),
-          Icon(Icons.room_rounded, color: Colors.lightBlue[700]),
+          Icon(Icons.room_rounded, color: Colors.red[400]),
           SizedBox(width: 15.0),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 40.0),
@@ -429,7 +432,7 @@ class _CreateAccountState extends State<CreateAccount> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            icon: Icon(Icons.calendar_today, color: Colors.lightBlue[700]),
+            icon: Icon(Icons.calendar_today, color: Colors.red[400]),
             labelText: 'Fecha de nacimiendo',
           ),
           onTap: () {
@@ -478,7 +481,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 })
               },
             ),
-            icon: Icon(Icons.lock, color: Colors.lightBlue[700])),
+            icon: Icon(Icons.lock, color: Colors.red[400])),
         key: keyClave,
         controller: pass1,
         onSaved: (value) => userAccount.password = value,

@@ -49,14 +49,13 @@ class _CareersPagesState extends State<CareersPages> {
           color: Colors.white),
       child: Column(
         children: [
-          Text("Filtrar eventos"),
+          Text(""),
           Divider(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: <Widget>[
-                _createCity(),
-                _createState(),
+                Text("Listado de eventos disponibles para su inscripcion."),
                 // _createOrder()
               ],
             ),
@@ -84,13 +83,19 @@ class _CareersPagesState extends State<CareersPages> {
               ),
             );
           } else {
-            return Center(
-              child: Text("No se encontraron eventos"),
+            return Container(
+              margin: EdgeInsets.only(top: heightScreen * 0.35),
+              child: Center(
+                child: Text(
+                  "No se encontraron eventos",
+                  style: TextStyle(color: Colors.red[400]),
+                ),
+              ),
             );
           }
         } else {
           return Container(
-            margin: EdgeInsets.only(top: 300),
+            margin: EdgeInsets.only(top: heightScreen * 0.35),
             child: Center(
               child: CircularProgressIndicator(),
             ),
@@ -336,7 +341,6 @@ class _CareersPagesState extends State<CareersPages> {
   }
 
   Future<void> obtenerData() async {
-    print("refescar");
     final duration = new Duration(microseconds: 200);
     new Timer(duration, () {
       setState(() {});

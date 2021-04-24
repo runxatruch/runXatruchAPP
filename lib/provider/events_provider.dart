@@ -25,7 +25,6 @@ class EventProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        //print(user);
         final id = result.id;
         user.id = id;
         int subsY = int.parse(user.fechaNac.substring(0, 4));
@@ -124,7 +123,6 @@ class EventProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        //print(user);
         final id = result.id;
         idUser = id;
         user.id = id;

@@ -44,7 +44,6 @@ MiUbicacionBloc mapaBloc;
 class _CompetityPage extends State<CompetityPage> {
   temp(LatLng ubication, List<LatLng> route, context) async {
     final resp = await InscriptionProvider().terminated(data.idInscription);
-    print("****** $resp");
     if (!resp) {
       _distance = 0.0;
       if (!_check) {
@@ -75,15 +74,10 @@ class _CompetityPage extends State<CompetityPage> {
     } else {
       cancelTimer();
       int count = 0;
-      var dataRun = {
-        "kmTotal": "0.0",
-        "timeTotal": null,
-        "timeStart": null,
-        "timeEnd": null,
-        "state": "Retirado"
-      };
       showDialog(
           context: context,
+          barrierDismissible: false,
+          barrierColor: Colors.redAccent,
           builder: (context) {
             return AlertDialog(
               title: Text('El evento se ha finalizado'),
@@ -92,13 +86,6 @@ class _CompetityPage extends State<CompetityPage> {
                   child:
                       Text('Salir', style: TextStyle(color: Colors.red[400])),
                   onPressed: () async {
-                    setState(() {
-                      _check = false;
-                    });
-
-                    await UserProvider().saveRouteCompetence(
-                        data.idInscription, dataRun, context);
-
                     Navigator.pushNamedAndRemoveUntil(context, "home", (route) {
                       return count++ == 3;
                     });
@@ -113,7 +100,7 @@ class _CompetityPage extends State<CompetityPage> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
       timerObjVar = timer;
       temp(mapaBloc.state.ubicacion, _route, context);
     });
@@ -339,7 +326,6 @@ class _CompetityPage extends State<CompetityPage> {
         "timeEnd": timeEnd,
         "state": _stateRun
       };
-      print(dataRun);
       cancelTimer();
       timeEnd = DateTime.now();
       final bool value = stopResumen(true, context);

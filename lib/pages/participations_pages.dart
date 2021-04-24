@@ -10,7 +10,6 @@ class ParticipationsPage extends StatelessWidget {
     final podData = ModalRoute.of(context).settings.arguments;
     if (podData != null) {
       producto = podData;
-      print(producto);
     }
 
     return Scaffold(
@@ -23,7 +22,6 @@ class ParticipationsPage extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.data;
-              print("********** $data");
               return ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, i) => _bodyCreate(data[i], context));
@@ -56,7 +54,7 @@ class ParticipationsPage extends StatelessWidget {
                   margin: EdgeInsets.only(top: 12),
                   child: Image(
                     image: AssetImage("assets/run.png"),
-                    width: 45,
+                    width: 85,
                   )),
               SizedBox(
                 width: 10,
