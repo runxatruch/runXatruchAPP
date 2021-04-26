@@ -32,37 +32,7 @@ class _BTNmapState extends State<BTNmap> {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // RaisedButton(
-        //   child: Container(
-        //       width: 95.0,
-        //       height: 55,
-        //       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-        //       child: Row(
-        //         mainAxisSize: MainAxisSize.min,
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: [_check ? Text('Finalizar') : Text('Iniciar')],
-        //       )),
-        //   shape:
-        //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
-        //   elevation: 5.0,
-        //   color: Colors.lightBlue[800],
-        //   textColor: Colors.white,
-        //   onPressed: () => _playStop(),
-        // )
-      ],
+      children: [],
     );
   }
-
-  // _playStop() {
-  //   setState(() {
-  //     _check = !_check;
-  //   });
-
-  //   if (_check == true) {
-  //     print('Iniciar');
-  //     context.read(timerProvider).startTimer();
-  //   } else
-  //     print('finalizar');
-  // }
 }

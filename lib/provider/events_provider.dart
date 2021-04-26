@@ -1,17 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:runxatruch_app/models/events_inscription_model.dart';
 import 'package:runxatruch_app/models/events_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/models/route_model.dart';
-import 'package:runxatruch_app/pages/porfile_page.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
-import 'package:runxatruch_app/provider/user_provider.dart';
 
 class EventProvider {
   final _pref = PreferenciasUsuario();
@@ -31,7 +25,6 @@ class EventProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        //print(user);
         final id = result.id;
         user.id = id;
         int subsY = int.parse(user.fechaNac.substring(0, 4));
@@ -54,6 +47,7 @@ class EventProvider {
     await firestoreInstance
         .where("startTime", isLessThanOrEqualTo: monthNext())
         .where("startTime", isGreaterThanOrEqualTo: DateTime.now().toString())
+        .orderBy("startTime", descending: false)
         .get()
         .then((value) {
       value.docs.forEach((result) {
@@ -70,14 +64,6 @@ class EventProvider {
 
             int ageMin = int.parse(element['ageMin']);
             int ageMax = int.parse(element['ageMax']);
-            //print(element);
-
-            // categories.forEach((elementCat) {
-            //   final dataC = jsonDecode(elementCat);
-            //   if (dataC['id'] == idCat) {
-            //     element['ruteArray'] = dataC['rute'];
-            //   }
-            // });
             if (ageUser >= ageMin && ageUser <= ageMax) {
               //return cuando ya se encuentre una categoria con esa edad
               validate = true;
@@ -88,14 +74,14 @@ class EventProvider {
           });
         }
 
-        if (validate == true) {
+        if (validate == true &&
+            DateTime.now().isBefore(DateTime.parse(value.inscriptionTime)) &&
+            result['finalized'] != "true") {
           events.add(value);
         }
       });
     });
-    //print(events.length);
-    // Future<List> cat = category("0bvPah3DhO6LDTTLh1DY");
-    // print(cat.then((value) => print(value)));\
+
     return events;
   }
 
@@ -137,7 +123,6 @@ class EventProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        //print(user);
         final id = result.id;
         idUser = id;
         user.id = id;
@@ -146,6 +131,7 @@ class EventProvider {
 //Instancia coleccion userInscription para saber los eventos a los que esta inscrito
     List events = [];
     List listid = [];
+    List lisdtidEvent = [];
     String idInscriptionUser;
     Query firestoreInstanceUI =
         FirebaseFirestore.instance.collection("userInscription");
@@ -158,7 +144,7 @@ class EventProvider {
         events
             .add({'idEvent': result['idEvent'], 'idCat': result['idCategory']});
         listid.add(result.id);
-
+        lisdtidEvent.add(result['idEvent']);
         idInscriptionUser = result.id;
       });
     });
@@ -166,29 +152,57 @@ class EventProvider {
 //Intancia coleccion evento
     Query firestoreInstance = FirebaseFirestore.instance.collection("event");
     //obteniendo las categorias existentes
-    for (var i = 0; i < events.length; i++) {
-      await firestoreInstance
-          .where("id", isEqualTo: events[i]['idEvent'])
+    await firestoreInstance
+        .where("id", whereIn: lisdtidEvent)
+        .orderBy("startTime", descending: false)
+        .get()
+        .then((value) {
+      value.docs.forEach((result) {
+        if (result['finalized'] != "true") {
+          for (var i = 0; i < events.length; i++) {
+            if (result["id"] == events[i]['idEvent']) {
+              final value = EventModelUser.fromJson(result.data());
+
+              value.idInscription = listid[i];
+              value.categories.forEach((element) {
+                if (element['id'] == events[i]['idCat']) {
+                  element['inscrito'] = true;
+                } else {
+                  element['inscrito'] = false;
+                }
+              });
+              if (DateTime.now().isBefore(DateTime.parse(value.endTime))) {
+                eventsUser.add(value);
+              }
+            }
+          }
+        }
+      });
+    });
+
+//Intancia coleccion competenceRunning
+    Query firestoreInstanceCo =
+        FirebaseFirestore.instance.collection("competenceRunning");
+    //obteniendo las categorias existentes
+
+    final List<EventModelUser> eventsFinal = new List();
+    for (var i = 0; i < eventsUser.length; i++) {
+      await firestoreInstanceCo
+          .where("idInscription", whereIn: listid)
           .get()
           .then((value) {
+        bool val = false;
         value.docs.forEach((result) {
-          final value = EventModelUser.fromJson(result.data());
-
-          value.idInscription = listid[i];
-          print("value id ${value.idInscription}");
-          value.categories.forEach((element) {
-            if (element['id'] == events[i]['idCat']) {
-              element['inscrito'] = true;
-            } else {
-              element['inscrito'] = false;
-            }
-          });
-
-          eventsUser.add(value);
+          if (result['idInscription'] == eventsUser[i].idInscription) {
+            val = true;
+          }
         });
+        if (!val) {
+          eventsFinal.add(eventsUser[i]);
+        }
       });
     }
-    return eventsUser;
+    return eventsFinal;
   }
 
   Future getInscription(String uid) async {

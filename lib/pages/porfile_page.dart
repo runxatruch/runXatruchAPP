@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
 import 'package:runxatruch_app/provider/user_provider.dart';
 import 'package:runxatruch_app/models/user_models.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PorfilePage extends StatefulWidget {
   const PorfilePage({Key key}) : super(key: key);
@@ -30,7 +31,6 @@ class _PorfilePageState extends State<PorfilePage> {
               onPressed: () {
                 setState(() {
                   Navigator.pushNamed(context, 'setting', arguments: user);
-                  print("here");
                 });
               })
         ],
@@ -86,8 +86,6 @@ class _PorfilePageState extends State<PorfilePage> {
                       );
                     }),
               );
-
-              print(data);
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -183,7 +181,9 @@ class _PorfilePageState extends State<PorfilePage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_forward_ios_outlined),
-                onPressed: () {},
+                onPressed: () async {
+                  await launch("https://testproyect-fee79.web.app/landing");
+                },
               )
             ],
           ),
@@ -199,7 +199,9 @@ class _PorfilePageState extends State<PorfilePage> {
               ),
               IconButton(
                 icon: Icon(Icons.arrow_forward_ios_outlined),
-                onPressed: () {},
+                onPressed: () async {
+                  await launch("https://testproyect-fee79.web.app/resultados");
+                },
               )
             ],
           ),
@@ -270,7 +272,6 @@ class _PorfilePageState extends State<PorfilePage> {
   }
 
   Future<void> obtenerData() async {
-    print("refescar");
     final duration = new Duration(microseconds: 200);
     new Timer(duration, () {
       setState(() {});
@@ -278,7 +279,6 @@ class _PorfilePageState extends State<PorfilePage> {
   }
 
   _mostrarFoto(UserModel data) {
-    print(data.fotoUrl);
     if (data.fotoUrl == "" || data.fotoUrl == null) {
       return AssetImage('assets/unnamed.png');
     } else {

@@ -174,7 +174,6 @@ class _SettingPageState extends State<SettingPage> {
 
   _mostrarFoto(UserModel data) {
     if (foto != null) {
-      print("****$foto");
       return Image.file(
         newImage,
         width: 140,
@@ -332,7 +331,6 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       _check = true;
     });
-    print("here");
 
     final result = await userProvider.updateUser(data, foto, clave);
     if (result["ok"]) {
@@ -360,10 +358,7 @@ class _SettingPageState extends State<SettingPage> {
     final File antImage = File('$tempPath/image2.png');
     try {
       await antImage.delete();
-      print("---true");
-    } catch (e) {
-      print("---error");
-    }
+    } catch (e) {}
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Example()),
@@ -372,7 +367,6 @@ class _SettingPageState extends State<SettingPage> {
     newImage = new File(result);
 
     foto = await newImage.copy('$tempPath/image2.png');
-    print('ruta ${foto.path}');
     setState(() {
       cambios = true;
     });

@@ -168,3 +168,85 @@ showAbstract(Map<String, dynamic> data, BuildContext context) {
         );
       });
 }
+
+showAbstractRun(Map<String, dynamic> data, BuildContext context) {
+  int count = 0;
+  // ignore: close_sinks
+  final TrainingModel training = new TrainingModel();
+  training.time = data['time'];
+
+  showDialog(
+      context: context,
+      barrierColor: Colors.redAccent,
+      barrierDismissible: false,
+      builder: (context) {
+        return new WillPopScope(
+          child: AlertDialog(
+            elevation: 50.0,
+            title: Text('LLego a la Meta:',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.redAccent)),
+            content: Container(
+              height: 180,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(children: [
+                    Icon(
+                      Icons.run_circle_sharp,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Km recorridos: ',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey)),
+                  ]),
+                  Text('${data['km']}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  Divider(),
+                  Row(children: [
+                    Icon(
+                      Icons.run_circle_sharp,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Tiempo total: mm:ss',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey))
+                  ]),
+                  Text('${data['time']}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Salir del evento',
+                    style: TextStyle(color: Colors.red[400])),
+                onPressed: () {
+                  //UserProvider().saveRouteUser(training);
+                  Navigator.pushNamedAndRemoveUntil(context, "home", (route) {
+                    return count++ == 3;
+                  });
+                },
+              )
+            ],
+          ),
+          onWillPop: () async => false,
+        );
+      });
+}

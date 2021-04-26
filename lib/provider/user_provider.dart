@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
+import 'package:runxatruch_app/models/events_inscription_model.dart';
+import 'package:runxatruch_app/models/runningCompetence_model.dart';
 import 'package:runxatruch_app/models/trainingUser_model.dart';
 import 'package:runxatruch_app/models/user_models.dart';
 import 'package:runxatruch_app/prefUser/preferent_user.dart';
@@ -28,7 +33,6 @@ class UserProvider {
         .then((value) {
       value.docs.forEach((result) {
         final user = UserModel.fromJson(result.data());
-        print(user);
         final id = result.id;
         user.id = id;
         final data = {
@@ -40,7 +44,6 @@ class UserProvider {
         dataUser.add(user);
       });
     });
-    print(dataUser);
 
     return dataUser;
   }
@@ -51,12 +54,32 @@ class UserProvider {
     DateTime now = new DateTime.now();
     data.date = new DateTime(now.year, now.month, now.day, now.hour, now.minute)
         .toString();
-    print(data.date);
     return await firestoreInstance
         .collection("userTraining")
         .add(data.toJson())
-        .then((value) => print('agregado con éxito'))
-        .catchError((e) => print("error $e"));
+        .then((value) => {})
+        .catchError((e) => {});
+  }
+
+  saveRouteCompetence(String idInscription, Map<String, dynamic> dataRun,
+      BuildContext context) async {
+    final RunningModel running = new RunningModel();
+    running.kmTotal = dataRun['kmTotal'];
+    running.idInscription = idInscription;
+    running.state = dataRun['state'];
+    running.timeStart = dataRun['timeStart'] == null
+        ? null
+        : dataRun['timeStart'].toString().substring(0, 19);
+    running.timeEnd = dataRun['timeEnd'] == null
+        ? null
+        : dataRun['timeEnd'].toString().substring(0, 19);
+    running.timeTotal = dataRun['timeTotal'];
+
+    return await firestoreInstance
+        .collection("competenceRunning")
+        .add(running.toJson())
+        .then((value) => {})
+        .catchError((e) => {});
   }
 
   Future<Map<String, dynamic>> updateUser(
@@ -64,7 +87,6 @@ class UserProvider {
     Map<String, dynamic> resultfinal;
     if (password["nueva"] != "") {
       dynamic result = await _auth.updateuser(user.email, password);
-      print(result);
       if (result['ok']) {
         dynamic resultupdate = await updateUsertemp(user, img);
         if (resultupdate["ok"]) {
@@ -133,8 +155,6 @@ class UserProvider {
   }
 
   uploadImg(File img, String name) async {
-    print("*****${img.existsSync()}");
-
     final data = jsonDecode(_pref.credential);
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("PostImg");

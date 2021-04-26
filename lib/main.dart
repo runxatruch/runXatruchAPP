@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:runxatruch_app/bloc/mapa/mapa_bloc.dart';
 import 'package:runxatruch_app/pages/account_pages.dart';
 import 'package:runxatruch_app/pages/careers_page.dart';
+import 'package:runxatruch_app/pages/competition_page.dart';
 import 'package:runxatruch_app/pages/event_page.dart';
-import 'package:runxatruch_app/pages/example.dart';
 import 'package:runxatruch_app/pages/historial_training.dart';
 import 'package:runxatruch_app/pages/home_pages.dart';
 import 'package:runxatruch_app/pages/login_pages.dart';
 import 'package:runxatruch_app/pages/map_page.dart';
 import 'package:runxatruch_app/pages/participations_pages.dart';
+import 'package:runxatruch_app/pages/preparation_page.dart';
 import 'package:runxatruch_app/pages/recover_pages.dart';
 
 import 'package:runxatruch_app/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
@@ -74,7 +76,10 @@ class MyApp extends StatelessWidget {
                 'historial': (BuildContext context) => HistorialTraining(),
                 'participation': (BuildContext context) => ParticipationsPage(),
                 'event': (BuildContext context) => EventPages(),
-                'carreer': (BuildContext context) => CareersPages()
+                'carreer': (BuildContext context) => CareersPages(),
+                'startRun': (BuildContext context) =>
+                    ProviderScope(child: CompetityPage()) // CompetityPage()
+                //ProviderScope(child: CompetityPage())
                 //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(
@@ -125,7 +130,9 @@ class MyApp extends StatelessWidget {
                 'map': (BuildContext context) => MapPage(),
                 'historial': (BuildContext context) => HistorialTraining(),
                 'participation': (BuildContext context) => ParticipationsPage(),
-                'event': (BuildContext context) => EventPages()
+                'event': (BuildContext context) => EventPages(),
+                'startRun': (BuildContext context) =>
+                    ProviderScope(child: CompetityPage())
                 //'example': (BuildContext context) => Example()
               },
               theme: ThemeData(

@@ -87,7 +87,6 @@ class _MapPageState extends State<MapPage> {
     final mapaBloc = BlocProvider.of<MapaBloc>(context);
     CameraPosition cameraPosition;
     if (type) {
-      print('here');
       mapaBloc.add(OnNuevaUbicacion(ubicacion: widget.route[0]));
       cameraPosition = new CameraPosition(target: widget.route[0], zoom: 15.0);
     } else {
@@ -106,7 +105,7 @@ class _MapPageState extends State<MapPage> {
         initialCameraPosition: cameraPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
-        zoomControlsEnabled: true,
+        zoomControlsEnabled: false,
         polylines: type ? _polyline : mapaBloc.state.polylines.values.toSet(),
       ),
     );
